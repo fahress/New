@@ -19,7 +19,7 @@ URLs match the old site, so existing links and Google results keep working.
 
 ## Setup
 
-1. Copy `.env.example` to `.env.local` and fill in:
+1. The public Supabase URL and anon key are built in (`lib/config.ts`), so no setup is required. To point at another project, copy `.env.example` to `.env.local` and fill in:
    - `NEXT_PUBLIC_SUPABASE_URL` — the project URL
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — the public **anon** key (never the service_role key)
    - `NEXT_PUBLIC_SITE_URL` — `https://fahress.com`
@@ -30,7 +30,7 @@ The Supabase tables the site reads need a read-only "Public read" policy (alread
 
 ## Deploying on Vercel
 
-Import this repository in Vercel, add the three environment variables above, and deploy. Every branch gets its own preview link; search engines are told not to index previews.
+Import this repository in Vercel and deploy — no environment variables are required. Every branch gets its own preview link; search engines are told not to index previews.
 
 ## Offline development
 

@@ -1,4 +1,4 @@
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+import { SUPABASE_URL } from './config';
 
 /** Public URL of a file in the Supabase "studio" storage bucket. */
 export function storageUrl(path: string | null | undefined): string {

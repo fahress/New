@@ -3,8 +3,7 @@ import { cache } from 'react';
 import type { Archive, Award, Font, Person, PersonType, Tag } from './types';
 import { slugify } from './format';
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
+import { SUPABASE_URL, SUPABASE_ANON_KEY as SUPABASE_KEY } from './config';
 
 /** How long fetched data is reused before Next.js asks Supabase again (seconds). */
 export const REVALIDATE_SECONDS = 600;
