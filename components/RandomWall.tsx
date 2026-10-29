@@ -49,15 +49,16 @@ export default function RandomWall({ pool }: { pool: WallFont[] }) {
   }, [pool]);
 
   // until the random pick is made in the browser, show light placeholders (no wasted image downloads)
-  const blank = Array.from({ length: PER_ROW }, (_, i) => <span key={i} className="mq-tile" aria-hidden="true" />);
+  // every placeholder needs its own key, otherwise React leaves some of them behind when the real tiles arrive
+  const blank = Array.from({ length: PER_ROW * 2 }, (_, i) => <span key={`blank-${i}`} className="mq-tile" aria-hidden="true" />);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div className="marquee">
-        {rows ? [...rows[0], ...rows[0]].map((f, i) => <Tile key={f.s + i} f={f} />) : [...blank, ...blank]}
+      <div className="marquee" key={rows ? 'top-live' : 'top-blank'}>
+        {rows ? [...rows[0], ...rows[0]].map((f, i) => <Tile key={`${f.s}-${i}`} f={f} />) : blank}
       </div>
-      <div className="marquee marquee--rev">
-        {rows ? [...rows[1], ...rows[1]].map((f, i) => <Tile key={f.s + i} f={f} />) : [...blank, ...blank]}
+      <div className="marquee marquee--rev" key={rows ? 'bottom-live' : 'bottom-blank'}>
+        {rows ? [...rows[1], ...rows[1]].map((f, i) => <Tile key={`${f.s}-${i}`} f={f} />) : blank}
       </div>
     </div>
   );
