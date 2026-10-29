@@ -1,8 +1,7 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { storageUrl } from '@/lib/format';
+import { thumbUrl } from '@/lib/format';
 
 export type WallFont = { s: string; n: string; c: string; by: string };
 
@@ -17,10 +16,20 @@ function shuffle<T>(list: T[]): T[] {
   return a;
 }
 
-function Tile({ f }: { f: WallFont }) {
+function Tile({ f, eager = false }: { f: WallFont; eager?: boolean }) {
   return (
     <Link href={`/fonts/${f.s}`} className="mq-tile tile">
-      <Image src={storageUrl(f.c)} alt={`${f.n} presentation`} fill sizes="420px" className="spec" />
+      {/* small resized copies (≈10–30 KB) instead of the full-size cover; the font page shows the full size */}
+      <img
+        src={thumbUrl(f.c, 384)}
+        srcSet={`${thumbUrl(f.c, 384)} 1x, ${thumbUrl(f.c, 640)} 2x`}
+        alt={`${f.n} presentation`}
+        className="spec"
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+        width={420}
+        height={210}
+      />
       <span className="mq-tile__cap">
         <b style={{ fontWeight: 600 }}>{f.n}</b>
         <span style={{ color: 'var(--mute-inv)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f.by}</span>
@@ -44,10 +53,10 @@ export default function RandomWall({ pool }: { pool: WallFont[] }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div className="marquee">
-        {rows ? [...rows[0], ...rows[0]].map((f, i) => <Tile key={f.s + i} f={f} />) : [...blank, ...blank]}
+        {rows ? [...rows[0], ...rows[0]].map((f, i) => <Tile key={f.s + i} f={f} eager={i < 4} />) : [...blank, ...blank]}
       </div>
       <div className="marquee marquee--rev">
-        {rows ? [...rows[1], ...rows[1]].map((f, i) => <Tile key={f.s + i} f={f} />) : [...blank, ...blank]}
+        {rows ? [...rows[1], ...rows[1]].map((f, i) => <Tile key={f.s + i} f={f} eager={i < 4} />) : [...blank, ...blank]}
       </div>
     </div>
   );
