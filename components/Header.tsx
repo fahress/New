@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Logo from './Logo';
 import NavLinks from './NavLinks';
+import HeaderSearch from './HeaderSearch';
 
 export default function Header() {
   return (
@@ -10,11 +11,7 @@ export default function Header() {
           <Logo width={60} />
         </Link>
         <NavLinks />
-        <form action="/fonts" method="get" role="search" className="header-search">
-          <label htmlFor="hs" className="sr-only">Search the archive</label>
-          <input id="hs" name="q" type="search" placeholder="Search fonts, designers…" autoComplete="off" />
-          <button type="submit">Search</button>
-        </form>
+        <HeaderSearch />
       </div>
     </header>
   );
