@@ -1,0 +1,33 @@
+import type { Archive, Font } from './types';
+import type { CardFont } from '@/components/FontCard';
+import { label, licenseLabel } from './format';
+
+export function creditOf(a: Archive, f: Font): string {
+  const people = f.people.map((id) => a.personById.get(id)).filter(Boolean);
+  const designers = people.filter((p) => p!.type === 'designer').map((p) => p!.name);
+  const foundries = people.filter((p) => p!.type === 'foundry').map((p) => p!.name);
+  return [...designers, ...foundries].join(' · ');
+}
+
+export function tagNames(list: { id: number; name: string }[], ids: number[]): string[] {
+  return ids.map((id) => list.find((t) => t.id === id)?.name).filter((x): x is string => !!x).map(label);
+}
+
+export function toCard(a: Archive, f: Font): CardFont {
+  const award = f.awards.length ? a.awards.find((w) => w.id === f.awards[0].awardId)?.name ?? null : null;
+  return {
+    slug: f.slug,
+    name: f.name,
+    cover: f.cover,
+    credit: creditOf(a, f),
+    script: shortList(tagNames(a.scripts, f.scripts)),
+    license: licenseLabel(f.license),
+    award,
+    badges: tagNames(a.types, f.types).slice(0, 2),
+  };
+}
+
+export function shortList(names: string[], max = 2): string {
+  if (!names.length) return '—';
+  return names.length > max ? `${names.slice(0, max).join(' / ')} +${names.length - max}` : names.join(' / ');
+}

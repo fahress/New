@@ -1,0 +1,49 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import { storageUrl } from '@/lib/format';
+
+export type CardFont = {
+  slug: string;
+  name: string;
+  cover: string;
+  credit: string;
+  script: string;
+  license: string;
+  award?: string | null;
+  badges?: string[];
+};
+
+export default function FontCard({ f, index = 0, priority = false, sizes }: { f: CardFont; index?: number; priority?: boolean; sizes?: string }) {
+  return (
+    <Link href={`/fonts/${f.slug}`} className="card tile pop" style={{ animationDelay: `${Math.min(index, 12) * 40}ms` }}>
+      <div className="frame">
+        {f.cover ? (
+          <Image
+            src={storageUrl(f.cover)}
+            alt={`${f.name} — presentation image${f.credit ? ` by ${f.credit}` : ''}`}
+            fill
+            sizes={sizes ?? '(max-width: 700px) 100vw, (max-width: 1200px) 50vw, 33vw'}
+            className="spec"
+            priority={priority}
+          />
+        ) : null}
+        {f.badges && f.badges.length > 0 ? (
+          <span className="card__badges">
+            {f.badges.map((b) => (
+              <span key={b} className="pill pill--sm">{b}</span>
+            ))}
+          </span>
+        ) : null}
+        {f.award ? <span className="card__award pill pill--sm pill--solid">★ {f.award}</span> : null}
+      </div>
+      <div className="card__row card__rule">
+        <span className="card__name">{f.name}</span>
+        <span className="pill pill--sm">{f.license}</span>
+      </div>
+      <div className="card__meta">
+        <span>{f.credit || 'Designer not listed'}</span>
+        <span className="muted" style={{ whiteSpace: 'nowrap' }}>{f.script}</span>
+      </div>
+    </Link>
+  );
+}
