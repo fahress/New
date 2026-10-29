@@ -11,7 +11,9 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
   async redirects() {
-    return [{ source: '/search', destination: '/fonts', permanent: true }];
+    return [
+      { source: '/search', destination: '/fonts', permanent: true },
+    ];
   },
 };
 

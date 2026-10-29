@@ -67,7 +67,8 @@ export const getArchive = cache(async (): Promise<Archive> => {
     fa, fd, fg, fl, fsc, fst, fty,
   ] = await Promise.all([
     table('fonts', 'id,name,slug,description,cover,images,purchase_links,case_studies,license,year,weights,is_variable,is_favorite,language_group,created_at,status', '&status=in.(published,featured)'),
-    table('designers', 'id,name,slug,logo,bio,social_links,type'),
+    // '*' so the country column is picked up once it exists
+    table('designers', '*'),
     table('awards', 'id,name,image'),
     table('genres'),
     table('languages', 'id,name,native_name'),
@@ -149,7 +150,7 @@ export const getArchive = cache(async (): Promise<Archive> => {
       type: (r.type === 'foundry' ? 'foundry' : 'designer') as PersonType,
       fontIds: fontIdsByPerson.get(str(r.id)) ?? [],
       // designers: where they are from; foundries: the country they operate in
-      from: (() => { const pl = placeOf(str(r.slug) || slugify(str(r.name))); return pl.from ?? (r.type === 'foundry' ? pl.based : undefined); })(),
+      from: str(r.country).trim() || (() => { const pl = placeOf(str(r.slug) || slugify(str(r.name))); return pl.from ?? (r.type === 'foundry' ? pl.based : undefined); })(),
     }))
     .filter((p) => p.name)
     .sort((a, b) => a.name.localeCompare(b.name));
