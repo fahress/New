@@ -16,7 +16,7 @@ function shuffle<T>(list: T[]): T[] {
   return a;
 }
 
-function Tile({ f, eager = false }: { f: WallFont; eager?: boolean }) {
+function Tile({ f }: { f: WallFont }) {
   return (
     <Link href={`/fonts/${f.s}`} className="mq-tile tile">
       {/* small resized copies (≈10–30 KB) instead of the full-size cover; the font page shows the full size */}
@@ -25,7 +25,8 @@ function Tile({ f, eager = false }: { f: WallFont; eager?: boolean }) {
         srcSet={`${thumbUrl(f.c, 384)} 1x, ${thumbUrl(f.c, 640)} 2x`}
         alt={`${f.n} presentation`}
         className="spec"
-        loading={eager ? 'eager' : 'lazy'}
+        // eager: the strip moves with a CSS transform, so the browser's lazy-loading never sees these tiles come on screen
+        loading="eager"
         decoding="async"
         width={420}
         height={210}
@@ -53,10 +54,10 @@ export default function RandomWall({ pool }: { pool: WallFont[] }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div className="marquee">
-        {rows ? [...rows[0], ...rows[0]].map((f, i) => <Tile key={f.s + i} f={f} eager={i < 4} />) : [...blank, ...blank]}
+        {rows ? [...rows[0], ...rows[0]].map((f, i) => <Tile key={f.s + i} f={f} />) : [...blank, ...blank]}
       </div>
       <div className="marquee marquee--rev">
-        {rows ? [...rows[1], ...rows[1]].map((f, i) => <Tile key={f.s + i} f={f} eager={i < 4} />) : [...blank, ...blank]}
+        {rows ? [...rows[1], ...rows[1]].map((f, i) => <Tile key={f.s + i} f={f} />) : [...blank, ...blank]}
       </div>
     </div>
   );
