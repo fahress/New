@@ -43,6 +43,7 @@ export default async function Home() {
       key: s.slug,
       href: `/fonts?scripts=${s.slug}`,
       img: fonts[0]?.cover ?? null,
+      imgs: fonts.map((f) => f.cover).filter(Boolean),
       content: (
         <>
           <span className="row__n mono">{String(i + 1).padStart(2, '0')}</span>
@@ -118,7 +119,7 @@ export default async function Home() {
       <section className="wrap section" id="scripts">
         <div className="section__head">
           <h2 className="display h-lg">Browse by script</h2>
-          <p className="muted" style={{ margin: 0 }}>Hover a script to preview its newest typeface</p>
+          <p className="muted" style={{ margin: 0 }}>Hover a script to preview one of its typefaces</p>
         </div>
         <HoverRows rows={scriptRows} />
       </section>
