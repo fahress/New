@@ -405,3 +405,7 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 .who__pop:hover .who__cta { text-decoration: underline; }
 @media (hover: none) { .who__pop { display: none; } }
 .on-dark .who__pop { color: var(--ink); }
+/* anchor the profile card to the font card (not the name) so it never runs off-screen */
+.card__meta { position: relative; }
+.card .who { position: static; }
+.card .who__pop { left: 0; max-width: 100%; }
