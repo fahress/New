@@ -18,6 +18,7 @@ export async function DirectoryPage({ kind }: { kind: PersonType }) {
       count: fonts.length,
       place: countryOf(p),
       country: countryOf(p),
+      r: Math.random(),
     };
   });
   return (

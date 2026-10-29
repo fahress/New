@@ -431,3 +431,6 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 .suggest__img--tag { display: grid; place-items: center; background: var(--paper); border: 1px solid var(--ink); font-size: 14px; }
 .header-search .suggest__all { height: auto; background: none; color: var(--ink); border-radius: 0 0 12px 12px; font-size: 14px; }
 .header-search .suggest__all:hover { background: var(--soft); text-decoration: none; }
+.seg--pill { border: 1.5px solid var(--ink); border-radius: 999px; }
+.seg--pill button { height: 43px; padding: 0 18px; font-size: 14px; }
+.seg--pill button + button { border-left: 1.5px solid var(--ink); }

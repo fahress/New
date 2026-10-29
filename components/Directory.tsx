@@ -4,14 +4,14 @@ import { useMemo, useState } from 'react';
 import HoverRows from './HoverRows';
 import { personHref } from '@/lib/format';
 
-export type DirEntry = { slug: string; name: string; logo: string | null; cover: string | null; work: string; count: number; place: string; country: string };
+export type DirEntry = { slug: string; name: string; logo: string | null; cover: string | null; work: string; count: number; place: string; country: string; r: number };
 
 const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '');
 
 export default function Directory({ kind, entries, counts }: { kind: 'designer' | 'foundry'; entries: DirEntry[]; counts: { designers: number; foundries: number } }) {
   const [q, setQ] = useState('');
   const [letter, setLetter] = useState('');
-  const [sort, setSort] = useState<'az' | 'most'>('az');
+  const [sort, setSort] = useState<'random' | 'az' | 'most'>('random');
   const [country, setCountry] = useState('');
   const countries = useMemo(() => {
     const m = new Map<string, number>();
@@ -28,6 +28,7 @@ export default function Directory({ kind, entries, counts }: { kind: 'designer' 
     const t = norm(q.trim());
     const r = entries.filter((e) => (!t || norm(e.name).includes(t)) && (!letter || first(e.name) === letter) && (!country || e.country === country));
     if (sort === 'most') r.sort((x, y) => y.count - x.count || x.name.localeCompare(y.name));
+    else if (sort === 'random') r.sort((x, y) => x.r - y.r);
     return r;
   }, [entries, q, letter, sort, country]);
 
@@ -38,7 +39,7 @@ export default function Directory({ kind, entries, counts }: { kind: 'designer' 
           <Link href="/designers" aria-current={kind === 'designer' ? 'page' : undefined}>Designers <span className="mono" style={{ opacity: .7, fontSize: 11 }}>{counts.designers}</span></Link>
           <Link href="/foundries" aria-current={kind === 'foundry' ? 'page' : undefined}>Foundries <span className="mono" style={{ opacity: .7, fontSize: 11 }}>{counts.foundries}</span></Link>
         </div>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', flex: '0 1 560px' }}>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', flex: '1 1 640px', justifyContent: 'flex-end' }}>
           <label htmlFor="dq" className="sr-only">Search names</label>
           <input id="dq" type="search" className="input-pill" style={{ flex: '1 1 240px' }} placeholder={`Search ${kind === 'designer' ? 'designers' : 'foundries'}`} value={q} onChange={(e) => setQ(e.target.value)} />
           <label htmlFor="dc" className="sr-only">Country</label>
@@ -46,7 +47,8 @@ export default function Directory({ kind, entries, counts }: { kind: 'designer' 
             <option value="">All countries</option>
             {countries.map(([c, n]) => <option key={c} value={c}>{c} ({n})</option>)}
           </select>
-          <div className="seg" role="group" aria-label="Sort">
+          <div className="seg seg--pill" role="group" aria-label="Sort">
+            <button type="button" aria-pressed={sort === 'random'} onClick={() => setSort('random')}>Random</button>
             <button type="button" aria-pressed={sort === 'az'} onClick={() => setSort('az')}>A–Z</button>
             <button type="button" aria-pressed={sort === 'most'} onClick={() => setSort('most')}>Most fonts</button>
           </div>
