@@ -367,3 +367,10 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 /* transparent PNG presentations need a light ground to stay visible */
 .cursor-preview, .mq-tile, .xfade { background: var(--paper); }
 .cursor-preview { border: 1px solid var(--ink); }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.cursor-preview.is-loading { background: linear-gradient(90deg, #efefef 25%, #fafafa 50%, #efefef 75%) 0 0 / 200% 100%; animation: shimmer 1.2s linear infinite; }
+.cursor-preview img { animation: previewIn .25s ease both; }
+@keyframes previewIn { from { opacity: 0; } to { opacity: 1; } }
+/* soft placeholder behind covers while they download (hidden once the image paints over it) */
+.frame, .mq-tile, .lrow__img, .award-row__img { background: linear-gradient(90deg, #efefef 25%, #f8f8f8 50%, #efefef 75%) 0 0 / 200% 100%; animation: shimmer 1.6s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .frame, .mq-tile, .lrow__img, .award-row__img, .cursor-preview.is-loading { animation: none; } }
