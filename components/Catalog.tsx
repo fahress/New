@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import FontCard from './FontCard';
+import FontCard, { type CardPerson } from './FontCard';
 import { thumbUrl } from '@/lib/format';
 
 export type CatFont = {
@@ -19,6 +19,7 @@ export type CatFont = {
   t: string; // created at
   aw: string | null; // first award name
   r: number; // random position for this visit (set on the server per request)
+  p: number[]; // credited people (indices into the `people` prop)
   f: Record<string, string[]>; // facet values (slugs) per group key
 };
 
@@ -40,8 +41,10 @@ export default function Catalog({
   initialQ,
   initialSort,
   initialView,
+  people,
 }: {
   fonts: CatFont[];
+  people: CardPerson[];
   groups: FacetGroup[];
   initial: Sel;
   initialQ: string;
@@ -260,7 +263,7 @@ export default function Catalog({
                   index={i % PAGE}
                   priority={i < 3}
                   sizes="(max-width: 700px) 100vw, (max-width: 1300px) 50vw, 30vw"
-                  f={{ slug: f.s, name: f.n, cover: f.c, credit: f.cr, script: f.scr, license: f.l === 'free' ? 'Free' : f.l === 'custom' ? 'Custom' : 'Paid', award: f.aw, badges: f.tg ? f.tg.split(', ').slice(0, 2) : [] }}
+                  f={{ slug: f.s, name: f.n, cover: f.c, credit: f.cr, people: f.p.map((i) => people[i]), script: f.scr, license: f.l === 'free' ? 'Free' : f.l === 'custom' ? 'Custom' : 'Paid', award: f.aw, badges: f.tg ? f.tg.split(', ').slice(0, 2) : [] }}
                 />
               ))}
             </div>

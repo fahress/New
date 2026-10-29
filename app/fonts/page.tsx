@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Catalog, { type CatFont, type FacetGroup } from '@/components/Catalog';
 import { getArchive } from '@/lib/data';
 import { label, slugify } from '@/lib/format';
-import { creditOf, shortList, tagNames } from '@/lib/view';
+import { creditOf, peopleOf, shortList, tagNames, toCardPerson } from '@/lib/view';
 import type { Tag } from '@/lib/types';
 
 export const metadata: Metadata = {
@@ -26,6 +26,8 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 
   const years = Array.from(new Set(a.fonts.map((f) => f.year).filter((y): y is number => !!y))).sort((x, y) => y - x);
 
+  const credited = a.people.filter((p) => p.fontIds.length > 0);
+  const personIndex = new Map(credited.map((p, i) => [p.id, i]));
   const fonts: CatFont[] = a.fonts.map((f) => {
     const people = f.people.map((id) => a.personById.get(id)).filter((p) => !!p);
     return {
@@ -43,6 +45,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
       t: f.createdAt,
       aw: f.awards.length ? a.awards.find((w) => w.id === f.awards[0].awardId)?.name ?? null : null,
       r: Math.random(),
+      p: peopleOf(a, f).map((p) => personIndex.get(p.id)!).filter((i) => i !== undefined),
       f: {
         scripts: bySlug(a.scripts, f.scripts),
         styles: bySlug(a.styles, f.styles),
@@ -108,6 +111,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
       initialQ={one('q')}
       initialSort={['random', 'new', 'az', 'year', 'weights'].includes(one('sort')) ? one('sort') : 'random'}
       initialView={one('view') === 'list' ? 'list' : 'grid'}
+      people={credited.map(toCardPerson)}
     />
   );
 }
