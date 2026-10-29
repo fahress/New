@@ -18,6 +18,7 @@ export type CatFont = {
   v: boolean;
   t: string; // created at
   aw: string | null; // first award name
+  r: number; // random position for this visit (set on the server per request)
   f: Record<string, string[]>; // facet values (slugs) per group key
 };
 
@@ -66,7 +67,7 @@ export default function Catalog({
     const p = new URLSearchParams();
     if (q.trim()) p.set('q', q.trim());
     for (const g of groups) if (sel[g.key]?.length) p.set(g.key, sel[g.key].join(','));
-    if (sort !== 'new') p.set('sort', sort);
+    if (sort !== 'random') p.set('sort', sort);
     if (view !== 'grid') p.set('view', view);
     const qs = p.toString();
     window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
@@ -112,7 +113,8 @@ export default function Catalog({
     if (sort === 'az') r.sort((a, b) => a.n.localeCompare(b.n));
     else if (sort === 'year') r.sort((a, b) => (b.y ?? 0) - (a.y ?? 0));
     else if (sort === 'weights') r.sort((a, b) => (b.w ?? 0) - (a.w ?? 0));
-    else r.sort((a, b) => b.t.localeCompare(a.t));
+    else if (sort === 'new') r.sort((a, b) => b.t.localeCompare(a.t));
+    else r.sort((a, b) => a.r - b.r);
     return r;
   }, [fonts, matches, sort]);
 
@@ -228,6 +230,7 @@ export default function Catalog({
             <div className="tools">
               <label htmlFor="sort" className="mono">Sort</label>
               <select id="sort" className="select" value={sort} onChange={(e) => setSort(e.target.value)}>
+                <option value="random">Random</option>
                 <option value="new">Recently added</option>
                 <option value="year">Release year</option>
                 <option value="az">A–Z</option>

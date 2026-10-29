@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/fonts' },
 };
 
+export const dynamic = 'force-dynamic'; // a fresh random order on every visit
+
 type SP = Record<string, string | string[] | undefined>;
 
 const weightKey = (w: number | null) => (!w ? [] : w === 1 ? ['single'] : w >= 9 ? ['large'] : ['family']);
@@ -40,6 +42,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
       v: f.variable,
       t: f.createdAt,
       aw: f.awards.length ? a.awards.find((w) => w.id === f.awards[0].awardId)?.name ?? null : null,
+      r: Math.random(),
       f: {
         scripts: bySlug(a.scripts, f.scripts),
         styles: bySlug(a.styles, f.styles),
@@ -103,7 +106,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
       groups={groups}
       initial={initial}
       initialQ={one('q')}
-      initialSort={['new', 'az', 'year', 'weights'].includes(one('sort')) ? one('sort') : 'new'}
+      initialSort={['random', 'new', 'az', 'year', 'weights'].includes(one('sort')) ? one('sort') : 'random'}
       initialView={one('view') === 'list' ? 'list' : 'grid'}
     />
   );
