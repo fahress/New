@@ -1,6 +1,7 @@
 import Directory, { type DirEntry } from '@/components/Directory';
 import { getArchive } from '@/lib/data';
 import type { PersonType } from '@/lib/types';
+import { countryOf, placeLabel } from '@/lib/places';
 
 export async function DirectoryPage({ kind }: { kind: PersonType }) {
   const a = await getArchive();
@@ -15,6 +16,8 @@ export async function DirectoryPage({ kind }: { kind: PersonType }) {
       cover: fonts[0]?.cover ?? null,
       work: names.join(' · ') + (fonts.length > 2 ? ` · +${fonts.length - 2}` : ''),
       count: fonts.length,
+      place: placeLabel(p),
+      country: countryOf(p),
     };
   });
   return (

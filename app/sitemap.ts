@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getArchive } from '@/lib/data';
+import { personHref } from '@/lib/format';
 
 export const revalidate = 3600;
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://fahress.com';
@@ -13,6 +14,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE}/foundries`, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE}/about`, changeFrequency: 'monthly', priority: 0.4 },
     ...a.fonts.map((f) => ({ url: `${SITE}/fonts/${f.slug}`, lastModified: f.createdAt || undefined, priority: 0.7 })),
-    ...a.people.filter((p) => p.fontIds.length).map((p) => ({ url: `${SITE}/designers/${p.slug}`, priority: 0.7 })),
+    ...a.people.filter((p) => p.fontIds.length).map((p) => ({ url: `${SITE}${personHref(p.type, p.slug)}`, priority: 0.7 })),
   ];
 }

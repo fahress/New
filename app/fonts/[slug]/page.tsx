@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import FontCard from '@/components/FontCard';
 import Gallery from '@/components/Gallery';
 import { getArchive } from '@/lib/data';
-import { excerpt, hostOf, label, licenseLabel, slugify, storageUrl, thumbUrl, weightsLabel } from '@/lib/format';
+import { excerpt, hostOf, label, licenseLabel, slugify, storageUrl, thumbUrl, weightsLabel, personHref } from '@/lib/format';
 import { creditOf, toCard } from '@/lib/view';
 import type { Tag } from '@/lib/types';
 
@@ -92,7 +92,7 @@ export default async function FontPage({ params }: Props) {
               {people.map((p, i) => (
                 <span key={p!.id}>
                   {i > 0 ? (i === people.length - 1 ? ' & ' : ', ') : null}
-                  <Link href={`/designers/${p!.slug}`} className="ul" style={{ fontWeight: 600 }}>{p!.name}</Link>
+                  <Link href={personHref(p!.type, p!.slug)} className="ul" style={{ fontWeight: 600 }}>{p!.name}</Link>
                 </span>
               ))}
             </p>
@@ -134,11 +134,11 @@ export default async function FontPage({ params }: Props) {
             <div className="panel__sec">
               <h2 className="mono" style={{ margin: '0 0 12px', fontWeight: 500 }}>Made by</h2>
               {people.map((p) => (
-                <Link key={p!.id} href={`/designers/${p!.slug}`} className="person">
+                <Link key={p!.id} href={personHref(p!.type, p!.slug)} className="person">
                   {p!.logo ? <img className={`avatar${p!.type === 'designer' ? ' avatar--grey' : ''}`} src={thumbUrl(p!.logo, 256)} alt="" width={52} height={52} loading="lazy" /> : <span className="mono-avatar" aria-hidden="true">{p!.name[0]}</span>}
                   <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                     <span className="person__name ul">{p!.name}</span>
-                    <span className="muted" style={{ fontSize: 13 }}>{p!.type === 'foundry' ? 'Foundry' : 'Designer'} · {p!.fontIds.length} {p!.fontIds.length === 1 ? 'typeface' : 'typefaces'}</span>
+                    <span className="muted" style={{ fontSize: 13 }}>{p!.type === 'foundry' ? 'Foundry' : 'Designer'}{p!.from || p!.based ? ` · ${p!.from ?? p!.based}` : ''} · {p!.fontIds.length} {p!.fontIds.length === 1 ? 'typeface' : 'typefaces'}</span>
                   </span>
                 </Link>
               ))}
@@ -179,7 +179,7 @@ export default async function FontPage({ params }: Props) {
         <section className="wrap section" style={{ paddingTop: 24 }}>
           <div className="section__head">
             <h2 className="display h-lg">More by {lead!.name}</h2>
-            <Link href={`/designers/${lead!.slug}`} className="ul">All {lead!.fontIds.length} typefaces →</Link>
+            <Link href={personHref(lead!.type, lead!.slug)} className="ul">All {lead!.fontIds.length} typefaces →</Link>
           </div>
           <div className="grid">{more.map((o, i) => <FontCard key={o.id} f={toCard(a, o)} index={i} />)}</div>
         </section>

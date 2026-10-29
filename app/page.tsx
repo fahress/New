@@ -4,7 +4,7 @@ import FontCard from '@/components/FontCard';
 import HomeSearch, { type SearchIndex } from '@/components/HomeSearch';
 import HoverRows from '@/components/HoverRows';
 import { getArchive } from '@/lib/data';
-import { SCRIPT_ARABIC, excerpt, label, storageUrl, thumbUrl } from '@/lib/format';
+import { SCRIPT_ARABIC, excerpt, label, personHref, storageUrl, thumbUrl } from '@/lib/format';
 import { creditOf, toCard } from '@/lib/view';
 import type { Archive, Font } from '@/lib/types';
 
@@ -133,12 +133,12 @@ export default async function Home() {
                 <img className="avatar avatar--grey" src={thumbUrl(star.logo, 256)} alt="" width={104} height={104} />
                 <div>
                   <h2 className="display h-lg" style={{ margin: 0 }}>{star.name}</h2>
-                  <p style={{ margin: '8px 0 0', color: 'var(--mute-inv)' }}>{star.fontIds.length} typefaces on Fahress</p>
+                  <p style={{ margin: '8px 0 0', color: 'var(--mute-inv)' }}>{star.from ? `${star.from} · ` : ''}{star.fontIds.length} typefaces on Fahress</p>
                 </div>
               </div>
               <p style={{ margin: 0, fontSize: 18, lineHeight: 1.65, color: '#e6e6e6' }}>{excerpt(star.bio, 320)}</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-                <Link href={`/designers/${star.slug}`} className="btn">Read the profile</Link>
+                <Link href={personHref(star.type, star.slug)} className="btn">Read the profile</Link>
                 {starFonts[0] ? <Link href={`/fonts/${starFonts[0].slug}`} className="btn btn--ghost">View {starFonts[0].name} →</Link> : null}
               </div>
             </div>
@@ -179,7 +179,7 @@ export default async function Home() {
         <div className="ticker">
           {[...foundries, ...foundries].map((p, i) => (
             <span key={p.id + i} style={{ display: 'inline-flex', gap: 48 }}>
-              <Link href={`/designers/${p.slug}`} className="ul" tabIndex={i >= foundries.length ? -1 : undefined}>{p.name}</Link>
+              <Link href={personHref(p.type, p.slug)} className="ul" tabIndex={i >= foundries.length ? -1 : undefined}>{p.name}</Link>
               <span aria-hidden="true">✳</span>
             </span>
           ))}

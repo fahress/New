@@ -1,7 +1,7 @@
 'use client';
 import { useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { thumbUrl } from '@/lib/format';
+import { personHref, thumbUrl } from '@/lib/format';
 
 export type SearchIndex = {
   fonts: { n: string; s: string; c: string; by: string }[];
@@ -28,7 +28,7 @@ export default function HomeSearch({ index, tries }: { index: SearchIndex; tries
       list.filter((x) => has(key(x))).sort((a, b) => Number(starts(key(b))) - Number(starts(key(a))));
     return [
       ...rank(index.tags, (x) => x.n).slice(0, 3).map((x) => ({ kind: x.g, label: x.n, sub: 'Filter the catalog', href: x.href })),
-      ...rank(index.people, (x) => x.n).slice(0, 4).map((x) => ({ kind: x.t === 'foundry' ? 'Foundry' : 'Designer', label: x.n, sub: `${x.k} ${x.k === 1 ? 'typeface' : 'typefaces'}`, href: `/designers/${x.s}` })),
+      ...rank(index.people, (x) => x.n).slice(0, 4).map((x) => ({ kind: x.t === 'foundry' ? 'Foundry' : 'Designer', label: x.n, sub: `${x.k} ${x.k === 1 ? 'typeface' : 'typefaces'}`, href: personHref(x.t, x.s) })),
       ...rank(index.fonts, (x) => x.n).slice(0, 6).map((x) => ({ kind: 'Font', label: x.n, sub: x.by, href: `/fonts/${x.s}`, img: x.c })),
     ];
   }, [q, index]);

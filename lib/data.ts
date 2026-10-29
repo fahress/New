@@ -2,6 +2,7 @@ import 'server-only';
 import { cache } from 'react';
 import type { Archive, Award, Font, Person, PersonType, Tag } from './types';
 import { slugify } from './format';
+import { placeOf } from './places';
 
 import { SUPABASE_URL, SUPABASE_ANON_KEY as SUPABASE_KEY } from './config';
 
@@ -147,6 +148,7 @@ export const getArchive = cache(async (): Promise<Archive> => {
       social: (r.social_links && typeof r.social_links === 'object' ? r.social_links : {}) as Person['social'],
       type: (r.type === 'foundry' ? 'foundry' : 'designer') as PersonType,
       fontIds: fontIdsByPerson.get(str(r.id)) ?? [],
+      ...placeOf(str(r.slug) || slugify(str(r.name))),
     }))
     .filter((p) => p.name)
     .sort((a, b) => a.name.localeCompare(b.name));

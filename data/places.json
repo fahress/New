@@ -1,0 +1,551 @@
+{
+ "29lt": {
+  "based": "Spain"
+ },
+ "aamir-arsalan-ahmadi": {
+  "from": "Iran"
+ },
+ "abbas-seyed-ebrahimi": {
+  "from": "Iran"
+ },
+ "abdelrahman-farahat": {
+  "from": "Egypt"
+ },
+ "abdo-mohamed": {
+  "from": "Egypt",
+  "based": "United Arab Emirates"
+ },
+ "abdoaroof-aburzizh": {
+  "from": "Libya"
+ },
+ "abdullah-aref": {
+  "from": "Egypt"
+ },
+ "abdurrahman-hanif": {
+  "from": "Indonesia"
+ },
+ "abjad-type-foundry": {
+  "based": "Jordan"
+ },
+ "abolfazl-rahrovan": {
+  "from": "Iran"
+ },
+ "adel-banfeel": {
+  "from": "Saudi Arabia"
+ },
+ "afra-al-sammahi": {
+  "from": "Saudi Arabia"
+ },
+ "ahad-hashemzadeh": {
+  "from": "Iran"
+ },
+ "ahmadreza-rahimi-pour": {
+  "from": "Iran"
+ },
+ "aida-sakkal": {
+  "based": "United States"
+ },
+ "alaa-el-hadidy": {
+  "from": "Egypt"
+ },
+ "albert-jan-pool": {
+  "from": "Netherlands",
+  "based": "Germany"
+ },
+ "alef-type-foundry": {
+  "based": "France"
+ },
+ "ali-alattas": {
+  "based": "Saudi Arabia"
+ },
+ "ali-almasri": {
+  "based": "Jordan"
+ },
+ "ali-moshref": {
+  "from": "Syria",
+  "based": "United Arab Emirates"
+ },
+ "ali-pezeshk": {
+  "from": "Iran"
+ },
+ "ali-sajjadieh": {
+  "from": "Iran"
+ },
+ "alif-type": {
+  "based": "Egypt"
+ },
+ "alireza-nematollahi": {
+  "from": "Iran"
+ },
+ "amin-abedi": {
+  "from": "Iran"
+ },
+ "amir-hosein-rouf": {
+  "from": "Iran"
+ },
+ "amir-hossein-saadatfar": {
+  "from": "Iran"
+ },
+ "amir-mahdi-moslehi": {
+  "from": "Iran",
+  "based": "Germany"
+ },
+ "amir-mesbahi": {
+  "from": "Iran"
+ },
+ "ammar-bouras": {
+  "from": "Algeria"
+ },
+ "arman-khorramak": {
+  "from": "Iran"
+ },
+ "artur-schmal": {
+  "from": "Netherlands"
+ },
+ "atefeh-mohammadi": {
+  "from": "Iran"
+ },
+ "azza-alameddine": {
+  "from": "Lebanon",
+  "based": "Spain"
+ },
+ "babelfont": {
+  "based": "France"
+ },
+ "bahman-eslami": {
+  "from": "Iran",
+  "based": "Netherlands"
+ },
+ "blackfoundry": {
+  "based": "France"
+ },
+ "boharat-type-foundry": {
+  "based": "Egypt"
+ },
+ "borna-izadpanah": {
+  "from": "Iran",
+  "based": "United Kingdom"
+ },
+ "brahim-boucheikha": {
+  "from": "Morocco",
+  "based": "France"
+ },
+ "canadatype": {
+  "based": "Canada"
+ },
+ "cosimo-lorenzo-pancini": {
+  "from": "Italy"
+ },
+ "dalton-maag": {
+  "based": "United Kingdom"
+ },
+ "damoon-khanjanzadeh": {
+  "from": "Iran"
+ },
+ "eduardo-tunni": {
+  "from": "Argentina"
+ },
+ "ehsan-roudi": {
+  "from": "Iran"
+ },
+ "elena-schneider": {
+  "from": "Germany"
+ },
+ "elman-taqidoust": {
+  "from": "Iran"
+ },
+ "f37": {
+  "based": "United Kingdom"
+ },
+ "fadhl-haqq": {
+  "from": "Indonesia",
+  "based": "Germany"
+ },
+ "fahd-al-fraikh": {
+  "from": "Saudi Arabia"
+ },
+ "farhood-moghaddam": {
+  "from": "Iran"
+ },
+ "fereshte-iranshahi": {
+  "from": "Iran"
+ },
+ "fereydoun-nematpour": {
+  "from": "Iran"
+ },
+ "foundry5": {
+  "based": "United Kingdom"
+ },
+ "greta-khoury": {
+  "from": "Lebanon"
+ },
+ "hani-alasadi": {
+  "based": "United Arab Emirates"
+ },
+ "hasan-abu-afash": {
+  "from": "Palestine"
+ },
+ "hassan-manzoori": {
+  "from": "Iran"
+ },
+ "hermann-zapf": {
+  "from": "Germany"
+ },
+ "hey-porter": {
+  "based": "Jordan"
+ },
+ "hind": {
+  "from": "Algeria"
+ },
+ "hirbod-lotfian": {
+  "from": "Iran"
+ },
+ "hoda-kaspoor": {
+  "from": "Iran"
+ },
+ "hojat-nourolahi": {
+  "from": "Iran"
+ },
+ "hossein-badzohreh": {
+  "from": "Iran"
+ },
+ "hossein-heidari": {
+  "from": "Iran"
+ },
+ "hossein-karimzadeh": {
+  "from": "Iran"
+ },
+ "ibrahim-hamdi": {
+  "from": "Egypt",
+  "based": "United Arab Emirates"
+ },
+ "iliya-salimi": {
+  "from": "Iran"
+ },
+ "javad-jalilian": {
+  "from": "Iran",
+  "based": "Switzerland"
+ },
+ "jawaher-alali": {
+  "from": "Bahrain"
+ },
+ "joe-hatem": {
+  "from": "Lebanon"
+ },
+ "jovanny-lemonad": {
+  "from": "Russia"
+ },
+ "juan-luis-blanco": {
+  "from": "Spain"
+ },
+ "kamal-mansour": {
+  "from": "Egypt"
+ },
+ "kameel-hawa": {
+  "from": "Lebanon"
+ },
+ "kamyab-jafari": {
+  "from": "Iran"
+ },
+ "kareem-mrghani": {
+  "based": "Saudi Arabia"
+ },
+ "karim-ameri": {
+  "from": "Iran"
+ },
+ "katharina-seidl": {
+  "based": "Germany"
+ },
+ "khajag-apelian": {
+  "from": "Lebanon"
+ },
+ "khaled-hosny": {
+  "from": "Egypt"
+ },
+ "ko-type": {
+  "based": "United Arab Emirates"
+ },
+ "kostas-bartsokas": {
+  "from": "Greece",
+  "based": "Norway"
+ },
+ "kourosh-beigpour": {
+  "from": "Iran",
+  "based": "United States"
+ },
+ "kristyan-sarkis": {
+  "from": "Lebanon",
+  "based": "Netherlands"
+ },
+ "lara-assouad": {
+  "from": "Lebanon",
+  "based": "United Arab Emirates"
+ },
+ "lara-captan": {
+  "from": "Lebanon",
+  "based": "Netherlands"
+ },
+ "latinotype": {
+  "based": "Chile"
+ },
+ "laura-garcia-mut": {
+  "from": "Spain"
+ },
+ "letterjuice": {
+  "based": "Spain"
+ },
+ "lettersoup": {
+  "based": "Germany"
+ },
+ "maha-akl": {
+  "from": "Egypt"
+ },
+ "mahan-jafarzadeh": {
+  "from": "Iran"
+ },
+ "mahdi-ershadi": {
+  "from": "Iran"
+ },
+ "mahmoud-abdelghany": {
+  "from": "Egypt"
+ },
+ "majid-halakoyei": {
+  "from": "Iran"
+ },
+ "majid-shoarai-nejati": {
+  "from": "Iran"
+ },
+ "mamoun-sakkal": {
+  "from": "Syria",
+  "based": "United States"
+ },
+ "manchester-type": {
+  "based": "United Kingdom"
+ },
+ "matype": {
+  "based": "Egypt"
+ },
+ "mazdak-kiani": {
+  "from": "Iran"
+ },
+ "mehdi-qassemi": {
+  "from": "Iran"
+ },
+ "mehrdad-notash": {
+  "from": "Iran"
+ },
+ "mhrf": {
+  "based": "Saudi Arabia"
+ },
+ "mike-abbink": {
+  "based": "United States"
+ },
+ "mohamad-dakak": {
+  "from": "Syria",
+  "based": "United Kingdom"
+ },
+ "mohamed-gaber": {
+  "from": "Egypt",
+  "based": "Netherlands"
+ },
+ "mohamed-gallah": {
+  "from": "Tunisia",
+  "based": "France"
+ },
+ "mohammad-darvishi": {
+  "from": "Iran"
+ },
+ "mohammad-reza-chitsaz": {
+  "from": "Iran"
+ },
+ "mohhamad-amouei": {
+  "from": "Iran"
+ },
+ "mohtaraf": {
+  "based": "Lebanon"
+ },
+ "monocotype": {
+  "based": "Indonesia"
+ },
+ "monotype": {
+  "based": "United States"
+ },
+ "moshen-shirsavaar-shamami": {
+  "from": "Iran"
+ },
+ "moslem-ebrahimi": {
+  "from": "Iran"
+ },
+ "mostafa-abasiry": {
+  "from": "Egypt",
+  "based": "Latvia"
+ },
+ "nadine-chahine": {
+  "from": "Lebanon"
+ },
+ "naghi-naghachian": {
+  "from": "Iran",
+  "based": "Germany"
+ },
+ "naghi-naghashian": {
+  "from": "Iran",
+  "based": "Germany"
+ },
+ "naima-ben-ayed": {
+  "from": "France"
+ },
+ "naji-el-mir": {
+  "from": "Lebanon",
+  "based": "France"
+ },
+ "namelatype": {
+  "based": "Indonesia"
+ },
+ "nan": {
+  "based": "Germany"
+ },
+ "naser-khadem": {
+  "from": "Iran"
+ },
+ "omaima-dajani": {
+  "from": "Palestine"
+ },
+ "omid-emamian": {
+  "from": "Iran"
+ },
+ "original-type": {
+  "based": "Netherlands"
+ },
+ "pampatype": {
+  "based": "Argentina"
+ },
+ "parachute": {
+  "based": "Greece"
+ },
+ "parnian-kashefi": {
+  "from": "Iran"
+ },
+ "pascal-zoghbi": {
+  "from": "Lebanon",
+  "based": "Spain"
+ },
+ "peter-bilak": {
+  "from": "Slovakia",
+  "based": "Netherlands"
+ },
+ "protype": {
+  "based": "Egypt"
+ },
+ "rania-azmi": {
+  "from": "Lebanon",
+  "based": "Italy"
+ },
+ "rasool-kamali": {
+  "from": "Iran"
+ },
+ "reza-bakhtiarifard": {
+  "from": "Iran"
+ },
+ "reza-bohlul": {
+  "from": "Iran"
+ },
+ "reza-ghaffari": {
+  "from": "Iran"
+ },
+ "reza-salarifar": {
+  "from": "Iran"
+ },
+ "rosettatype": {
+  "based": "Czech Republic"
+ },
+ "rui-abreu": {
+  "from": "Portugal"
+ },
+ "saeed-haqiqat": {
+  "from": "Iran"
+ },
+ "santiago-orozco": {
+  "from": "Mexico",
+  "based": "Norway"
+ },
+ "seyed-mahdi-seyedinia": {
+  "from": "Iran"
+ },
+ "shahrzad-akbari": {
+  "from": "Iran"
+ },
+ "shaqa-bovand": {
+  "from": "Iran",
+  "based": "United Kingdom"
+ },
+ "siavash-mousavi": {
+  "from": "Iran"
+ },
+ "sil-international": {
+  "based": "United States"
+ },
+ "sina-fakour": {
+  "from": "Iran",
+  "based": "France"
+ },
+ "studio-daftar": {
+  "from": "Iran"
+ },
+ "sultan-alonazi": {
+  "from": "Saudi Arabia"
+ },
+ "sultan-fonts": {
+  "from": "Yemen"
+ },
+ "tarek-alsawwa": {
+  "based": "Turkey"
+ },
+ "tarek-atrissi": {
+  "from": "Lebanon",
+  "based": "Spain"
+ },
+ "titus-nemeth": {
+  "from": "Austria"
+ },
+ "toshi-omagari": {
+  "from": "Japan",
+  "based": "United Kingdom"
+ },
+ "tptq": {
+  "based": "Netherlands"
+ },
+ "ts-fonts": {
+  "based": "Turkey"
+ },
+ "typetogether": {
+  "based": "Czech Republic"
+ },
+ "vahid-yaghoblo": {
+  "from": "Iran"
+ },
+ "vitoria-neves": {
+  "from": "Portugal"
+ },
+ "wael-morcos": {
+  "from": "Lebanon",
+  "based": "United States"
+ },
+ "yanone": {
+  "from": "Germany"
+ },
+ "yara-khoury": {
+  "from": "Lebanon"
+ },
+ "younes-al-aboudi": {
+  "based": "Saudi Arabia"
+ },
+ "younes-dehghani": {
+  "from": "Iran"
+ },
+ "zakariya-saleh": {
+  "from": "Palestine"
+ },
+ "zetafonts": {
+  "based": "Italy"
+ }
+}

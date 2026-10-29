@@ -14,6 +14,9 @@ export function thumbUrl(path: string | null | undefined, w: 256 | 384 | 640 | 1
   return src ? `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75` : '';
 }
 
+/** Profile address: foundries live under /foundries, designers under /designers. */
+export const personHref = (type: string, slug: string) => (type === 'foundry' ? `/foundries/${slug}` : `/designers/${slug}`);
+
 export function slugify(s: string): string {
   return s
     .toLowerCase()
