@@ -57,7 +57,7 @@ export default function HomeSearch({ index, tries }: { index: SearchIndex; tries
           type="search"
           value={q}
           autoComplete="off"
-          placeholder="Search fonts, designers, foundries… ابحث"
+          placeholder="Search fonts, designers, foundries…"
           aria-controls="home-hits"
           aria-expanded={hits.length > 0}
           onChange={(e) => {
