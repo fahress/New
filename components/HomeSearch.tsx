@@ -1,7 +1,7 @@
 'use client';
 import { useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { storageUrl } from '@/lib/format';
+import { thumbUrl } from '@/lib/format';
 
 export type SearchIndex = {
   fonts: { n: string; s: string; c: string; by: string }[];
@@ -82,7 +82,7 @@ export default function HomeSearch({ index, tries }: { index: SearchIndex; tries
             hits.map((h, i) => (
               <a key={h.href + i} href={h.href} className="hit" role="option" aria-selected={i === sel} onMouseEnter={() => setSel(i)}>
                 <span className="hit__kind mono muted">{h.kind}</span>
-                {h.img ? <img className="hit__thumb" src={storageUrl(h.img)} alt="" loading="lazy" /> : null}
+                {h.img ? <img className="hit__thumb" src={thumbUrl(h.img, 256)} alt="" loading="lazy" /> : null}
                 <span style={{ fontSize: 17, fontWeight: 500 }}>{h.label}</span>
                 <span className="muted" style={{ fontSize: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{h.sub}</span>
               </a>

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import FontCard from './FontCard';
-import { storageUrl } from '@/lib/format';
+import { thumbUrl } from '@/lib/format';
 
 export type CatFont = {
   id: string;
@@ -265,7 +265,7 @@ export default function Catalog({
             <div style={{ borderTop: '1px solid var(--ink)' }}>
               {list.slice(0, shown).map((f) => (
                 <Link key={f.id} href={`/fonts/${f.s}`} className="lrow">
-                  <span className="lrow__img">{f.c ? <img className="spec" src={storageUrl(f.c)} alt="" loading="lazy" /> : null}</span>
+                  <span className="lrow__img">{f.c ? <img className="spec" src={thumbUrl(f.c, 384)} alt="" loading="lazy" /> : null}</span>
                   <span className="lrow__name">{f.n}</span>
                   <span style={{ flex: '1 1 200px', fontSize: 15 }}>{f.cr || '—'}</span>
                   <span className="muted" style={{ flex: '0 1 220px', fontSize: 13 }}>{f.scr}{f.tg ? ` · ${f.tg}` : ''}</span>

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import WorkGrid from '@/components/WorkGrid';
 import { getArchive } from '@/lib/data';
-import { excerpt, hostOf, storageUrl } from '@/lib/format';
+import { excerpt, hostOf, storageUrl, thumbUrl } from '@/lib/format';
 import { tagNames, toCard } from '@/lib/view';
 
 export const revalidate = 600;
@@ -86,7 +86,7 @@ export default async function PersonPage({ params }: Props) {
                 <textPath href="#ring">FAHRESS · {p.type === 'foundry' ? 'FOUNDRY' : 'DESIGNER'} PROFILE · CREDIT THE MAKERS ·</textPath>
               </text>
             </svg>
-            {p.logo ? <img className={`avatar${p.type === 'designer' ? ' avatar--grey' : ''}`} src={storageUrl(p.logo)} alt={`${p.name}`} /> : <span className="mono-avatar">{p.name[0]}</span>}
+            {p.logo ? <img className={`avatar${p.type === 'designer' ? ' avatar--grey' : ''}`} src={thumbUrl(p.logo, 384)} alt={`${p.name}`} /> : <span className="mono-avatar">{p.name[0]}</span>}
           </div>
         </div>
         <div className="wrap dhero__bio">
@@ -128,7 +128,7 @@ export default async function PersonPage({ params }: Props) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))', gap: '6px 24px', borderTop: '1.5px solid var(--ink)' }}>
             {collaborators.map(({ person, n }) => (
               <Link key={person.id} href={`/designers/${person.slug}`} className="person" style={{ borderBottom: '1px solid var(--line)', padding: '12px 0' }}>
-                {person.logo ? <img className={`avatar${person.type === 'designer' ? ' avatar--grey' : ''}`} src={storageUrl(person.logo)} alt="" width={52} height={52} loading="lazy" /> : <span className="mono-avatar" aria-hidden="true">{person.name[0]}</span>}
+                {person.logo ? <img className={`avatar${person.type === 'designer' ? ' avatar--grey' : ''}`} src={thumbUrl(person.logo, 256)} alt="" width={52} height={52} loading="lazy" /> : <span className="mono-avatar" aria-hidden="true">{person.name[0]}</span>}
                 <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                   <span className="person__name ul">{person.name}</span>
                   <span className="muted" style={{ fontSize: 13 }}>{person.type === 'foundry' ? 'Foundry' : 'Designer'} · {n} shared {n === 1 ? 'typeface' : 'typefaces'}</span>

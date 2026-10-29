@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
-import { storageUrl } from '@/lib/format';
+import { storageUrl, thumbUrl } from '@/lib/format';
 
 export default function Gallery({ images, name }: { images: string[]; name: string }) {
   const [i, setI] = useState(0);
@@ -53,7 +53,7 @@ export default function Gallery({ images, name }: { images: string[]; name: stri
         <div className="thumbs">
           {images.map((src, k) => (
             <button key={src} type="button" aria-pressed={k === i} aria-label={`Show image ${k + 1}`} onClick={() => go(k)}>
-              <img src={storageUrl(src)} alt="" loading="lazy" />
+              <img src={thumbUrl(src, 256)} alt="" loading="lazy" />
             </button>
           ))}
         </div>

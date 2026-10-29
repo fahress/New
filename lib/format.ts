@@ -8,6 +8,12 @@ export function storageUrl(path: string | null | undefined): string {
   return `${SUPABASE_URL}/storage/v1/object/public/studio/${clean}`;
 }
 
+/** A resized, cached copy of a storage image via Next.js image optimisation (w must be an allowed size, e.g. 256, 384, 640, 1080). */
+export function thumbUrl(path: string | null | undefined, w: 256 | 384 | 640 | 1080 = 640): string {
+  const src = storageUrl(path);
+  return src ? `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75` : '';
+}
+
 export function slugify(s: string): string {
   return s
     .toLowerCase()

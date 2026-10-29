@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useRef, useState, type ReactNode } from 'react';
-import { storageUrl } from '@/lib/format';
+import { thumbUrl } from '@/lib/format';
 
 export type HoverRow = {
   key: string;
@@ -54,7 +54,7 @@ export default function HoverRows({ rows, variant = 'top', empty }: { rows: Hove
           className={`cursor-preview${variant === 'side' ? (cur.face ? ' cursor-preview--face' : ' cursor-preview--side') : ''}${cur.grey ? ' cursor-preview--grey' : ''}`}
           style={{ left: pos.x, top: pos.y }}
         >
-          <img key={src} src={storageUrl(src)} alt="" />
+          <img key={src} src={thumbUrl(src, 640)} alt="" />
         </div>
       ) : null}
     </div>

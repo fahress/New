@@ -4,7 +4,7 @@ import FontCard from '@/components/FontCard';
 import HomeSearch, { type SearchIndex } from '@/components/HomeSearch';
 import HoverRows from '@/components/HoverRows';
 import { getArchive } from '@/lib/data';
-import { SCRIPT_ARABIC, excerpt, label, storageUrl } from '@/lib/format';
+import { SCRIPT_ARABIC, excerpt, label, storageUrl, thumbUrl } from '@/lib/format';
 import { creditOf, toCard } from '@/lib/view';
 import type { Archive, Font } from '@/lib/types';
 
@@ -130,7 +130,7 @@ export default async function Home() {
             <div className="spotlight__text">
               <p className="mono" style={{ margin: 0, color: 'var(--mute-inv)' }}>Designer of the week</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-                <img className="avatar avatar--grey" src={storageUrl(star.logo)} alt="" width={104} height={104} />
+                <img className="avatar avatar--grey" src={thumbUrl(star.logo, 256)} alt="" width={104} height={104} />
                 <div>
                   <h2 className="display h-lg" style={{ margin: 0 }}>{star.name}</h2>
                   <p style={{ margin: '8px 0 0', color: 'var(--mute-inv)' }}>{star.fontIds.length} typefaces on Fahress</p>
@@ -165,7 +165,7 @@ export default async function Home() {
           <div className="award-list">
             {awarded.slice(0, 8).map((f) => (
               <Link key={f.id} href={`/fonts/${f.slug}`} className="award-row">
-                <span className="award-row__img"><img className="spec" src={storageUrl(f.cover)} alt="" loading="lazy" /></span>
+                <span className="award-row__img"><img className="spec" src={thumbUrl(f.cover, 384)} alt="" loading="lazy" /></span>
                 <span className="award-row__name">{f.name}</span>
                 <span className="muted" style={{ fontSize: 15 }}>{creditOf(a, f)}</span>
                 <span className="mono">{f.awards.map((w) => a.awards.find((x) => x.id === w.awardId)?.name).filter(Boolean).join(' · ')}</span>
