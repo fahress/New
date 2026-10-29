@@ -148,7 +148,8 @@ export const getArchive = cache(async (): Promise<Archive> => {
       social: (r.social_links && typeof r.social_links === 'object' ? r.social_links : {}) as Person['social'],
       type: (r.type === 'foundry' ? 'foundry' : 'designer') as PersonType,
       fontIds: fontIdsByPerson.get(str(r.id)) ?? [],
-      ...placeOf(str(r.slug) || slugify(str(r.name))),
+      // designers: where they are from; foundries: the country they operate in
+      from: (() => { const pl = placeOf(str(r.slug) || slugify(str(r.name))); return pl.from ?? (r.type === 'foundry' ? pl.based : undefined); })(),
     }))
     .filter((p) => p.name)
     .sort((a, b) => a.name.localeCompare(b.name));

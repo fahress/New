@@ -6,7 +6,6 @@ import WorkGrid from '@/components/WorkGrid';
 import { getArchive } from '@/lib/data';
 import { excerpt, hostOf, personHref, storageUrl, thumbUrl } from '@/lib/format';
 import { tagNames, toCard } from '@/lib/view';
-import { placeLabel } from '@/lib/places';
 
 export async function personParams(kind: PersonType) {
   const a = await getArchive();
@@ -64,7 +63,7 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
         </nav>
         <div className="wrap dhero__in">
           <div style={{ flex: '999 1 600px', minWidth: 0 }}>
-            <p className="mono" style={{ margin: '0 0 22px', color: 'var(--mute-inv)' }}>{p.type === 'foundry' ? 'Type foundry' : 'Type designer'}{placeLabel(p) ? ` · ${placeLabel(p)}` : ''} · {fonts.length} {fonts.length === 1 ? 'typeface' : 'typefaces'} on Fahress</p>
+            <p className="mono" style={{ margin: '0 0 22px', color: 'var(--mute-inv)' }}>{p.type === 'foundry' ? 'Type foundry' : 'Type designer'}</p>
             <h1 className="display" aria-label={p.name}>
               {words.map((w, wi) => (
                 <span key={wi}>
@@ -100,7 +99,6 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
         <div className="facts-strip">
           <div><span className="mono muted">Typefaces</span><b>{fonts.length}</b></div>
           {p.from ? <div><span className="mono muted">{p.type === 'foundry' ? 'Country' : 'From'}</span><b>{p.from}</b></div> : null}
-          {p.based && p.based !== p.from ? <div><span className="mono muted">Based in</span><b>{p.based}</b></div> : null}
           <div><span className="mono muted">Scripts</span><b>{scripts.map((s) => s.name).join(' · ') || '—'}</b></div>
           <div><span className="mono muted">Releases</span><b>{active}</b></div>
           <div><span className="mono muted">Free fonts</span><b>{free} of {fonts.length}</b></div>
@@ -130,7 +128,7 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
                 {person.logo ? <img className={`avatar${person.type === 'designer' ? ' avatar--grey' : ''}`} src={thumbUrl(person.logo, 256)} alt="" width={52} height={52} loading="lazy" /> : <span className="mono-avatar" aria-hidden="true">{person.name[0]}</span>}
                 <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                   <span className="person__name ul">{person.name}</span>
-                  <span className="muted" style={{ fontSize: 13 }}>{person.type === 'foundry' ? 'Foundry' : 'Designer'}{person.from || person.based ? ` · ${person.from ?? person.based}` : ''} · {n} shared {n === 1 ? 'typeface' : 'typefaces'}</span>
+                  <span className="muted" style={{ fontSize: 13 }}>{person.type === 'foundry' ? 'Foundry' : 'Designer'}{person.from ? ` · ${person.from}` : ''} · {n} shared {n === 1 ? 'typeface' : 'typefaces'}</span>
                 </span>
               </Link>
             ))}

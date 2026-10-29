@@ -11,13 +11,5 @@ const PLACES = places as Record<string, Place>;
 
 export const placeOf = (slug: string): Place => PLACES[slug] ?? {};
 
-/** One-line label, e.g. "Egypt · based in Latvia", "Iran", "Based in Turkey". */
-export function placeLabel(p: Place): string {
-  if (p.from && p.based && p.based !== p.from) return `${p.from} · based in ${p.based}`;
-  if (p.from) return p.from;
-  if (p.based) return `Based in ${p.based}`;
-  return '';
-}
-
-/** The single country used for filtering: origin first, otherwise where they work. */
-export const countryOf = (p: Place) => p.from ?? p.based ?? '';
+/** The country shown on the site: where a designer is from (for foundries, their country). */
+export const countryOf = (p: { from?: string }) => p.from ?? '';

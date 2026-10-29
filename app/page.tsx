@@ -3,6 +3,7 @@ import Link from 'next/link';
 import FontCard from '@/components/FontCard';
 import HomeSearch, { type SearchIndex } from '@/components/HomeSearch';
 import HoverRows from '@/components/HoverRows';
+import RandomWall from '@/components/RandomWall';
 import { getArchive } from '@/lib/data';
 import { SCRIPT_ARABIC, excerpt, label, personHref, storageUrl, thumbUrl } from '@/lib/format';
 import { creditOf, toCard } from '@/lib/view';
@@ -10,26 +11,16 @@ import type { Archive, Font } from '@/lib/types';
 
 export const revalidate = 600;
 
-function Tile({ a, f }: { a: Archive; f: Font }) {
-  return (
-    <Link href={`/fonts/${f.slug}`} className="mq-tile tile">
-      <Image src={storageUrl(f.cover)} alt={`${f.name} presentation`} fill sizes="420px" className="spec" />
-      <span className="mq-tile__cap">
-        <b style={{ fontWeight: 600 }}>{f.name}</b>
-        <span style={{ color: 'var(--mute-inv)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{creditOf(a, f)}</span>
-      </span>
-    </Link>
-  );
-}
-
 export default async function Home() {
   const a = await getArchive();
   const designers = a.people.filter((p) => p.type === 'designer' && p.fontIds.length > 0);
   const foundries = a.people.filter((p) => p.type === 'foundry' && p.fontIds.length > 0);
 
-  const latest = a.fonts.slice(0, 24);
-  const rowA = latest.slice(0, 12);
-  const rowB = latest.slice(12, 24);
+  // newest releases by release year (then most recently added within the same year)
+  const newest = a.fonts
+    .filter((f) => f.year)
+    .sort((x, y) => (y.year ?? 0) - (x.year ?? 0) || y.createdAt.localeCompare(x.createdAt))
+    .slice(0, 6);
 
   // Designer spotlight rotates weekly among designers with a bio and at least 4 typefaces.
   const pool = designers.filter((p) => p.fontIds.length >= 4 && p.bio.length > 40 && p.logo);
@@ -91,10 +82,7 @@ export default async function Home() {
 
       <section className="band" aria-label="Recently archived">
         <div className="wrap band__head mono"><span>Live from the index</span><span style={{ color: 'var(--mute-inv)' }}>Hover to pause</span></div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div className="marquee">{[...rowA, ...rowA].map((f, i) => <Tile key={f.id + i} a={a} f={f} />)}</div>
-          <div className="marquee marquee--rev">{[...rowB, ...rowB].map((f, i) => <Tile key={f.id + i} a={a} f={f} />)}</div>
-        </div>
+        <RandomWall pool={a.fonts.map((f) => ({ s: f.slug, n: f.name, c: f.cover, by: creditOf(a, f) }))} />
       </section>
 
       <section className="wrap" aria-label="The archive in numbers">
@@ -108,11 +96,11 @@ export default async function Home() {
 
       <section className="wrap section">
         <div className="section__head">
-          <h2 className="display h-lg">New in the index</h2>
-          <Link href="/fonts" className="ul">See all {a.fonts.length} typefaces →</Link>
+          <h2 className="display h-lg">New releases</h2>
+          <Link href="/fonts?sort=year" className="ul">All typefaces by release year →</Link>
         </div>
         <div className="grid">
-          {a.fonts.slice(0, 6).map((f, i) => <FontCard key={f.id} f={toCard(a, f)} index={i} priority={i < 3} />)}
+          {newest.map((f, i) => <FontCard key={f.id} f={{ ...toCard(a, f), script: `${toCard(a, f).script} · ${f.year}` }} index={i} priority={i < 3} />)}
         </div>
       </section>
 

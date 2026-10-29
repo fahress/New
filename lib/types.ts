@@ -20,7 +20,6 @@ export type Person = {
   type: PersonType;
   fontIds: string[];
   from?: string;
-  based?: string;
 };
 
 export type FontAward = { awardId: string; url: string | null };
