@@ -49,7 +49,11 @@ function Fonts() {
   async function bulk(next: string) {
     setBusy(true);
     try {
-      for (const id of picked) await db.update('fonts', { id }, { status: next, updated_at: new Date().toISOString() });
+      for (const id of picked) {
+        const f = data!.fonts.find((x) => String(x.id) === id);
+        await db.update('fonts', { id }, { status: next, updated_at: new Date().toISOString() });
+        await db.log({ action: `status:${next}`, entity: 'font', entity_id: id, label: String(f?.name ?? ''), before: { row: f } });
+      }
       await db.refreshSite();
       toast(`${picked.length} font${picked.length === 1 ? '' : 's'} set to ${STATUSES.find((s) => s.id === next)?.label}`);
       setPicked([]);
@@ -102,7 +106,7 @@ function Fonts() {
         <div className="dz-callout" style={{ padding: '14px 18px' }}>
           <span>{picked.length} selected</span>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {STATUSES.map((s) => <button key={s.id} type="button" className="dz-btn dz-btn--sm" disabled={busy} onClick={() => bulk(s.id)}>Set {s.label}</button>)}
+            {STATUSES.filter((s) => data.role === 'admin' || s.id === 'draft' || s.id === 'pending').map((s) => <button key={s.id} type="button" className="dz-btn dz-btn--sm" disabled={busy} onClick={() => bulk(s.id)}>Set {s.label}</button>)}
             <button type="button" className="dz-btn dz-btn--sm" onClick={() => setPicked([])}>Clear</button>
           </div>
         </div>

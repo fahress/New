@@ -250,3 +250,38 @@
 @media (prefers-reduced-motion: reduce) {
   .dz *, .dz-modal, .dz-toast { animation: none !important; transition: none !important; }
 }
+
+/* autofill */
+.dz-autofill { background: var(--soft); border-color: var(--soft); }
+.dz-autofill .dz-input { background: var(--paper); }
+.dz-remote { margin-top: 14px; padding: 14px; border: 1.5px dashed var(--ink); border-radius: 14px; }
+.dz-remote .dz-gimg:disabled { opacity: .5; }
+
+/* duplicates */
+.dz-dup { position: relative; display: grid; gap: 6px; align-content: start; padding: 14px; border: 1.5px solid var(--line); border-radius: 16px; cursor: pointer; transition: border-color .2s; }
+.dz-dup.is-on { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.dz-dup input { position: absolute; top: 14px; right: 14px; accent-color: var(--ink); width: 18px; height: 18px; }
+.dz-dup__img { display: block; aspect-ratio: 2 / 1; width: 100%; object-fit: cover; border-radius: 10px; background: var(--soft); }
+.dz-dup__keep { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-top: 4px; }
+.dz-dup:not(.is-on) .dz-dup__keep { color: var(--mute); }
+@media (max-width: 860px) { .dz-dupgrid { grid-template-columns: minmax(0, 1fr) !important; } }
+
+/* inbox diff */
+.dz-diff { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: start; padding: 10px 0; border-top: 1px solid var(--line); }
+.dz-diff__pair { display: grid; gap: 6px; font-size: 14px; }
+.dz-diff__pair del { color: var(--mute); }
+.dz-diff__pair ins { text-decoration: none; background: var(--soft); padding: 4px 8px; border-radius: 8px; }
+@media (max-width: 860px) { .dz-diff { grid-template-columns: minmax(0, 1fr); } }
+.dz-progress { height: 4px; background: var(--soft); border-radius: 99px; overflow: hidden; margin: -12px 0 18px; }
+.dz-progress span { display: block; height: 100%; background: var(--ink); transition: width .3s var(--ease); }
+
+/* stats */
+.dz-bars { display: flex; align-items: flex-end; gap: 3px; height: 120px; }
+.dz-bars span { flex: 1; min-height: 2px; background: var(--ink); border-radius: 3px 3px 0 0; transition: opacity .2s; }
+.dz-bars span:hover { opacity: .6; }
+.dz-meter { display: flex; align-items: center; gap: 10px; }
+.dz-meter span { height: 10px; background: var(--ink); border-radius: 99px; min-width: 4px; }
+.dz-meter b { font-weight: 500; font-variant-numeric: tabular-nums; }
+
+/* nav groups */
+.dz-nav__group { font-family: var(--f-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); padding: 14px 12px 6px; }

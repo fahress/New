@@ -252,7 +252,7 @@ export default function Catalog({
               <p className="muted" style={{ margin: '10px 0 18px' }}>Remove a filter, or tell us about a typeface we’re missing.</p>
               <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button type="button" className="btn" onClick={clear}>Clear filters</button>
-                <Link href="/about#submit" className="btn btn--ghost">Suggest a font</Link>
+                <Link href="/submit" className="btn btn--ghost">Suggest a font</Link>
               </div>
             </div>
           ) : view === 'grid' ? (

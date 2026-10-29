@@ -1,6 +1,7 @@
 'use client';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { db, demoUrls, type Row } from './db';
+import { DEMO } from './client';
 import { storageUrl, thumbUrl } from '@/lib/format';
 
 export type Tag = { id: number; name: string; slug?: string; [k: string]: unknown };
@@ -21,6 +22,17 @@ export type Data = {
   };
   profiles: Row[] | null; // null when the account can't read them
   hasCountry: boolean; // whether the designers table has the country column yet
+  /* tables added by the dashboard database update — null until it has been run */
+  submissions: Row[] | null;
+  linkChecks: Row[] | null;
+  redirects: Row[] | null;
+  activity: Row[] | null;
+  team: Row[] | null;
+  /** 'admin' | 'editor'; before the update everyone who can log in is treated as admin */
+  role: 'admin' | 'editor';
+  /** false when the update has run but this account isn't on the dashboard team */
+  member: boolean;
+  upgraded: boolean;
 };
 
 export const LINK_TABLES = {
@@ -63,6 +75,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       ]);
       let profiles: Row[] | null = null;
       try { profiles = await db.all('profiles'); } catch { profiles = null; }
+      const [submissions, linkChecks, redirects, activity, team, role] = await Promise.all([
+        db.maybe('submissions', '*', { order: 'created_at', limit: 1000 }),
+        db.maybe('link_checks'),
+        db.maybe('font_redirects'),
+        db.maybe('activity_log', '*', { order: 'at', limit: 300 }),
+        db.maybe('dashboard_roles'),
+        db.rpc<string>('dashboard_role'),
+      ]);
       const sortTags = (t: Row[]) => (t as Tag[]).sort((a, b) => String(a.name).localeCompare(String(b.name)));
       setData({
         fonts: fonts.sort((a, b) => String(b.created_at).localeCompare(String(a.created_at))),
@@ -76,6 +96,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         },
         profiles,
         hasCountry: people.length > 0 && 'country' in people[0],
+        submissions, linkChecks, redirects, activity, team,
+        role: role === 'editor' ? 'editor' : 'admin',
+        member: submissions === null || role === 'admin' || role === 'editor' || DEMO,
+        upgraded: submissions !== null,
       });
       setError(null);
     } catch (e) {

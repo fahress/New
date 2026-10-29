@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import type { PersonType } from '@/lib/types';
 import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
+import SuggestCorrection from '@/components/SuggestCorrection';
 import WorkGrid from '@/components/WorkGrid';
-import { getArchive } from '@/lib/data';
+import { getArchive, getRedirect } from '@/lib/data';
 import { excerpt, hostOf, personHref, storageUrl, thumbUrl } from '@/lib/format';
 import { tagNames, toCard } from '@/lib/view';
 
@@ -31,7 +32,12 @@ const SOCIAL: [string, string][] = [['instagram_url', 'Instagram'], ['behance_ur
 export async function PersonPage({ slug, kind }: { slug: string; kind: PersonType }) {
   const a = await getArchive();
   const p = a.personBySlug.get(slug);
-  if (!p) notFound();
+  if (!p) {
+    const moved = await getRedirect(slug);
+    const to = moved && moved.kind !== 'font' ? a.personBySlug.get(moved.to) : undefined;
+    if (to) permanentRedirect(personHref(to.type, to.slug));
+    notFound();
+  }
   // a foundry opened at /designers/… (or the reverse) moves to its proper address
   if (p.type !== kind) permanentRedirect(personHref(p.type, p.slug));
 
@@ -63,7 +69,10 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
         </nav>
         <div className="wrap dhero__in">
           <div style={{ flex: '999 1 600px', minWidth: 0 }}>
-            <p className="mono" style={{ margin: '0 0 22px', color: 'var(--mute-inv)' }}>{p.type === 'foundry' ? 'Type foundry' : 'Type designer'}</p>
+            <p className="mono" style={{ margin: '0 0 22px', color: 'var(--mute-inv)', display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+              {p.type === 'foundry' ? 'Type foundry' : 'Type designer'}
+              {p.claimed ? <span className="verified" style={{ background: 'var(--paper)', color: 'var(--ink)' }} title={`This profile is managed by ${p.name}`}>✓ Verified</span> : null}
+            </p>
             <h1 className="display" aria-label={p.name}>
               {words.map((w, wi) => (
                 <span key={wi}>
@@ -115,6 +124,10 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
         ) : (
           <p className="muted">No typefaces linked yet.</p>
         )}
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start', marginTop: 48, paddingTop: 20, borderTop: '1px solid var(--line)' }}>
+          {!p.claimed ? <Link href={`/account?claim=${p.slug}`} className="ul" style={{ fontSize: 14 }}>Is this you? Claim this profile →</Link> : null}
+          <div style={{ flex: '1 1 320px', maxWidth: 560 }}><SuggestCorrection designerId={p.id} about={p.name} /></div>
+        </div>
       </section>
 
       {collaborators.length ? (

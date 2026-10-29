@@ -20,6 +20,8 @@ export type Person = {
   type: PersonType;
   fontIds: string[];
   from?: string;
+  /** managed by the designer / foundry themselves (claimed profile) */
+  claimed?: boolean;
 };
 
 export type FontAward = { awardId: string; url: string | null };

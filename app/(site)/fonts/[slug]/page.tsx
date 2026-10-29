@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import FontCard from '@/components/FontCard';
 import Gallery from '@/components/Gallery';
-import { getArchive } from '@/lib/data';
+import SuggestCorrection from '@/components/SuggestCorrection';
+import { getArchive, getRedirect } from '@/lib/data';
 import { excerpt, hostOf, label, licenseLabel, slugify, storageUrl, thumbUrl, weightsLabel, personHref } from '@/lib/format';
 import { creditOf, toCard } from '@/lib/view';
 import type { Tag } from '@/lib/types';
@@ -39,7 +40,11 @@ export default async function FontPage({ params }: Props) {
   const { slug } = await params;
   const a = await getArchive();
   const f = a.fontBySlug.get(slug);
-  if (!f) notFound();
+  if (!f) {
+    const moved = await getRedirect(slug);
+    if (moved?.kind === 'font' && a.fontBySlug.has(moved.to)) permanentRedirect(`/fonts/${moved.to}`);
+    notFound();
+  }
 
   const people = f.people.map((id) => a.personById.get(id)).filter((p) => !!p).sort((x, y) => (x!.type === y!.type ? 0 : x!.type === 'designer' ? -1 : 1));
   const tagsOf = (list: Tag[], ids: number[]) => ids.map((id) => list.find((t) => t.id === id)).filter((t): t is Tag => !!t);
@@ -99,7 +104,7 @@ export default async function FontPage({ params }: Props) {
           ) : null}
         </div>
         {f.purchaseLinks[0] ? (
-          <a href={f.purchaseLinks[0]} className="btn" target="_blank" rel="noopener" style={{ minHeight: 56, fontSize: 16, padding: '0 28px' }}>
+          <a href={`/go/${f.id}/0`} className="btn" target="_blank" rel="noopener nofollow" style={{ minHeight: 56, fontSize: 16, padding: '0 28px' }}>
             {f.license === 'free' ? 'Download' : 'Buy'} at {hostOf(f.purchaseLinks[0])} <span aria-hidden="true">↗</span>
           </a>
         ) : null}
@@ -162,7 +167,7 @@ export default async function FontPage({ params }: Props) {
               <h2 className="mono" style={{ margin: '0 0 12px', fontWeight: 500 }}>Where to get it</h2>
               <div className="buy">
                 {f.purchaseLinks.map((u, i) => (
-                  <a key={u} href={u} target="_blank" rel="noopener" className={`btn${i ? ' btn--ghost' : ''}`}>
+                  <a key={u} href={`/go/${f.id}/${i}`} target="_blank" rel="noopener nofollow" className={`btn${i ? ' btn--ghost' : ''}`}>
                     <span>{hostOf(u)}</span><span aria-hidden="true">↗</span>
                   </a>
                 ))}
@@ -170,7 +175,7 @@ export default async function FontPage({ params }: Props) {
             </div>
           ) : null}
           <div className="panel__sec" style={{ borderTop: '1px solid var(--ink)' }}>
-            <a href={`mailto:admin@fahress.com?subject=${encodeURIComponent(`Correction: ${f.name}`)}`} className="ul" style={{ fontSize: 14 }}>Spotted an error? Suggest a correction →</a>
+            <SuggestCorrection fontId={f.id} about={f.name} />
           </div>
         </aside>
       </div>

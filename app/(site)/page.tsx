@@ -178,7 +178,7 @@ export default async function Home() {
         <h2 className="display" style={{ margin: 0, flex: '1 1 560px', fontSize: 'clamp(44px, 6.4vw, 100px)' }}>Drew an Arabic typeface? Put your name on it.</h2>
         <div style={{ flex: '0 1 360px', display: 'flex', flexDirection: 'column', gap: 16 }}>
           <p className="lede" style={{ margin: 0 }}>Send us your typeface, portrait and story, and we’ll credit you on every font you drew, with a link to where it can be bought.</p>
-          <Link href="/about#submit" className="btn">Submit a font</Link>
+          <Link href="/submit" className="btn">Submit a font</Link>
         </div>
       </section>
     </>

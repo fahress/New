@@ -33,16 +33,27 @@ export function issues(data: Data, linked: (id: string, k: keyof Data['links']) 
   const fontItem = (f: Row) => ({ href: fontHref(f), label: String(f.name) });
   const personItem = (p: Row) => ({ href: personHref(p), label: String(p.name), note: p.type === 'foundry' ? 'Foundry' : 'Designer' });
 
+  const broken = new Set((data.linkChecks ?? []).filter((l) => l.verdict === 'broken').map((l) => String(l.url)));
   const list: Issue[] = [
+    {
+      id: 'inbox',
+      label: 'New in the inbox (submissions, corrections, claims)',
+      items: (data.submissions ?? []).filter((x) => x.status === 'new').map((x) => ({ href: '/dashboard/inbox', label: String((x.payload as Row)?.name ?? x.kind), note: String(x.kind).replace('_', ' ') })),
+    },
+    {
+      id: 'broken',
+      label: 'Broken buy links (from the last link check)',
+      items: data.fonts.filter((f) => ((f.purchase_links as string[]) ?? []).some((u) => broken.has(u))).map(fontItem),
+    },
     {
       id: 'dups',
       label: 'Possible duplicate fonts',
-      items: duplicateFonts(data).flatMap((g) => g.map((f) => ({ href: fontHref(f), label: String(f.name), note: `${f.slug} · ${f.status}` }))),
+      items: duplicateFonts(data).flatMap((g) => g.map((f) => ({ href: '/dashboard/duplicates', label: String(f.name), note: `${f.slug} · ${f.status}` }))),
     },
     {
       id: 'dup-people',
       label: 'Possible duplicate designers or foundries',
-      items: duplicatePeople(data).flatMap((g) => g.map(personItem)),
+      items: duplicatePeople(data).flatMap((g) => g.map((p) => ({ ...personItem(p), href: '/dashboard/duplicates' }))),
     },
     { id: 'no-credit', label: 'Live fonts with no designer or foundry credited', items: live.filter((f) => !linked(String(f.id), 'designers').length).map(fontItem) },
     { id: 'no-cover', label: 'Fonts without a presentation image', items: data.fonts.filter((f) => !coverOf(f)).map(fontItem) },

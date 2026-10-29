@@ -24,9 +24,10 @@ export default async function About() {
         <h2>What we do</h2>
         <p>We highlight designers’ work on a professional, authoritative platform; structure Arabic typefaces into a clear system for browsing, comparison and precise search; help agencies, publishers and individuals find the right typeface for their technical and visual needs; and point everyone to licensed sources instead of unreliable downloads.</p>
         <h2 id="submit">Submit a font or claim your profile</h2>
-        <p>Designed an Arabic typeface, or found one we’re missing? Send its name, designer, foundry, where to buy it and a few presentation images to <b>admin@fahress.com</b>. Designers can also send a portrait and a short biography for their profile.</p>
+        <p>Designed an Arabic typeface, or found one we’re missing? Send it through the submission form — every submission is reviewed by hand. Designers and foundries can create an account to claim their profile, keep their photo, bio and links up to date, and see how many visitors Fahress sends to their store.</p>
         <p style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <Link href="/fonts" className="btn">Browse the catalog</Link>
+          <Link href="/submit" className="btn">Submit a font</Link>
+          <Link href="/account" className="btn btn--ghost">Claim your profile</Link>
           <a href="https://www.instagram.com/fahresstype" target="_blank" rel="noopener" className="btn btn--ghost">Follow on Instagram ↗</a>
         </p>
       </div>

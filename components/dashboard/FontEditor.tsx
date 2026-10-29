@@ -6,6 +6,7 @@ import { db, type Row } from '@/lib/admin/db';
 import { LINK_TABLES, coverOf, dupKey, img, useData, type Data } from '@/lib/admin/store';
 import { ConfirmButton, DropZone, Field, MultiPicker, STATUSES, StatusPill, slugify, useToast, useUploader, type Option } from './ui';
 import PersonQuickAdd from './PersonQuickAdd';
+import type { Prefill } from '@/lib/admin/prefill';
 
 type Form = {
   name: string; slug: string; slugTouched: boolean; year: string; description: string; status: string; license: string;
@@ -37,7 +38,13 @@ function fromRow(f: Row, data: Data, linked: (id: string, k: keyof Data['links']
   };
 }
 
-export default function FontEditor({ id }: { id?: string }) {
+/** Everything about a font, for the history (so a delete or merge can be undone). */
+export function snapshotFont(fontId: string, data: Data, fontById: Map<string, Row>) {
+  const links = Object.fromEntries(Object.entries(LINK_TABLES).map(([k, { table }]) => [table, data.links[k as keyof Data['links']].filter((r) => String(r.font_id) === fontId)]));
+  return { row: fontById.get(fontId) ?? null, links };
+}
+
+export default function FontEditor({ id, prefill }: { id?: string; prefill?: Prefill }) {
   const { data, linked, fontById, reload } = useData();
   const router = useRouter();
   const toast = useToast();
@@ -48,15 +55,92 @@ export default function FontEditor({ id }: { id?: string }) {
   const [saving, setSaving] = useState(false);
   const [tried, setTried] = useState(false);
   const [adding, setAdding] = useState<string | null>(null);
+  const [remote, setRemote] = useState<string[]>([]);
+  const [newNames, setNewNames] = useState<string[]>([]);
+  const [fillUrl, setFillUrl] = useState('');
+  const [filling, setFilling] = useState(false);
+  const [importing, setImporting] = useState(0);
+  const isEditor = data?.role === 'editor';
 
   useEffect(() => {
     if (!data) return;
     const f = existing ? fromRow(existing, data, linked) : blank;
     setForm(f);
     setInitial(JSON.stringify(f));
+    if (!existing && prefill) applyFill(prefill);
     // only when switching font
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, !!data, !!existing]);
+
+  /** Merges a draft into the form. Only fills fields that are still empty. */
+  function applyFill(p: Prefill) {
+    if (!data) return;
+    const matched: string[] = [];
+    const unknown: string[] = [];
+    for (const n of p.designers ?? []) {
+      const k = dupKey(n);
+      const hit = k ? data.people.find((x) => dupKey(String(x.name)) === k) : undefined;
+      if (hit) matched.push(String(hit.id)); else if (n.trim()) unknown.push(n.trim());
+    }
+    setForm((f) => {
+      const name = f.name || (p.name ?? '').trim();
+      const links = (p.links ?? []).filter(Boolean);
+      return {
+        ...f,
+        name,
+        slug: f.slugTouched ? f.slug : slugify(name),
+        description: f.description || (p.description ?? ''),
+        year: f.year || (p.year ? String(p.year).slice(0, 4) : ''),
+        license: p.license && !f.purchase.some(Boolean) ? p.license : f.license,
+        purchase: f.purchase.some(Boolean) ? f.purchase : links.length ? links : f.purchase,
+        source: f.source || (p.source ?? ''),
+        people: [...f.people, ...matched.filter((m) => !f.people.includes(m))],
+        images: p.stored?.length ? [...new Set([...f.images, ...p.stored])] : f.images,
+        cover: f.cover || p.stored?.[0] || '',
+      };
+    });
+    setNewNames((n) => [...new Set([...n, ...unknown])]);
+    setRemote((r) => [...new Set([...r, ...(p.images ?? [])])].slice(0, 30));
+  }
+
+  async function fillFromLink() {
+    const url = fillUrl.trim();
+    if (!/^https?:\/\//i.test(url)) { toast('Paste a full link starting with https://', 'err'); return; }
+    setFilling(true);
+    try {
+      const r = await db.api<{ url: string; host: string; title: string; description: string; year: number | null; designers: string[]; images: string[] }>('/api/dashboard/scrape', { url });
+      const isStore = !/behance\.net|instagram\.com|dribbble\.com/.test(r.host);
+      applyFill({ name: r.title, description: r.description, year: r.year, designers: r.designers, images: r.images, links: isStore ? [r.url] : [], source: r.url });
+      if (!isStore) setForm((f) => ({ ...f, cases: f.cases.includes(r.url) ? f.cases : [...f.cases, r.url] }));
+      toast(`Filled from ${r.host} — check everything before saving`);
+      setFillUrl('');
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Could not read that page', 'err');
+    } finally {
+      setFilling(false);
+    }
+  }
+
+  async function importImages(urls: string[]) {
+    setImporting(urls.length);
+    const files: File[] = [];
+    for (const u of urls) {
+      try {
+        const { data: s } = await (await import('@/lib/admin/client')).supabase().auth.getSession();
+        const res = await fetch('/api/dashboard/image', { method: 'POST', headers: { 'content-type': 'application/json', ...(s.session ? { Authorization: `Bearer ${s.session.access_token}` } : {}) }, body: JSON.stringify({ url: u }) });
+        if (!res.ok) throw new Error();
+        const blob = await res.blob();
+        const name = decodeURIComponent(u.split('?')[0].split('/').pop() || 'image') .replace(/[^\w.-]+/g, '-');
+        files.push(new File([blob], /\.\w{3,4}$/.test(name) ? name : `${name}.${(blob.type.split('/')[1] || 'jpg').replace('jpeg', 'jpg')}`, { type: blob.type }));
+      } catch {
+        toast(`Couldn't import ${u.slice(0, 60)}…`, 'err');
+      } finally {
+        setImporting((n) => n - 1);
+      }
+    }
+    if (files.length) await addImages(files);
+    setRemote((r) => r.filter((x) => !urls.includes(x)));
+  }
 
   const dirty = JSON.stringify(form) !== initial;
   useEffect(() => {
@@ -158,6 +242,10 @@ export default function FontEditor({ id }: { id?: string }) {
       const langs = [...new Set(data!.groupLangs.filter((g) => form.groups.includes(String(g.language_group_id))).map((g) => String(g.language_id)))];
       await syncLinks(fontId, 'languages', langs);
 
+      if (!id && prefill?.submissionId) {
+        await db.update('submissions', { id: prefill.submissionId }, { status: 'accepted', font_id: fontId, handled_at: new Date().toISOString() }).catch(() => undefined);
+      }
+      await db.log({ action: id ? (existing?.status !== status ? `status:${status}` : 'update') : 'create', entity: 'font', entity_id: fontId, label: row.name, before: id ? snapshotFont(fontId, data!, fontById) : null, after: { row: { ...existing, ...row } } });
       await db.refreshSite();
       await reload();
       const label = STATUSES.find((s) => s.id === status)?.label ?? status;
@@ -178,7 +266,9 @@ export default function FontEditor({ id }: { id?: string }) {
     if (!id) return;
     setSaving(true);
     try {
+      const before = snapshotFont(id, data!, fontById);
       for (const { table } of Object.values(LINK_TABLES)) await db.remove(table, { font_id: id });
+      await db.log({ action: 'delete', entity: 'font', entity_id: id, label: form.name, before });
       await db.remove('fonts', { id });
       await db.refreshSite();
       await reload();
@@ -218,6 +308,15 @@ export default function FontEditor({ id }: { id?: string }) {
 
       <div className="dz-editor">
         <div>
+          <section className="dz-section dz-autofill">
+            <h2 className="dz-section__title">Fill from a link <small>MyFonts, Behance, a foundry page…</small></h2>
+            <div className="dz-linkrow">
+              <input className="dz-input" placeholder="Paste the font's page — https://…" value={fillUrl} onChange={(e) => setFillUrl(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); fillFromLink(); } }} />
+              <button type="button" className="dz-btn dz-btn--primary" disabled={filling || !fillUrl.trim()} onClick={fillFromLink}>{filling ? 'Reading…' : 'Fill in'}</button>
+            </div>
+            <p className="dz-hint" style={{ margin: '8px 0 0' }}>Fills the empty fields with the name, description, year, designer and images it finds. Nothing is saved until you press save.</p>
+          </section>
+
           <section className="dz-section">
             <h2 className="dz-section__title">Details</h2>
             <div className="dz-grid">
@@ -255,11 +354,44 @@ export default function FontEditor({ id }: { id?: string }) {
                 createLabel="Add new designer or foundry"
               />
             </Field>
+            {newNames.length > 0 && (
+              <div className="dz-warn" style={{ borderColor: 'var(--ink)', marginTop: 14 }}>
+                <b style={{ color: 'var(--ink)' }}>Found on the page, not in the archive yet</b>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  {newNames.map((n) => (
+                    <span key={n} style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}>
+                      <button type="button" className="dz-btn dz-btn--sm" onClick={() => { setAdding(n); setNewNames((x) => x.filter((y) => y !== n)); }}>+ Add “{n}”</button>
+                      <button type="button" className="dz-link" onClick={() => setNewNames((x) => x.filter((y) => y !== n))}>ignore</button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
 
           <section className="dz-section">
             <h2 className="dz-section__title">Presentation images <small>first image or ★ = cover</small></h2>
             <DropZone onFiles={addImages} />
+            {remote.length > 0 && (
+              <div className="dz-remote">
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <b>{remote.length} image{remote.length === 1 ? '' : 's'} found on the page</b>
+                  <span style={{ display: 'flex', gap: 8 }}>
+                    <button type="button" className="dz-btn dz-btn--sm dz-btn--primary" disabled={importing > 0} onClick={() => importImages(remote)}>{importing ? `Importing… ${importing} left` : 'Import all'}</button>
+                    <button type="button" className="dz-btn dz-btn--sm" onClick={() => setRemote([])}>Dismiss</button>
+                  </span>
+                </div>
+                <p className="dz-hint" style={{ margin: '6px 0 10px' }}>Click an image to import just that one. Skip logos and avatars.</p>
+                <div className="dz-gallery" style={{ marginTop: 0 }}>
+                  {remote.map((u) => (
+                    <button key={u} type="button" className="dz-gimg" style={{ padding: 0, cursor: 'pointer' }} disabled={importing > 0} onClick={() => importImages([u])} title="Import this image">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={u} alt="" loading="lazy" referrerPolicy="no-referrer" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             {uploading > 0 ? <p className="dz-hint" style={{ marginTop: 10 }}>Uploading {uploading} image{uploading === 1 ? '' : 's'}…</p> : null}
             {tried && !form.images.length ? <p className="dz-error" style={{ marginTop: 10 }}>Add at least one image</p> : null}
             {form.images.length > 0 && (
@@ -345,7 +477,7 @@ export default function FontEditor({ id }: { id?: string }) {
             )}
           </section>
 
-          {id ? (
+          {id && !isEditor ? (
             <section className="dz-section" style={{ borderColor: '#b42318' }}>
               <h2 className="dz-section__title">Delete</h2>
               <p className="dz-hint" style={{ marginTop: -8 }}>Removes the font and its credits from the archive. The uploaded images stay in storage.</p>
@@ -368,21 +500,23 @@ export default function FontEditor({ id }: { id?: string }) {
           </div>
           <div className="dz-panel dz-panel--soft">
             <p className="dz-eyebrow">Status</p>
-            <select className="dz-select" value={form.status} onChange={(e) => set('status', e.target.value)}>
+            <select className="dz-select" value={form.status} onChange={(e) => set('status', e.target.value)} disabled={isEditor}>
               {STATUSES.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
             </select>
-            <p className="dz-hint" style={{ margin: '10px 0 0' }}>Only Published and Featured fonts appear on the site.</p>
+            <p className="dz-hint" style={{ margin: '10px 0 0' }}>{isEditor ? 'As an editor you can save drafts and send fonts for review. An admin publishes them.' : 'Only Published and Featured fonts appear on the site.'}</p>
           </div>
         </aside>
       </div>
 
       <div className="dz-savebar">
         <span className="dz-savebar__note">{saving ? 'Saving…' : dirty ? 'Unsaved changes' : id ? 'All changes saved' : ''}</span>
-        {form.status !== 'published' && form.status !== 'featured' ? (
+        {isEditor && (existing?.status === 'published' || existing?.status === 'featured') ? (
+          <span className="dz-hint">This font is live — only an admin can change it.</span>
+        ) : form.status !== 'published' && form.status !== 'featured' ? (
           <>
             <button type="button" className="dz-btn" disabled={saving || uploading > 0} onClick={() => save('draft')}>Save draft</button>
-            <button type="button" className="dz-btn" disabled={saving || uploading > 0} onClick={() => save('pending')}>Send for review</button>
-            <button type="button" className="dz-btn dz-btn--primary" disabled={saving || uploading > 0} onClick={() => save('published')}>Publish</button>
+            <button type="button" className={`dz-btn${isEditor ? ' dz-btn--primary' : ''}`} disabled={saving || uploading > 0} onClick={() => save('pending')}>Send for review</button>
+            {!isEditor ? <button type="button" className="dz-btn dz-btn--primary" disabled={saving || uploading > 0} onClick={() => save('published')}>Publish</button> : null}
           </>
         ) : (
           <>

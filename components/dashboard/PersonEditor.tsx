@@ -81,6 +81,7 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
       let pid = id;
       if (pid) await db.update('designers', { id: pid }, row);
       else pid = String((await db.insert('designers', row))[0].id);
+      await db.log({ action: id ? 'update' : 'create', entity: 'designer', entity_id: pid, label: row.name, before: id ? { row: existing } : null, after: { row } });
       await db.refreshSite();
       await reload();
       toast(id ? 'Saved' : `${form.name.trim()} added`);
@@ -99,8 +100,10 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
     if (!id) return;
     setBusy(true);
     try {
+      const credits = data!.links.designers.filter((r) => String(r.designer_id) === id);
       await db.remove('font_designers', { designer_id: id });
       await db.remove('designers', { id });
+      await db.log({ action: 'delete', entity: 'designer', entity_id: id, label: form.name, before: { row: existing, credits } });
       await db.refreshSite();
       await reload();
       toast(`Deleted ${form.name}`);

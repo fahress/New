@@ -22,8 +22,12 @@ export default function Review() {
   async function act(id: string, status: string | null, msg: string) {
     setBusy(id);
     try {
-      if (status) await db.update('fonts', { id }, { status, updated_at: new Date().toISOString() });
-      else {
+      const f = data!.fonts.find((x) => String(x.id) === id);
+      if (status) {
+        await db.update('fonts', { id }, { status, updated_at: new Date().toISOString() });
+        await db.log({ action: `status:${status}`, entity: 'font', entity_id: id, label: String(f?.name ?? ''), before: { row: f } });
+      } else {
+        await db.log({ action: 'delete', entity: 'font', entity_id: id, label: String(f?.name ?? ''), before: { row: f, links: Object.fromEntries(Object.entries(LINK_TABLES).map(([k, { table }]) => [table, data!.links[k as keyof NonNullable<typeof data>["links"]].filter((r) => String(r.font_id) === id)])) } });
         for (const { table } of Object.values(LINK_TABLES)) await db.remove(table, { font_id: id });
         await db.remove('fonts', { id });
       }
@@ -71,11 +75,13 @@ export default function Review() {
               {dup.length > 0 && <div className="dz-warn"><b>Looks like a duplicate of</b>{dup.map((d) => <span key={String(d.id)}><Link href={`/dashboard/fonts/${d.id}`}>{String(d.name)}</Link> <span className="dz-muted">· {String(d.status)}</span></span>)}</div>}
               {missing.length > 0 && <p className="dz-error">Missing before it can go live: {missing.join(', ')}</p>}
               <div className="dz-review__actions">
+                {data.role === 'admin' ? <>
                 <button type="button" className="dz-btn dz-btn--primary" disabled={busy === id || missing.length > 0} onClick={() => act(id, 'published', `${f.name} is live`)}>Approve &amp; publish</button>
                 <button type="button" className="dz-btn" disabled={busy === id || missing.length > 0} onClick={() => act(id, 'featured', `${f.name} is live and featured`)}>Publish as featured</button>
+                </> : <span className="dz-hint">An admin approves fonts.</span>}
                 <Link href={`/dashboard/fonts/${id}`} className="dz-btn">Edit first</Link>
                 <button type="button" className="dz-btn" disabled={busy === id} onClick={() => act(id, 'draft', `${f.name} moved to drafts`)}>Back to draft</button>
-                <ConfirmButton onConfirm={() => act(id, null, `${f.name} rejected and deleted`)} label="Click again to delete">Reject</ConfirmButton>
+                {data.role === 'admin' ? <ConfirmButton onConfirm={() => act(id, null, `${f.name} rejected and deleted`)} label="Click again to delete">Reject</ConfirmButton> : null}
               </div>
             </div>
           </article>

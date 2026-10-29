@@ -76,6 +76,60 @@ export const db = {
     if (error) explain(error, `remove from ${table}`);
   },
 
+  /** Reads a table that may not exist yet (added by the dashboard database update). Returns null instead of failing. */
+  async maybe(table: string, select = '*', opts: { order?: string; limit?: number } = {}): Promise<Row[] | null> {
+    if (DEMO) return (await demoTables())[table] ? structuredClone((await demoTables())[table]) : null;
+    let q = supabase().from(table).select(select);
+    if (opts.order) q = q.order(opts.order, { ascending: false });
+    if (opts.limit) q = q.limit(opts.limit);
+    const { data, error } = await q;
+    if (error) return null;
+    return (data ?? []) as Row[];
+  },
+
+  async upsert(table: string, rows: Row[], onConflict: string): Promise<void> {
+    if (!rows.length) return;
+    if (DEMO) {
+      const t = ((await demoTables())[table] ??= []);
+      for (const r of rows) {
+        const i = t.findIndex((x) => String(x[onConflict]) === String(r[onConflict]));
+        if (i >= 0) t[i] = { ...t[i], ...r }; else t.push(r);
+      }
+      return;
+    }
+    const { error } = await supabase().from(table).upsert(rows, { onConflict });
+    if (error) explain(error, `save ${table}`);
+  },
+
+  async rpc<T = unknown>(fn: string, args: Row = {}): Promise<T | null> {
+    if (DEMO) return null;
+    const { data, error } = await supabase().rpc(fn, args);
+    if (error) return null;
+    return data as T;
+  },
+
+  /** Records a change in the activity history (if the history table exists). Never blocks a save. */
+  async log(entry: { action: string; entity: string; entity_id?: string; label?: string; before?: unknown; after?: unknown }): Promise<void> {
+    try {
+      if (DEMO) { ((await demoTables()).activity_log ??= []).unshift({ id: Date.now(), at: new Date().toISOString(), user_email: 'demo@fahress', ...entry }); return; }
+      const { data } = await supabase().auth.getUser();
+      await supabase().from('activity_log').insert({ ...entry, user_id: data.user?.id, user_email: data.user?.email ?? null });
+    } catch { /* history is best-effort */ }
+  },
+
+  /** Authorised call to one of the site's own dashboard API routes. */
+  async api<T = unknown>(path: string, body?: unknown, method = 'POST'): Promise<T> {
+    const { data } = DEMO ? { data: { session: null } } : await supabase().auth.getSession();
+    const token = data.session?.access_token ?? '';
+    const res = await fetch(path, {
+      method,
+      headers: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+    if (!res.ok) throw new DbError((await res.text().catch(() => '')) || `Request failed (${res.status})`);
+    return (await res.json()) as T;
+  },
+
   /** Uploads an image to the studio bucket in the same folder layout the site already uses (YYYY-MM-DD/timestamp-name). */
   async upload(file: File): Promise<string> {
     const day = new Date().toISOString().slice(0, 10);

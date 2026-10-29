@@ -150,6 +150,7 @@ export const getArchive = cache(async (): Promise<Archive> => {
       type: (r.type === 'foundry' ? 'foundry' : 'designer') as PersonType,
       fontIds: fontIdsByPerson.get(str(r.id)) ?? [],
       // designers: where they are from; foundries: the country they operate in
+      claimed: !!r.user_id,
       from: str(r.country).trim() || (() => { const pl = placeOf(str(r.slug) || slugify(str(r.name))); return pl.from ?? (r.type === 'foundry' ? pl.based : undefined); })(),
     }))
     .filter((p) => p.name)
@@ -173,3 +174,19 @@ export const getArchive = cache(async (): Promise<Archive> => {
     personById: new Map(people.map((p) => [p.id, p])),
   };
 });
+
+/** Where an old address now lives (after two duplicates were merged in the dashboard). */
+export async function getRedirect(slug: string): Promise<{ to: string; kind: string } | null> {
+  if (process.env.FAHRESS_FIXTURE) return null;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/font_redirects?select=to_slug,kind&from_slug=eq.${encodeURIComponent(slug)}&limit=1`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+      next: { revalidate: REVALIDATE_SECONDS, tags: ['fahress'] },
+    });
+    if (!res.ok) return null;
+    const [row] = (await res.json()) as { to_slug: string; kind: string }[];
+    return row ? { to: row.to_slug, kind: row.kind } : null;
+  } catch {
+    return null;
+  }
+}

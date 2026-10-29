@@ -5,17 +5,24 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Logo from '@/components/Logo';
 import { DEMO, supabase } from '@/lib/admin/client';
 import { DataProvider, coverOf, img, useData } from '@/lib/admin/store';
+import { duplicateFonts, duplicatePeople } from '@/lib/admin/checks';
 import { Loading, Toasts } from './ui';
 
 const NAV = [
   { href: '/dashboard', label: 'Overview' },
   { href: '/dashboard/review', label: 'Review queue', badge: 'pending' as const },
+  { href: '/dashboard/inbox', label: 'Inbox', badge: 'inbox' as const },
   { href: '/dashboard/fonts', label: 'Fonts' },
   { href: '/dashboard/designers', label: 'Designers' },
   { href: '/dashboard/foundries', label: 'Foundries' },
   { href: '/dashboard/awards', label: 'Awards' },
   { href: '/dashboard/taxonomy', label: 'Classification' },
-  { href: '/dashboard/users', label: 'Users' },
+  { group: 'Tools' },
+  { href: '/dashboard/duplicates', label: 'Duplicates', badge: 'dups' as const },
+  { href: '/dashboard/links', label: 'Link health', badge: 'broken' as const },
+  { href: '/dashboard/stats', label: 'Clicks & stats' },
+  { href: '/dashboard/history', label: 'History' },
+  { href: '/dashboard/users', label: 'Users & team' },
 ];
 
 type Auth = { state: 'loading' } | { state: 'out' } | { state: 'in'; email: string };
@@ -56,7 +63,15 @@ function Frame({ email, children }: { email: string; children: React.ReactNode }
   const { data, error } = useData();
   const [menu, setMenu] = useState(false);
   useEffect(() => setMenu(false), [path]);
-  const pending = data?.fonts.filter((f) => f.status === 'pending').length ?? 0;
+  const badges = useMemo(() => {
+    if (!data) return {} as Record<string, number>;
+    return {
+      pending: data.fonts.filter((f) => f.status === 'pending').length,
+      inbox: (data.submissions ?? []).filter((s) => s.status === 'new').length,
+      dups: duplicateFonts(data).length + duplicatePeople(data).length,
+      broken: (data.linkChecks ?? []).filter((l) => l.verdict === 'broken').length,
+    } as Record<string, number>;
+  }, [data]);
 
   const active = (href: string) => (href === '/dashboard' ? path === href : path.startsWith(href));
 
@@ -70,16 +85,16 @@ function Frame({ email, children }: { email: string; children: React.ReactNode }
         <div className="dz-side__body">
           <Link href="/dashboard/fonts/new" className="dz-btn dz-btn--primary dz-btn--block">+ New font</Link>
           <nav className="dz-nav">
-            {NAV.map((n) => (
+            {NAV.map((n) => 'group' in n ? <span key={n.group} className="dz-nav__group">{n.group}</span> : (
               <Link key={n.href} href={n.href} className={active(n.href) ? 'is-active' : ''}>
                 {n.label}
-                {n.badge && pending > 0 ? <span className="dz-badge">{pending}</span> : null}
+                {n.badge && badges[n.badge] > 0 ? <span className="dz-badge">{badges[n.badge]}</span> : null}
               </Link>
             ))}
           </nav>
           <div className="dz-side__foot">
             <Link href="/" target="_blank" className="dz-link">View site ↗</Link>
-            <span className="dz-me" title={email}>{email}</span>
+            <span className="dz-me" title={email}>{email}{data ? ` · ${data.role === 'editor' ? 'Editor' : 'Admin'}` : ''}</span>
             {DEMO ? <span className="dz-hint">Demo mode — nothing is saved</span> : (
               <button type="button" className="dz-link" onClick={() => supabase().auth.signOut()}>Sign out</button>
             )}
@@ -96,7 +111,13 @@ function Frame({ email, children }: { email: string; children: React.ReactNode }
               <b>Couldn&apos;t load the archive.</b>
               <p>{error}</p>
             </div>
-          ) : !data ? <Loading /> : children}
+          ) : !data ? <Loading /> : !data.member ? (
+            <div className="dz-panel" style={{ maxWidth: 620 }}>
+              <h3>This account isn&apos;t on the dashboard team</h3>
+              <p className="dz-muted">You&apos;re signed in as {email}. Ask a Fahress admin to add you under Users &amp; team, then reload this page.</p>
+              <button type="button" className="dz-btn" onClick={() => supabase().auth.signOut()}>Sign in with another account</button>
+            </div>
+          ) : children}
         </div>
       </div>
     </div>
