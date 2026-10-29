@@ -66,7 +66,7 @@ export default async function Home() {
     <>
       <section className="wrap hero">
         <div className="hero__text rise">
-          <p className="hero__eyebrow mono"><span>فهرس / Fahress</span><span className="muted">The Arabic Type Design Archive</span></p>
+          <p className="hero__eyebrow mono"><span>Fahress</span><span className="muted">The Arabic Type Design Archive</span></p>
           <h1 className="display h-xl" style={{ margin: 0 }}>
             Every font
             <br />
