@@ -1,6 +1,6 @@
 /*
-  Fahress — black & white. The only colour on the site comes from the
-  designers' own presentation images, which reveal their colour on hover.
+  Fahress — black & white interface. Colour comes only from the typefaces'
+  presentation images and foundry logos; designer portraits stay black & white.
 */
 :root {
   --ink: #0a0a0a;
@@ -65,8 +65,8 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 .pill--sm { min-height: 24px; padding: 2px 9px; font-size: 11px; font-family: var(--f-mono); letter-spacing: .04em; }
 
 /* specimen images: greyscale at rest, colour on hover */
-.spec { filter: grayscale(1) contrast(1.08); transition: filter .6s ease, transform .9s var(--ease); }
-.tile:hover .spec, .tile:focus-visible .spec { filter: none; transform: scale(1.045); }
+.spec { transition: transform .9s var(--ease); }
+.tile:hover .spec, .tile:focus-visible .spec { transform: scale(1.045); }
 .frame { position: relative; overflow: hidden; border-radius: 6px; background: var(--soft); aspect-ratio: 2 / 1; }
 .frame img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -280,8 +280,7 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 .thumbs button { flex: 0 0 120px; aspect-ratio: 2 / 1; padding: 0; border: 1.5px solid var(--line); border-radius: 6px; overflow: hidden; background: none; cursor: pointer; opacity: .7; transition: opacity .3s, transform .3s, border-color .3s; }
 .thumbs button:hover { transform: translateY(-3px); opacity: 1; }
 .thumbs button[aria-pressed='true'] { border-color: var(--ink); opacity: 1; }
-.thumbs img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
-.thumbs button[aria-pressed='true'] img { filter: none; }
+.thumbs img { width: 100%; height: 100%; object-fit: cover; }
 .about-font { margin-top: 56px; display: flex; flex-wrap: wrap; gap: 32px; }
 .about-font h2 { flex: 1 1 200px; margin: 0; }
 .about-font__text { flex: 2 1 420px; min-width: 0; font-size: 18px; line-height: 1.7; }
@@ -319,7 +318,8 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 .nrow__n { flex: 0 0 110px; text-align: right; }
 .cursor-preview--face { width: 220px; aspect-ratio: 5 / 6; transform: translate(24px, -50%) rotate(2deg); }
 .cursor-preview--side { transform: translate(24px, -50%) rotate(2deg); width: 360px; }
-.cursor-preview--face img { filter: grayscale(1) contrast(1.1); background: var(--paper); }
+.cursor-preview--face img { background: var(--paper); }
+.cursor-preview--grey img { filter: grayscale(1) contrast(1.1); }
 
 .dhero { background: var(--ink); color: var(--paper); overflow: hidden; }
 .dhero__in { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end; padding-block: 64px 48px; }

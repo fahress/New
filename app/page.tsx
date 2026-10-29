@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import Logo from '@/components/Logo';
 import FontCard from '@/components/FontCard';
 import HomeSearch, { type SearchIndex } from '@/components/HomeSearch';
 import HoverRows from '@/components/HoverRows';
@@ -83,10 +82,6 @@ export default async function Home() {
             <span className="rotator"><span>designer.</span><span>foundry.</span><span>story.</span></span>
           </h1>
         </div>
-        <div className="hero__aside">
-          <span style={{ maxWidth: 420 }}><Logo width={420} draw title="Fahress logo" /></span>
-          <p className="lede" style={{ margin: 0 }}>People know the fonts. Fahress shows who made them — indexed by script, style and license, with a link to buy from the source.</p>
-        </div>
       </section>
 
       <section className="wrap" aria-label="Search">
@@ -94,7 +89,7 @@ export default async function Home() {
       </section>
 
       <section className="band" aria-label="Recently archived">
-        <div className="wrap band__head mono"><span>Live from the index</span><span style={{ color: 'var(--mute-inv)' }}>Hover a specimen to see it in colour</span></div>
+        <div className="wrap band__head mono"><span>Live from the index</span><span style={{ color: 'var(--mute-inv)' }}>Hover to pause</span></div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div className="marquee">{[...rowA, ...rowA].map((f, i) => <Tile key={f.id + i} a={a} f={f} />)}</div>
           <div className="marquee marquee--rev">{[...rowB, ...rowB].map((f, i) => <Tile key={f.id + i} a={a} f={f} />)}</div>

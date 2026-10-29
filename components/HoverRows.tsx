@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRef, useState, type ReactNode } from 'react';
 import { storageUrl } from '@/lib/format';
 
-export type HoverRow = { key: string; href: string; img: string | null; face?: boolean; content: ReactNode; className?: string };
+export type HoverRow = { key: string; href: string; img: string | null; face?: boolean; grey?: boolean; content: ReactNode; className?: string };
 
 /** A list of links; hovering a row floats an image next to the cursor. */
 export default function HoverRows({ rows, variant = 'top', empty }: { rows: HoverRow[]; variant?: 'top' | 'side'; empty?: ReactNode }) {
@@ -30,7 +30,7 @@ export default function HoverRows({ rows, variant = 'top', empty }: { rows: Hove
       {cur && cur.img ? (
         <div
           aria-hidden="true"
-          className={`cursor-preview${variant === 'side' ? (cur.face ? ' cursor-preview--face' : ' cursor-preview--side') : ''}`}
+          className={`cursor-preview${variant === 'side' ? (cur.face ? ' cursor-preview--face' : ' cursor-preview--side') : ''}${cur.grey ? ' cursor-preview--grey' : ''}`}
           style={{ left: pos.x, top: pos.y }}
         >
           <img src={storageUrl(cur.img)} alt="" />

@@ -54,6 +54,7 @@ export default function Directory({ kind, entries, counts }: { kind: 'designer' 
             href: `/designers/${e.slug}`,
             img: e.logo ?? e.cover,
             face: !!e.logo,
+            grey: !!e.logo && kind === 'designer',
             className: 'nrow',
             content: (
               <>

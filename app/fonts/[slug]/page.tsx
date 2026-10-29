@@ -135,7 +135,7 @@ export default async function FontPage({ params }: Props) {
               <h2 className="mono" style={{ margin: '0 0 12px', fontWeight: 500 }}>Made by</h2>
               {people.map((p) => (
                 <Link key={p!.id} href={`/designers/${p!.slug}`} className="person">
-                  {p!.logo ? <img className="avatar" src={storageUrl(p!.logo)} alt="" width={52} height={52} loading="lazy" /> : <span className="mono-avatar" aria-hidden="true">{p!.name[0]}</span>}
+                  {p!.logo ? <img className={`avatar${p!.type === 'designer' ? ' avatar--grey' : ''}`} src={storageUrl(p!.logo)} alt="" width={52} height={52} loading="lazy" /> : <span className="mono-avatar" aria-hidden="true">{p!.name[0]}</span>}
                   <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                     <span className="person__name ul">{p!.name}</span>
                     <span className="muted" style={{ fontSize: 13 }}>{p!.type === 'foundry' ? 'Foundry' : 'Designer'} · {p!.fontIds.length} {p!.fontIds.length === 1 ? 'typeface' : 'typefaces'}</span>
