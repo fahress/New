@@ -19,6 +19,7 @@ const NAV = [
   { href: '/dashboard/taxonomy', label: 'Classification' },
   { group: 'Tools' },
   { href: '/dashboard/import', label: 'Import from survey' },
+  { href: '/dashboard/import-awards', label: 'Import awards' },
   { href: '/dashboard/duplicates', label: 'Duplicates', badge: 'dups' as const },
   { href: '/dashboard/links', label: 'Link health', badge: 'broken' as const },
   { href: '/dashboard/stats', label: 'Clicks & stats' },
@@ -74,7 +75,7 @@ function Frame({ email, children }: { email: string; children: React.ReactNode }
     } as Record<string, number>;
   }, [data]);
 
-  const active = (href: string) => (href === '/dashboard' ? path === href : path.startsWith(href));
+  const active = (href: string) => (href === '/dashboard' ? path === href : path === href || path.startsWith(`${href}/`));
 
   return (
     <div className={`dz${menu ? ' is-menu' : ''}`}>

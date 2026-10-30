@@ -1,0 +1,1994 @@
+{
+ "programs": [
+  {
+   "name": "TDC",
+   "logo": null,
+   "bio": null
+  },
+  {
+   "name": "GRANSHAN",
+   "logo": null,
+   "bio": null
+  },
+  {
+   "name": "D&AD",
+   "logo": null,
+   "bio": null
+  },
+  {
+   "name": "ATypI",
+   "logo": null,
+   "bio": null
+  },
+  {
+   "name": "European Design Awards",
+   "logo": null,
+   "bio": "Annual pan-European competition for communication design, founded in 2007 by a network of European design magazines. Website: europeandesign.org"
+  },
+  {
+   "name": "Linotype Arabic Type Design Competition",
+   "logo": "https://www.linotype.com/images/LinotypeLogo.svg",
+   "bio": "International competition for Arabic typeface design organised by the German type foundry Linotype in the 2000s. Winning designs were developed and released as Linotype fonts."
+  },
+  {
+   "name": "ADC Annual Awards",
+   "logo": "https://www.oneclub.org/images/logo/logo-big.png",
+   "bio": "The Art Directors Club Annual Awards, founded in New York in 1921 and now run by The One Club for Creativity. Winners receive ADC Cubes. (Logo shown: The One Club.)"
+  },
+  {
+   "name": "Communication Arts Typography Competition",
+   "logo": "https://www.commarts.com/content/images/logo.png",
+   "bio": "Annual juried typography competition held by Communication Arts magazine (USA); winning work, including typefaces, is published in the Typography Annual."
+  },
+  {
+   "name": "Horouf Bilingual Type Design Competition",
+   "logo": null,
+   "bio": "Type design competition for bilingual Arabic–Latin typefaces."
+  },
+  {
+   "name": "Red Dot Award",
+   "logo": "https://www.red-dot.org/_assets/da7bbd4aa1f5ce3fbedffd238001a9db/ModernBuild/assets/logo-DNcR9Mgs.svg",
+   "bio": "International design award run by Design Zentrum Nordrhein Westfalen in Essen, Germany. Typefaces compete in the Brands & Communication Design category. Website: red-dot.org"
+  },
+  {
+   "name": "Dubai Lynx",
+   "logo": "https://www.dubailynx.com/dubailynx/apple-touch-icon.png",
+   "bio": "Festival and awards for creativity in the Middle East and North Africa, held in Dubai since 2006 by the organisers of Cannes Lions. Website: dubailynx.com"
+  },
+  {
+   "name": "Tokyo TDC",
+   "logo": "https://tokyotypedirectorsclub.org/wp-content/uploads/2019/05/cropped-tdc-3-1.png",
+   "bio": "Annual international awards of the Tokyo Type Directors Club, Japan, for typography and type design. Website: tokyotypedirectorsclub.org"
+  },
+  {
+   "name": "A’ Design Award",
+   "logo": "https://competition.adesignaward.com/images/adesigncompetition.gif",
+   "bio": "International juried design competition held annually in Como, Italy, across many design disciplines. Website: adesignaward.com"
+  },
+  {
+   "name": "Cannes Lions",
+   "logo": "https://www.canneslions.com/canneslions/apple-touch-icon.png",
+   "bio": "Cannes Lions International Festival of Creativity, held in Cannes, France, since 1954. Winners receive Gold, Silver and Bronze Lions. Website: canneslions.com"
+  },
+  {
+   "name": "German Design Award",
+   "logo": "https://www.german-design-award.com/_assets/396a91bff0b3ddf7c5dbeaf6be6c0dcd/Images/logo/GDA_HO_K_RGB.svg",
+   "bio": "International design award of the German Design Council (Rat für Formgebung). Website: german-design-award.com"
+  },
+  {
+   "name": "Premios CLAP",
+   "logo": "https://premiosclap.org/img/logo-retina.png",
+   "bio": "International design award (Premio Internacional de Diseño CLAP) based in Valencia, Spain, covering branding, graphic design and typography. Website: premiosclap.org"
+  },
+  {
+   "name": "The One Show",
+   "logo": "https://www.oneclub.org/images/logo/logo-big.png",
+   "bio": "Annual awards for advertising, design and creativity run by The One Club for Creativity in New York. Winners receive One Show Pencils. (Logo shown: The One Club.)"
+  },
+  {
+   "name": "iF Design Award",
+   "logo": "https://ifdesign.com/icons/icon-512x512.png?v=83b3aeff55ebb0885c48f21b994512c0",
+   "bio": "International design award run by iF International Forum Design in Hanover, Germany, since 1954. Website: ifdesign.com"
+  }
+ ],
+ "records": [
+  {
+   "fid": "AF054",
+   "font": "Graphik Arabic",
+   "designers": [
+    "Khajag Apelian"
+   ],
+   "foundry": "Commercial Type",
+   "award": "ADC Annual Awards",
+   "year": "2018",
+   "prize": "2018: Bronze Cube (Typography / Typefaces / Font Systems – Series)",
+   "url": "https://www.oneclub.org/awards/adcawards/-award/29506/graphik-arabic/"
+  },
+  {
+   "fid": "AF108",
+   "font": "Sakkal Kitab",
+   "designers": [
+    "Mamoun Sakkal",
+    "Aida Sakkal"
+   ],
+   "foundry": "Sakkal Design",
+   "award": "ADC Annual Awards",
+   "year": "2018",
+   "prize": "2018: Bronze Cube (Typography / Typefaces / Font Systems – Series)",
+   "url": "https://www.oneclub.org/awards/adcawards/-award/29502/sakkal-kitab-arabic/"
+  },
+  {
+   "fid": "AF073",
+   "font": "Lyon Arabic",
+   "designers": [
+    "Wael Morcos",
+    "Khajag Apelian"
+   ],
+   "foundry": "Commercial Type",
+   "award": "ADC Annual Awards",
+   "year": "2021",
+   "prize": "2021: Silver Cube (Typography / Typefaces / Font Systems)",
+   "url": "https://www.oneclub.org/awards/adcawards/-award/40945/lyon-arabic/"
+  },
+  {
+   "fid": "AF103",
+   "font": "Qasida",
+   "designers": [
+    "Kourosh Beigpour"
+   ],
+   "foundry": "Canada Type",
+   "award": "ADC Annual Awards",
+   "year": "2022",
+   "prize": "2022: Merit Honor (Typography / Typefaces / Font Systems)",
+   "url": "https://www.oneclub.org/awards/adcawards/-adtitle/Qasida/2022"
+  },
+  {
+   "fid": "AF029",
+   "font": "CoFo Sans Pro Arabic",
+   "designers": [
+    "Wael Morcos",
+    "Khajag Apelian",
+    "Lana Soufeh"
+   ],
+   "foundry": "Contrast Foundry",
+   "award": "ADC Annual Awards",
+   "year": "2026",
+   "prize": "2026: Merit Honor (Typography / Lettering / Typeface)",
+   "url": "https://www.oneclub.org/awards/adcawards/-award/62852/cofo-sans-arabic/"
+  },
+  {
+   "fid": "AF058",
+   "font": "Harir",
+   "designers": [
+    "Bahman Eslami"
+   ],
+   "foundry": "TPTQ Arabic",
+   "award": "ATypI",
+   "year": "2011",
+   "prize": "2011: Letter.2 (ATypI type design competition) — Winner — selected among 53 typefaces (Type Design)",
+   "url": "https://tptq-arabic.com/fonts/harir/about"
+  },
+  {
+   "fid": "AF090",
+   "font": "Nassim Arabic",
+   "designers": [
+    "Titus Nemeth"
+   ],
+   "foundry": "Rosetta",
+   "award": "ATypI",
+   "year": "2011",
+   "prize": "2011: Letter.2 (ATypI type design competition) — Winner — selected among 53 typefaces (Type Design)",
+   "url": "https://rosettatype.com/assets/families/NassimArabic/NassimArabic_specimen.pdf"
+  },
+  {
+   "fid": "AF123",
+   "font": "Thuraya",
+   "designers": [
+    "Kristyan Sarkis"
+   ],
+   "foundry": "TPTQ Arabic / Typotheque",
+   "award": "ATypI",
+   "year": "2011",
+   "prize": "2011: Letter.2 (ATypI type design competition) — Winner — selected among 53 typefaces (Type Design)",
+   "url": "https://atypi.org/wp-content/uploads/2022/09/CD_reports_2009-2012_27.-1.-2015.pdf"
+  },
+  {
+   "fid": "AF077",
+   "font": "Maqsaf",
+   "designers": [
+    "Habib Khoury"
+   ],
+   "foundry": "AvanType",
+   "award": "ATypI",
+   "year": "2001",
+   "prize": "2001: bukva:raz! (ATypI type design competition) — Winner — 100 selected typefaces (Type Design)",
+   "url": "https://avantype.com/new-fonts/maqsaf/"
+  },
+  {
+   "fid": "AF078",
+   "font": "Markazi",
+   "designers": [
+    "Tim Holloway"
+   ],
+   "foundry": "Not stated",
+   "award": "ATypI",
+   "year": "2001",
+   "prize": "2001: bukva:raz! (ATypI type design competition) — Winner — 100 selected typefaces (Arabic script)",
+   "url": "https://typenetwork.com/font-designers/tim-holloway"
+  },
+  {
+   "fid": "AF087",
+   "font": "Monk Latin and Arabic",
+   "designers": [
+    "Naser Imache"
+   ],
+   "foundry": "Salt & Pepper / S6 Foundry",
+   "award": "A’ Design Award",
+   "year": "2020",
+   "prize": "2020: Silver (Graphics, Illustration and Visual Communication Design)",
+   "url": "https://designers.org/works/monk-latin-and-arabic-geometric-typeface-design"
+  },
+  {
+   "fid": "AF131",
+   "font": "Zael",
+   "designers": [
+    "Ibrahim Hamdi",
+    "Abdo Mohamed"
+   ],
+   "foundry": "Protype Foundry",
+   "award": "Cannes Lions",
+   "year": "2024",
+   "prize": "2024: Bronze Lion (Industry Craft / Typography: Brand & Communications Design)",
+   "url": "https://protype.studio/zael"
+  },
+  {
+   "fid": "AF116",
+   "font": "Stinger",
+   "designers": [
+    "Cosimo Lorenzo Pancini",
+    "Andrea Tartarelli",
+    "Maria Chiara Fantini",
+    "Francesco Canovaro"
+   ],
+   "foundry": "Zetafonts",
+   "award": "Communication Arts Typography Competition",
+   "year": "2021",
+   "prize": "2021: Winner (Typeface Design)",
+   "url": "https://www.zetafonts.com/blog/stinger-wins-communication-arts-awards/"
+  },
+  {
+   "fid": "AF103",
+   "font": "Qasida",
+   "designers": [
+    "Kourosh Beigpour"
+   ],
+   "foundry": "Canada Type",
+   "award": "Communication Arts Typography Competition",
+   "year": "2023",
+   "prize": "2023: Winner (Typeface Design)",
+   "url": "https://www.commarts.com/project/34973/qasida"
+  },
+  {
+   "fid": "AF029",
+   "font": "CoFo Sans Pro Arabic",
+   "designers": [
+    "Wael Morcos",
+    "Khajag Apelian",
+    "Lana Soufeh"
+   ],
+   "foundry": "Contrast Foundry",
+   "award": "Communication Arts Typography Competition",
+   "year": "2026",
+   "prize": "2026: Award of Excellence (Typeface Design)",
+   "url": "https://contrastfoundry.com/about"
+  },
+  {
+   "fid": "AF050",
+   "font": "Futura 100 Multiscript",
+   "designers": [
+    "Azza Alameddine"
+   ],
+   "foundry": "TypeTogether / Bauer Types",
+   "award": "Communication Arts Typography Competition",
+   "year": "2026",
+   "prize": "2026: Best of Show (Typography Annual)",
+   "url": "https://www.typetogether.com/fonts/futura-100-arabic"
+  },
+  {
+   "fid": "AF021",
+   "font": "Brighter Sans Arabic",
+   "designers": [
+    "Elena Schneider"
+   ],
+   "foundry": "Newlyn / MTN (custom)",
+   "award": "D&AD",
+   "year": "2019",
+   "prize": "2019: Wood Pencil (Typography / Type Design)",
+   "url": "https://elenaschneider.com/Brighter-Sans-Arabic"
+  },
+  {
+   "fid": "AF063",
+   "font": "IBM Plex Arabic",
+   "designers": [
+    "Wael Morcos",
+    "Khajag Apelian"
+   ],
+   "foundry": "IBM / Bold Monday",
+   "award": "D&AD",
+   "year": "2020",
+   "prize": "2020: Wood Pencil (Typography / Type Design)",
+   "url": "https://www.dandad.org/work/d-ad-awards-archive/ibm-plex-arabic"
+  },
+  {
+   "fid": "AF112",
+   "font": "SF Arabic",
+   "designers": [],
+   "foundry": "Apple",
+   "award": "D&AD",
+   "year": "2022",
+   "prize": "2022: Wood Pencil (Type Design & Lettering)",
+   "url": "https://www.dandad.org/work/d-ad-awards-archive/sf-arabic"
+  },
+  {
+   "fid": "AF076",
+   "font": "Maqroo",
+   "designers": [
+    "Revati Patil",
+    "Abdelrahman Gad"
+   ],
+   "foundry": "Omantel / Leo Burnett Dubai (custom)",
+   "award": "D&AD",
+   "year": "2024",
+   "prize": "2024: Wood Pencil (Health & Wellbeing)",
+   "url": "https://www.omantel.om/About%20us/media-center/news/details/Omantel%20wins%20two%20prestigious%20awards%20at%20Effies%20Awards%202024%20for%20Best%20Marketing%20Campaigns"
+  },
+  {
+   "fid": "AF131",
+   "font": "Zael",
+   "designers": [
+    "Ibrahim Hamdi",
+    "Abdo Mohamed"
+   ],
+   "foundry": "Protype Foundry",
+   "award": "D&AD",
+   "year": "2024",
+   "prize": "2024: Wood Pencil (Type Design & Lettering)",
+   "url": "https://www.dandad.org/work/d-ad-awards-archive/zael"
+  },
+  {
+   "fid": "AF127",
+   "font": "VW Bespoke Arabic Typeface",
+   "designers": [
+    "Khajag Apelian",
+    "Wael Morcos",
+    "Lana Soufeh"
+   ],
+   "foundry": "Maktoob / Morcos Key (custom)",
+   "award": "D&AD",
+   "year": "2025",
+   "prize": "2025: Wood Pencil (Type Design & Lettering)",
+   "url": "https://www.dandad.org/work/d-ad-awards-archive/written-by-gti"
+  },
+  {
+   "fid": "AF076",
+   "font": "Maqroo",
+   "designers": [
+    "Revati Patil",
+    "Abdelrahman Gad"
+   ],
+   "foundry": "Omantel / Leo Burnett Dubai (custom)",
+   "award": "Dubai Lynx",
+   "year": "2024",
+   "prize": "2024: Grand Prix (Industry Craft / Typography: Brand & Communications Design)",
+   "url": "https://downloads.ctfassets.net/8ha5xom4da7e/5CjXPNS497sIFm7AkgdvxU/5f13ffbed12154ce6174a76f07260301/Dubai_Lynx_Creativity_Report_2024.pdf"
+  },
+  {
+   "fid": "AF131",
+   "font": "Zael",
+   "designers": [
+    "Ibrahim Hamdi",
+    "Abdo Mohamed"
+   ],
+   "foundry": "Protype Foundry",
+   "award": "Dubai Lynx",
+   "year": "2024",
+   "prize": "2024: 1 Silver + 2 Bronze (Multiple categories — exact categories not stated by foundry)",
+   "url": "https://protype.studio/zael"
+  },
+  {
+   "fid": "AF090",
+   "font": "Nassim Arabic",
+   "designers": [
+    "Titus Nemeth"
+   ],
+   "foundry": "Rosetta",
+   "award": "European Design Awards",
+   "year": "2007",
+   "prize": "2007: 1st Prize (Original Typeface)",
+   "url": "https://rosettatype.com/assets/families/NassimArabic/NassimArabic_specimen.pdf"
+  },
+  {
+   "fid": "AF089",
+   "font": "Nabil",
+   "designers": [
+    "Emanuela Conidi"
+   ],
+   "foundry": "Not stated (graduation project)",
+   "award": "European Design Awards",
+   "year": "2009",
+   "prize": "2009: Bronze (Original Typeface)",
+   "url": "https://luc.devroye.org/fonts-53796.html"
+  },
+  {
+   "fid": "AF011",
+   "font": "Al-Andalus",
+   "designers": [
+    "Andreu Balius"
+   ],
+   "foundry": "Typerepublic",
+   "award": "European Design Awards",
+   "year": "2011",
+   "prize": "2011: Bronze (501 Original Typeface – Text)",
+   "url": "https://awards.europeandesign.org/rankings/agency/1339"
+  },
+  {
+   "fid": "AF019",
+   "font": "Baldufa",
+   "designers": [
+    "Ferran Milan Oliveras"
+   ],
+   "foundry": "Letterjuice",
+   "award": "European Design Awards",
+   "year": "2013",
+   "prize": "2013: Gold (Original Typeface)",
+   "url": "https://typecache.com/search/?q=Original+Type"
+  },
+  {
+   "fid": "AF030",
+   "font": "Colvert Arabic",
+   "designers": [
+    "Kristyan Sarkis"
+   ],
+   "foundry": "Typographies.fr",
+   "award": "European Design Awards",
+   "year": "2013",
+   "prize": "2013: Bronze (Original Typeface)",
+   "url": "https://www.typographies.fr/N/colvert/colvert.html"
+  },
+  {
+   "fid": "AF044",
+   "font": "Eskorte Arabic",
+   "designers": [
+    "Elena Schneider"
+   ],
+   "foundry": "Rosetta",
+   "award": "European Design Awards",
+   "year": "2014",
+   "prize": "2014: Bronze (Original Typeface)",
+   "url": "https://elenaschneider.com/Eskorte-Arabic"
+  },
+  {
+   "fid": "AF099",
+   "font": "Ping",
+   "designers": [
+    "Kristyan Sarkis"
+   ],
+   "foundry": "Typotheque / TPTQ Arabic",
+   "award": "European Design Awards",
+   "year": "2019",
+   "prize": "2019: Gold (Original Typeface)",
+   "url": "https://www.typotheque.com/blog/gold-european-design-award-for-ping"
+  },
+  {
+   "fid": "AF091",
+   "font": "Nawin",
+   "designers": [
+    "Ferran Milan",
+    "Pilar Cano"
+   ],
+   "foundry": "Letterjuice",
+   "award": "European Design Awards",
+   "year": "2023",
+   "prize": "2023: Bronze (Original Typeface — exact subcategory not stated)",
+   "url": "https://www.linkedin.com/posts/letterjuice_edawards2023-nawin-letterjuice-activity-7071864929410064384-J3rc"
+  },
+  {
+   "fid": "AF050",
+   "font": "Futura 100 Multiscript",
+   "designers": [
+    "Azza Alameddine"
+   ],
+   "foundry": "TypeTogether / Bauer Types",
+   "award": "European Design Awards",
+   "year": "2026",
+   "prize": "2026: Bronze (Typeface Design — exact subcategory not stated)",
+   "url": "https://www.typetogether.com/fonts/futura-100-arabic"
+  },
+  {
+   "fid": "AF030",
+   "font": "Colvert Arabic",
+   "designers": [
+    "Kristyan Sarkis"
+   ],
+   "foundry": "Typographies.fr",
+   "award": "GRANSHAN",
+   "year": "2012",
+   "prize": "2012: 1st Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/colvert-base-2012-arabic-display"
+  },
+  {
+   "fid": "AF036",
+   "font": "DecoType Qarandash",
+   "designers": [
+    "Thomas Milo",
+    "Mirjam Somers"
+   ],
+   "foundry": "DecoType",
+   "award": "GRANSHAN",
+   "year": "2012",
+   "prize": "2012: 3rd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/decotype-qarandash-base-2012-arabic-display"
+  },
+  {
+   "fid": "AF097",
+   "font": "Palatino Sans Arabic",
+   "designers": [
+    "Nadine Chahine",
+    "Hermann Zapf"
+   ],
+   "foundry": "Linotype",
+   "award": "GRANSHAN",
+   "year": "2012",
+   "prize": "2012: 2nd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/palatino-sans-arabic-base-2012-arabic-display"
+  },
+  {
+   "fid": "AF019",
+   "font": "Baldufa",
+   "designers": [
+    "Ferran Milan Oliveras"
+   ],
+   "foundry": "Letterjuice",
+   "award": "GRANSHAN",
+   "year": "2013",
+   "prize": "2013: 2nd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/baldufa-base-2013-arabic-display"
+  },
+  {
+   "fid": "AF044",
+   "font": "Eskorte Arabic",
+   "designers": [
+    "Elena Schneider"
+   ],
+   "foundry": "Rosetta",
+   "award": "GRANSHAN",
+   "year": "2013",
+   "prize": "2013: 1st Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/eskorte-arabic-base-2013-arabic-display"
+  },
+  {
+   "fid": "AF066",
+   "font": "Intel Clear Arabic",
+   "designers": [
+    "Naïma Ben Ayed",
+    "Damien Collot"
+   ],
+   "foundry": "Dalton Maag / Intel (custom)",
+   "award": "GRANSHAN",
+   "year": "2014",
+   "prize": "2014: 1st Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/intel-clear-base-2014-arabic-display"
+  },
+  {
+   "fid": "AF094",
+   "font": "Omid",
+   "designers": [
+    "Omid Emamian"
+   ],
+   "foundry": "Not stated",
+   "award": "GRANSHAN",
+   "year": "2014",
+   "prize": "2014: 2nd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/omid-base-2014-arabic-display"
+  },
+  {
+   "fid": "AF072",
+   "font": "Lida",
+   "designers": [
+    "Borna Izadpanah"
+   ],
+   "foundry": "Not stated",
+   "award": "GRANSHAN",
+   "year": "2015",
+   "prize": "2015: 1st Prize + Grand Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/lida-base-2015-arabic-display"
+  },
+  {
+   "fid": "AF004",
+   "font": "29LT Riwaya",
+   "designers": [
+    "Katharina Seidl"
+   ],
+   "foundry": "29LT",
+   "award": "GRANSHAN",
+   "year": "2016",
+   "prize": "2016: 3rd Prize (B2 Display Typefaces with a latin complement)",
+   "url": "https://granshan.com/grand-exhibition/riwaya-base-2016-arabic-latin-display"
+  },
+  {
+   "fid": "AF012",
+   "font": "Alef",
+   "designers": [
+    "Mehdi Ravandi"
+   ],
+   "foundry": "Not stated",
+   "award": "GRANSHAN",
+   "year": "2016",
+   "prize": "2016: 3rd Prize (C2 Multiscript Display Typefaces)",
+   "url": "https://granshan.com/grand-exhibition/alef-base-2016-display-multiscript"
+  },
+  {
+   "fid": "AF022",
+   "font": "Bustan",
+   "designers": [
+    "Jamal Bustan",
+    "Mamoun Sakkal",
+    "Aida Sakkal"
+   ],
+   "foundry": "Sakkal Design",
+   "award": "GRANSHAN",
+   "year": "2016",
+   "prize": "2016: 1st Prize + Grand Prize (C2 Multiscript Display Typefaces)",
+   "url": "https://granshan.com/grand-exhibition/bustan-base-2016-display-multiscript"
+  },
+  {
+   "fid": "AF025",
+   "font": "Calibri Arabic",
+   "designers": [
+    "Mamoun Sakkal",
+    "Aida Sakkal"
+   ],
+   "foundry": "Microsoft",
+   "award": "GRANSHAN",
+   "year": "2016",
+   "prize": "2016: 2nd Prize (B2 Display Typefaces with a latin complement)",
+   "url": "https://granshan.com/grand-exhibition/calibri-arabic-base-2016-arabic-latin-display"
+  },
+  {
+   "fid": "AF070",
+   "font": "Lalezar",
+   "designers": [
+    "Borna Izadpanah"
+   ],
+   "foundry": "Google Fonts",
+   "award": "GRANSHAN",
+   "year": "2016",
+   "prize": "2016: 2nd Prize (C2 Multiscript Display Typefaces)",
+   "url": "https://granshan.com/grand-exhibition/lalezar-base-2016-display-multiscript"
+  },
+  {
+   "fid": "AF119",
+   "font": "Symbio",
+   "designers": [
+    "Rui Abreu"
+   ],
+   "foundry": "Not stated",
+   "award": "GRANSHAN",
+   "year": "2016",
+   "prize": "2016: 1st Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/symbio-base-2016-arabic-display"
+  },
+  {
+   "fid": "AF054",
+   "font": "Graphik Arabic",
+   "designers": [
+    "Khajag Apelian"
+   ],
+   "foundry": "Commercial Type",
+   "award": "GRANSHAN",
+   "year": "2017",
+   "prize": "2017: 1st Prize (B2 Display Typefaces with a latin complement)",
+   "url": "https://granshan.com/grand-exhibition/graphic-arabic-base-2017-arabic-latin-display"
+  },
+  {
+   "fid": "AF083",
+   "font": "Mirza",
+   "designers": [
+    "Amir Mahdi Moslehi"
+   ],
+   "foundry": "Bagh-e Tafarroj Studio / Google Fonts",
+   "award": "GRANSHAN",
+   "year": "2017",
+   "prize": "2017: 2nd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/mirza-base-2017-arabic-display"
+  },
+  {
+   "fid": "AF005",
+   "font": "29LT Zarid Display",
+   "designers": [
+    "Pascal Zoghbi"
+   ],
+   "foundry": "29LT",
+   "award": "GRANSHAN",
+   "year": "2019",
+   "prize": "2019: 2nd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/29lt-zarid-display-arabic-base-2019-arabic-display"
+  },
+  {
+   "fid": "AF006",
+   "font": "29LT Zarid Sans",
+   "designers": [
+    "Pascal Zoghbi"
+   ],
+   "foundry": "29LT",
+   "award": "GRANSHAN",
+   "year": "2019",
+   "prize": "2019: 1st Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/29lt-zarid-sans-arabic-base-2019-arabic-display"
+  },
+  {
+   "fid": "AF008",
+   "font": "Adelle Sans Arabic",
+   "designers": [
+    "Azza Alameddine"
+   ],
+   "foundry": "TypeTogether",
+   "award": "GRANSHAN",
+   "year": "2019",
+   "prize": "2019: 3rd Prize (Multiscript — Arabic, Devanagari and Thai)",
+   "url": "https://www.type-together.com/resources/_pdfs/DS_Adelle-Sans.pdf?v=20250929222424"
+  },
+  {
+   "fid": "AF062",
+   "font": "Hudhud",
+   "designers": [
+    "Maha Akl"
+   ],
+   "foundry": "TPTQ Arabic",
+   "award": "GRANSHAN",
+   "year": "2019",
+   "prize": "2019: 3rd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/hudhud-base-2019-arabic-display"
+  },
+  {
+   "fid": "AF063",
+   "font": "IBM Plex Arabic",
+   "designers": [
+    "Wael Morcos",
+    "Khajag Apelian"
+   ],
+   "foundry": "IBM / Bold Monday",
+   "award": "GRANSHAN",
+   "year": "2019",
+   "prize": "2019: 2nd Prize (B2 Display Typefaces with a latin complement)",
+   "url": "https://granshan.com/grand-exhibition/ibm-plex-arabic-base-2019-arabic-latin-display"
+  },
+  {
+   "fid": "AF068",
+   "font": "Jali",
+   "designers": [
+    "Mohamad Dakak"
+   ],
+   "foundry": "Foundry5",
+   "award": "GRANSHAN",
+   "year": "2019",
+   "prize": "2019: 1st Prize (B2 Display Typefaces with a latin complement)",
+   "url": "https://granshan.com/grand-exhibition/jali-base-2019-arabic-latin-display"
+  },
+  {
+   "fid": "AF013",
+   "font": "Alibaba",
+   "designers": [
+    "Mahdi Ershadi",
+    "Reza Bakhtiarifard"
+   ],
+   "foundry": "Not stated",
+   "award": "GRANSHAN",
+   "year": "2021/2022",
+   "prize": "2021/2022: 3rd Prize (A1 Text Typefaces)",
+   "url": "https://granshan.com/grand-exhibition/alibaba-base-2021-2022-arabic-text"
+  },
+  {
+   "fid": "AF028",
+   "font": "Charisma",
+   "designers": [
+    "Hirbod Lotfian"
+   ],
+   "foundry": "Not stated",
+   "award": "GRANSHAN",
+   "year": "2021/2022",
+   "prize": "2021/2022: 2nd Prize (A1 Text Typefaces)",
+   "url": "https://granshan.com/grand-exhibition/charisma-base-2021-2022-arabic-text"
+  },
+  {
+   "fid": "AF043",
+   "font": "Ekhtiar",
+   "designers": [
+    "Amir Mahdi Moslehi"
+   ],
+   "foundry": "Not stated",
+   "award": "GRANSHAN",
+   "year": "2021/2022",
+   "prize": "2021/2022: 1st Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/ekhtiar-base-2021-2022-arabic-display"
+  },
+  {
+   "fid": "AF069",
+   "font": "Klaket",
+   "designers": [
+    "Toshi Omagari"
+   ],
+   "foundry": "Omega Type Foundry",
+   "award": "GRANSHAN",
+   "year": "2021/2022",
+   "prize": "2021/2022: 1st Prize (B2 Display Typefaces with a latin complement)",
+   "url": "https://granshan.com/grand-exhibition/klaket-base-2021-2022-arabic-latin-display"
+  },
+  {
+   "fid": "AF084",
+   "font": "Mithaq",
+   "designers": [
+    "Yara Khoury Nammour"
+   ],
+   "foundry": "AlMohtaraf Design House (custom)",
+   "award": "GRANSHAN",
+   "year": "2021/2022",
+   "prize": "2021/2022: 2nd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/mithaq-base-2021-2022-arabic-display"
+  },
+  {
+   "fid": "AF106",
+   "font": "Reeshet Khudair",
+   "designers": [
+    "Najla Badran"
+   ],
+   "foundry": "Not stated",
+   "award": "GRANSHAN",
+   "year": "2021/2022",
+   "prize": "2021/2022: 3rd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/reeshet-khudair-base-2021-2022-arabic-display"
+  },
+  {
+   "fid": "AF108",
+   "font": "Sakkal Kitab",
+   "designers": [
+    "Mamoun Sakkal",
+    "Aida Sakkal"
+   ],
+   "foundry": "Sakkal Design",
+   "award": "GRANSHAN",
+   "year": "2021/2022",
+   "prize": "2021/2022: 1st Prize + Grand Prize (A1 Text Typefaces)",
+   "url": "https://granshan.com/grand-exhibition/sakkal-kitab-base-2021-2022-arabic-text"
+  },
+  {
+   "fid": "AF060",
+   "font": "Hasti",
+   "designers": [
+    "Moslem Ebrahimi"
+   ],
+   "foundry": "FontIran (publisher)",
+   "award": "GRANSHAN",
+   "year": "2023/2024",
+   "prize": "2023/2024: 2nd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/hasti"
+  },
+  {
+   "fid": "AF095",
+   "font": "Opel Next",
+   "designers": [
+    "Tom Foley",
+    "Malou Verlomme",
+    "Emilios Theofanous",
+    "Friedrich Althausen",
+    "Toshi Omagari",
+    "Filip Blažek",
+    "Cadson Demak"
+   ],
+   "foundry": "Monotype (custom for Opel)",
+   "award": "GRANSHAN",
+   "year": "2023/2024",
+   "prize": "2023/2024: 2nd Prize (C1 Multiscript Text Typefaces)",
+   "url": "https://granshan.com/grand-exhibition/opel-next"
+  },
+  {
+   "fid": "AF133",
+   "font": "Zhian",
+   "designers": [],
+   "foundry": "Studio Metaphor / Frontline Typo",
+   "award": "GRANSHAN",
+   "year": "2023/2024",
+   "prize": "2023/2024: 3rd Prize (A2 Display Typeface)",
+   "url": "https://granshan.com/grand-exhibition/zhian-arabic"
+  },
+  {
+   "fid": "AF032",
+   "font": "Cultural Talents Tournament",
+   "designers": [
+    "Milk Company LTD",
+    "Alaa Tameem"
+   ],
+   "foundry": "Milk Company LTD (custom)",
+   "award": "German Design Award",
+   "year": "2026",
+   "prize": "2026: Winner (Excellent Communications Design / Typography)",
+   "url": "https://www.german-design-award.com/en/gallery/detail?cHash=68e688b5594c0fb64c8308816d9d5d19&tx_lnscelumarticles_articleshow%5Baction%5D=show&tx_lnscelumarticles_articleshow%5Barticle%5D=6218&tx_lnscelumarticles_articleshow%5Bcontroller%5D=Article"
+  },
+  {
+   "fid": "AF019",
+   "font": "Baldufa",
+   "designers": [
+    "Ferran Milan Oliveras"
+   ],
+   "foundry": "Letterjuice",
+   "award": "Horouf Bilingual Type Design Competition",
+   "year": "2014",
+   "prize": "2014: 3rd place (Type Designers)",
+   "url": "https://arabic380.rssing.com/chan-26039740/all_p3.html"
+  },
+  {
+   "fid": "AF027",
+   "font": "Change",
+   "designers": [
+    "Sultan Mohammad / Sultan Maqtari"
+   ],
+   "foundry": "Sultan Fonts",
+   "award": "Horouf Bilingual Type Design Competition",
+   "year": "2014",
+   "prize": "2014: 2nd place (Type Designers)",
+   "url": "https://arabic380.rssing.com/chan-26039740/all_p3.html"
+  },
+  {
+   "fid": "AF132",
+   "font": "Zamalka",
+   "designers": [
+    "Ahmad Al Hindi"
+   ],
+   "foundry": "Not stated",
+   "award": "Horouf Bilingual Type Design Competition",
+   "year": "2014",
+   "prize": "2014: 3rd place (Graphic Designers)",
+   "url": "https://www.khtt.net/en/page/25538/zamalka-bilingual-typeface"
+  },
+  {
+   "fid": "AF048",
+   "font": "Firas",
+   "designers": [
+    "Abbas Al-Baghdadi"
+   ],
+   "foundry": "Linotype",
+   "award": "Linotype Arabic Type Design Competition",
+   "year": "2006",
+   "prize": "2006: 2nd Prize (Calligraphy)",
+   "url": "https://sultanfontsdotnet.wordpress.com/2012/08/"
+  },
+  {
+   "fid": "AF057",
+   "font": "Hakim Ghazali",
+   "designers": [
+    "Hakim Ghazali"
+   ],
+   "foundry": "Linotype",
+   "award": "Linotype Arabic Type Design Competition",
+   "year": "2006",
+   "prize": "2006: 1st Prize (Calligraphy)",
+   "url": "https://sultanfontsdotnet.wordpress.com/2012/08/"
+  },
+  {
+   "fid": "AF059",
+   "font": "Hasan Hiba",
+   "designers": [
+    "Hasan Abu Afash"
+   ],
+   "foundry": "Hiba Studio",
+   "award": "Linotype Arabic Type Design Competition",
+   "year": "2006",
+   "prize": "2006: 5th place (Display)",
+   "url": "https://decotype.com/pdfs/tasmeem48p%20brochure.pdf"
+  },
+  {
+   "fid": "AF067",
+   "font": "Isra",
+   "designers": [
+    "Almamoun Ahmed"
+   ],
+   "foundry": "Linotype",
+   "award": "Linotype Arabic Type Design Competition",
+   "year": "2006",
+   "prize": "2006: 1st Prize (Display)",
+   "url": "https://sultanfontsdotnet.wordpress.com/2012/08/"
+  },
+  {
+   "fid": "AF082",
+   "font": "Midan",
+   "designers": [
+    "Kameel Hawa",
+    "Mamoun Ahmad",
+    "Yara Khoury Nammour"
+   ],
+   "foundry": "Linotype",
+   "award": "Linotype Arabic Type Design Competition",
+   "year": "2006",
+   "prize": "2006: 2nd Prize (Text)",
+   "url": "https://sultanfontsdotnet.wordpress.com/2012/08/"
+  },
+  {
+   "fid": "AF117",
+   "font": "Sultan Free",
+   "designers": [
+    "Sultan Mohammed Saeed Maqtari"
+   ],
+   "foundry": "Linotype",
+   "award": "Linotype Arabic Type Design Competition",
+   "year": "2006",
+   "prize": "2006: 1st Prize (Text)",
+   "url": "https://sultanfontsdotnet.wordpress.com/2012/08/"
+  },
+  {
+   "fid": "AF118",
+   "font": "Sultan Nahia",
+   "designers": [
+    "Sultan Mohammed Saeed Maqtari"
+   ],
+   "foundry": "Linotype",
+   "award": "Linotype Arabic Type Design Competition",
+   "year": "2006",
+   "prize": "2006: 2nd Prize (Display)",
+   "url": "https://sultanfontsdotnet.wordpress.com/2012/08/"
+  },
+  {
+   "fid": "AF020",
+   "font": "Bree Arabic",
+   "designers": [
+    "Azza Alameddine"
+   ],
+   "foundry": "TypeTogether",
+   "award": "Premios CLAP",
+   "year": "2022",
+   "prize": "2022: Selección CLAP (Mejor diseño de fuente tipográfica para títulos)",
+   "url": "https://premiosclap.org/ganadores-2022"
+  },
+  {
+   "fid": "AF065",
+   "font": "Infinix Display",
+   "designers": [],
+   "foundry": "Infinix (custom)",
+   "award": "Red Dot Award",
+   "year": "2023",
+   "prize": "2023: Red Dot (Brands & Communication Design)",
+   "url": "https://www.prnewswire.com/news-releases/infinix-display-wins-the-red-dot-award-for-brands-and-communication-design-2023-302004534.html"
+  },
+  {
+   "fid": "AF092",
+   "font": "November",
+   "designers": [
+    "Kristyan Sarkis"
+   ],
+   "foundry": "Typotheque",
+   "award": "Red Dot Award",
+   "year": "2023",
+   "prize": "2023: Best of the Best (Brands & Communication Design / Typeface)",
+   "url": "https://www.red-dot.org/project/november-66415"
+  },
+  {
+   "fid": "AF079",
+   "font": "Mazhik",
+   "designers": [
+    "Sahar Afshar"
+   ],
+   "foundry": "Dogray Type Foundry",
+   "award": "Red Dot Award",
+   "year": "2026",
+   "prize": "2026: Red Dot (Brands & Communication Design)",
+   "url": "https://uk.linkedin.com/company/dogray"
+  },
+  {
+   "fid": "AF040",
+   "font": "Diwan Mishafi",
+   "designers": [
+    "Hamid Al-Saadi"
+   ],
+   "foundry": "Diwan Software",
+   "award": "TDC",
+   "year": "2000",
+   "prize": "2000: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.diwan.com/index.php/archive/45-diwan-mishafi-font-wins-prestigious-type-directors-club-award"
+  },
+  {
+   "fid": "AF017",
+   "font": "Arabic Typesetting",
+   "designers": [
+    "Mamoun Sakkal"
+   ],
+   "foundry": "Microsoft",
+   "award": "TDC",
+   "year": "2003",
+   "prize": "2003: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.sakkal.com/type/typesetting.html"
+  },
+  {
+   "fid": "AF111",
+   "font": "Sakkal Seta Pro",
+   "designers": [
+    "Mamoun Sakkal"
+   ],
+   "foundry": "Sakkal Design",
+   "award": "TDC",
+   "year": "2003",
+   "prize": "2003: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.sakkal.com/type/tdc_competition.html"
+  },
+  {
+   "fid": "AF088",
+   "font": "MS Uighur",
+   "designers": [
+    "Mamoun Sakkal"
+   ],
+   "foundry": "Microsoft",
+   "award": "TDC",
+   "year": "2004",
+   "prize": "2004: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.sakkal.com/WhatsNew.html"
+  },
+  {
+   "fid": "AF009",
+   "font": "Adobe Arabic",
+   "designers": [
+    "Tim Holloway"
+   ],
+   "foundry": "Adobe Originals",
+   "award": "TDC",
+   "year": "2006",
+   "prize": "2006: Certificate of Excellence (Typeface Design)",
+   "url": "https://blog.typekit.com/2006/04/18/tdc_2006_winnin/"
+  },
+  {
+   "fid": "AF082",
+   "font": "Midan",
+   "designers": [
+    "Kameel Hawa",
+    "Mamoun Ahmad",
+    "Yara Khoury Nammour"
+   ],
+   "foundry": "Linotype",
+   "award": "TDC",
+   "year": "2007",
+   "prize": "2007: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.khtt.net/en/page/17601/there-is-a-strong-intuitive-side-to-designing-typefaces"
+  },
+  {
+   "fid": "AF090",
+   "font": "Nassim Arabic",
+   "designers": [
+    "Titus Nemeth"
+   ],
+   "foundry": "Rosetta",
+   "award": "TDC",
+   "year": "2007",
+   "prize": "2007: Certificate of Excellence (Typeface Design)",
+   "url": "https://rosettatype.com/assets/families/NassimArabic/NassimArabic_specimen.pdf"
+  },
+  {
+   "fid": "AF014",
+   "font": "Al Rajhi",
+   "designers": [
+    "Habib Khoury"
+   ],
+   "foundry": "AvanType / Brandinstinct",
+   "award": "TDC",
+   "year": "2008",
+   "prize": "2008: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.avantdesign.co.il/about/"
+  },
+  {
+   "fid": "AF049",
+   "font": "Fresco Arabic",
+   "designers": [
+    "Lara Assouad Khoury",
+    "Fred Smeijers"
+   ],
+   "foundry": "OurType / Khatt Foundation",
+   "award": "TDC",
+   "year": "2008",
+   "prize": "2008: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.khtt.net/en/page/1426/fresco-arabic-wins-tcd2-2008-award"
+  },
+  {
+   "fid": "AF096",
+   "font": "Palatino Arabic",
+   "designers": [
+    "Nadine Chahine",
+    "Hermann Zapf"
+   ],
+   "foundry": "Linotype",
+   "award": "TDC",
+   "year": "2008",
+   "prize": "2008: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.myfonts.com/collections/palatino-arabic-font-linotype"
+  },
+  {
+   "fid": "AF010",
+   "font": "Aisha Arabic",
+   "designers": [
+    "Titus Nemeth"
+   ],
+   "foundry": "Rosetta",
+   "award": "TDC",
+   "year": "2010",
+   "prize": "2010: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2010/"
+  },
+  {
+   "fid": "AF035",
+   "font": "DecoType Nastaliq",
+   "designers": [
+    "Mirjam Somers"
+   ],
+   "foundry": "DecoType",
+   "award": "TDC",
+   "year": "2010",
+   "prize": "2010: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2010/"
+  },
+  {
+   "fid": "AF097",
+   "font": "Palatino Sans Arabic",
+   "designers": [
+    "Nadine Chahine",
+    "Hermann Zapf"
+   ],
+   "foundry": "Linotype",
+   "award": "TDC",
+   "year": "2011",
+   "prize": "2011: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2011/"
+  },
+  {
+   "fid": "AF120",
+   "font": "Tabati",
+   "designers": [
+    "Lara Assouad Khoury"
+   ],
+   "foundry": "Dar Onboz (publisher)",
+   "award": "TDC",
+   "year": "2011",
+   "prize": "2011: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2011/"
+  },
+  {
+   "fid": "AF123",
+   "font": "Thuraya",
+   "designers": [
+    "Kristyan Sarkis"
+   ],
+   "foundry": "TPTQ Arabic / Typotheque",
+   "award": "TDC",
+   "year": "2011",
+   "prize": "2011: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2011/"
+  },
+  {
+   "fid": "AF037",
+   "font": "DecoType Ruq’ah",
+   "designers": [
+    "Mirjam Somers"
+   ],
+   "foundry": "DecoType",
+   "award": "TDC",
+   "year": "2012",
+   "prize": "2012: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2012/"
+  },
+  {
+   "fid": "AF055",
+   "font": "Greta Arabic / Greta Text Arabic",
+   "designers": [
+    "Kristyan Sarkis"
+   ],
+   "foundry": "TPTQ Arabic / Typotheque",
+   "award": "TDC",
+   "year": "2012, 2016",
+   "prize": "2012: Certificate of Excellence (Typeface Design); 2016: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2012/"
+  },
+  {
+   "fid": "AF019",
+   "font": "Baldufa",
+   "designers": [
+    "Ferran Milan Oliveras"
+   ],
+   "foundry": "Letterjuice",
+   "award": "TDC",
+   "year": "2013",
+   "prize": "2013: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2013/"
+  },
+  {
+   "fid": "AF018",
+   "font": "Azer",
+   "designers": [
+    "Wael Morcos",
+    "Ian Party",
+    "Pascal Zoghbi"
+   ],
+   "foundry": "29LT",
+   "award": "TDC",
+   "year": "2014",
+   "prize": "2014: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2014/"
+  },
+  {
+   "fid": "AF034",
+   "font": "DecoType Nastaleeq Press",
+   "designers": [
+    "Mirjam Somers"
+   ],
+   "foundry": "DecoType",
+   "award": "TDC",
+   "year": "2014",
+   "prize": "2014: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2014/"
+  },
+  {
+   "fid": "AF022",
+   "font": "Bustan",
+   "designers": [
+    "Jamal Bustan",
+    "Mamoun Sakkal",
+    "Aida Sakkal"
+   ],
+   "foundry": "Sakkal Design",
+   "award": "TDC",
+   "year": "2015",
+   "prize": "2015: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2015/"
+  },
+  {
+   "fid": "AF086",
+   "font": "Mohtaraf",
+   "designers": [
+    "Kameel Hawa",
+    "Abdelrahim Fouad",
+    "Patil Gabodigian"
+   ],
+   "foundry": "Al Mohtaraf",
+   "award": "TDC",
+   "year": "2015",
+   "prize": "2015: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2015/"
+  },
+  {
+   "fid": "AF023",
+   "font": "Bustani",
+   "designers": [
+    "Patrick Giasson",
+    "Kamal Mansour"
+   ],
+   "foundry": "Monotype",
+   "award": "TDC",
+   "year": "2016",
+   "prize": "2016: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2016/"
+  },
+  {
+   "fid": "AF070",
+   "font": "Lalezar",
+   "designers": [
+    "Borna Izadpanah"
+   ],
+   "foundry": "Google Fonts",
+   "award": "TDC",
+   "year": "2017",
+   "prize": "2017: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2017/"
+  },
+  {
+   "fid": "AF102",
+   "font": "Qandus",
+   "designers": [
+    "Kristyan Sarkis"
+   ],
+   "foundry": "TPTQ Arabic / Khatt Foundation",
+   "award": "TDC",
+   "year": "2017",
+   "prize": "2017: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2017/"
+  },
+  {
+   "fid": "AF083",
+   "font": "Mirza",
+   "designers": [
+    "Amir Mahdi Moslehi"
+   ],
+   "foundry": "Bagh-e Tafarroj Studio / Google Fonts",
+   "award": "TDC",
+   "year": "2018",
+   "prize": "2018: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2018/"
+  },
+  {
+   "fid": "AF105",
+   "font": "Ray",
+   "designers": [
+    "Reza Bakhtiarifard",
+    "Omid Emamian"
+   ],
+   "foundry": "Not stated",
+   "award": "TDC",
+   "year": "2018",
+   "prize": "2018: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2018/"
+  },
+  {
+   "fid": "AF126",
+   "font": "Vazeh UI Quranic",
+   "designers": [
+    "Reza Bakhtiarifard",
+    "Omid Emamian"
+   ],
+   "foundry": "Not stated",
+   "award": "TDC",
+   "year": "2018",
+   "prize": "2018: Certificate of Excellence (Typeface Design)",
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2018/"
+  },
+  {
+   "fid": "AF068",
+   "font": "Jali",
+   "designers": [
+    "Mohamad Dakak"
+   ],
+   "foundry": "Foundry5",
+   "award": "TDC",
+   "year": "2019",
+   "prize": "2019: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.khtt.net/en/page/38973/developing-functional-arabic-typefaces"
+  },
+  {
+   "fid": "AF005",
+   "font": "29LT Zarid Display",
+   "designers": [
+    "Pascal Zoghbi"
+   ],
+   "foundry": "29LT",
+   "award": "TDC",
+   "year": "2020",
+   "prize": "2020: Certificate of Excellence (Typeface Design)",
+   "url": "https://www.29lt.com/product/29lt-zarid-display/"
+  },
+  {
+   "fid": "AF062",
+   "font": "Hudhud",
+   "designers": [
+    "Maha Akl"
+   ],
+   "foundry": "TPTQ Arabic",
+   "award": "TDC",
+   "year": "2020",
+   "prize": "2020: Certificate of Excellence (Typeface Design)",
+   "url": "https://kristyan-sarkis.com/about"
+  },
+  {
+   "fid": "AF016",
+   "font": "Arabic Protest",
+   "designers": [
+    "Daniel Grumer",
+    "Nadine Chahine"
+   ],
+   "foundry": "ArabicType",
+   "award": "TDC",
+   "year": "2021",
+   "prize": "2021: TDC Winner (Type Family)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/38530/arabic-protest-display-typeface/"
+  },
+  {
+   "fid": "AF073",
+   "font": "Lyon Arabic",
+   "designers": [
+    "Wael Morcos",
+    "Khajag Apelian"
+   ],
+   "foundry": "Commercial Type",
+   "award": "TDC",
+   "year": "2021",
+   "prize": "2021: TDC Winner (Super Family)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/38535/lyon-arabic/"
+  },
+  {
+   "fid": "AF125",
+   "font": "Vazeh Classic Quranic",
+   "designers": [
+    "Reza Bakhtiarifard",
+    "Omid Emamian"
+   ],
+   "foundry": "Maryam Soft",
+   "award": "TDC",
+   "year": "2021",
+   "prize": "2021: TDC Winner (Type Family)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/38527/vazeh-classic-quranic-typeface/"
+  },
+  {
+   "fid": "AF015",
+   "font": "Amaala Arabic",
+   "designers": [
+    "Bahman Eslami"
+   ],
+   "foundry": "Bahman Eslami / Interval Type (custom)",
+   "award": "TDC",
+   "year": "2022",
+   "prize": "2022: TDC Winner (Super Family / Type System / Variable Font)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/41823/amaala-arabic/"
+  },
+  {
+   "fid": "AF028",
+   "font": "Charisma",
+   "designers": [
+    "Hirbod Lotfian"
+   ],
+   "foundry": "Not stated",
+   "award": "TDC",
+   "year": "2022",
+   "prize": "2022: TDC Winner (Type Family)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/41824/charisma-typeface/"
+  },
+  {
+   "fid": "AF031",
+   "font": "Contemporary Naskh Typeface",
+   "designers": [
+    "Damoon Khanjanzadeh"
+   ],
+   "foundry": "Not stated",
+   "award": "TDC",
+   "year": "2022",
+   "prize": "2022: TDC Winner (Single Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/41820/contemporary-naskh-typeface/"
+  },
+  {
+   "fid": "AF069",
+   "font": "Klaket",
+   "designers": [
+    "Toshi Omagari"
+   ],
+   "foundry": "Omega Type Foundry",
+   "award": "TDC",
+   "year": "2022",
+   "prize": "2022: TDC Winner (Type Family)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/41819/klaket/"
+  },
+  {
+   "fid": "AF084",
+   "font": "Mithaq",
+   "designers": [
+    "Yara Khoury Nammour"
+   ],
+   "foundry": "AlMohtaraf Design House (custom)",
+   "award": "TDC",
+   "year": "2022",
+   "prize": "2022: TDC Winner (Single Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/41825/mithaq-typeface/"
+  },
+  {
+   "fid": "AF112",
+   "font": "SF Arabic",
+   "designers": [],
+   "foundry": "Apple",
+   "award": "TDC",
+   "year": "2022",
+   "prize": "2022: TDC Winner (Super Family / Type System / Variable Font)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/41821/sf-arabic/"
+  },
+  {
+   "fid": "AF129",
+   "font": "YouTube Sans Arabic",
+   "designers": [
+    "Lara Captan"
+   ],
+   "foundry": "YouTube / Google (custom)",
+   "award": "TDC",
+   "year": "2022",
+   "prize": "2022: TDC Winner (Super Family / Type System / Variable Font)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/41822/youtube-sans-arabic/"
+  },
+  {
+   "fid": "AF001",
+   "font": "29LT Ada Sharp, Flat, and Round",
+   "designers": [
+    "Pascal Zoghbi",
+    "Toshi Omagari"
+   ],
+   "foundry": "29LT",
+   "award": "TDC",
+   "year": "2023",
+   "prize": "2023: TDC Winner (Multiple Axis Type Family (ie weight + width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/46259/29lt-ada-sharp-flat-and-round/"
+  },
+  {
+   "fid": "AF056",
+   "font": "Gulzar",
+   "designers": [
+    "Borna Izadpanah"
+   ],
+   "foundry": "Google Fonts",
+   "award": "TDC",
+   "year": "2023",
+   "prize": "2023: TDC Winner (Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/46233/gulzar/"
+  },
+  {
+   "fid": "AF100",
+   "font": "Portada Arabic",
+   "designers": [
+    "Sahar Afshar"
+   ],
+   "foundry": "TypeTogether",
+   "award": "TDC",
+   "year": "2023",
+   "prize": "2023: TDC Winner (Superfamily (non-related styles))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/46266/portada-arabic/"
+  },
+  {
+   "fid": "AF109",
+   "font": "Sakkal Saad",
+   "designers": [
+    "Mamoun Sakkal",
+    "Aida Sakkal"
+   ],
+   "foundry": "Sakkal Design",
+   "award": "TDC",
+   "year": "2023",
+   "prize": "2023: TDC Winner (Single Axis Type Family (ie weight or width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/46245/sakkal-saad-arabic-typeface/"
+  },
+  {
+   "fid": "AF113",
+   "font": "SF Arabic Rounded",
+   "designers": [],
+   "foundry": "Apple",
+   "award": "TDC",
+   "year": "2023",
+   "prize": "2023: TDC Winner (Multiple Axis Type Family (ie weight + width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/46256/sf-arabic-rounded/"
+  },
+  {
+   "fid": "AF128",
+   "font": "Yasar",
+   "designers": [
+    "Reina Akkoush"
+   ],
+   "foundry": "Not stated (student project)",
+   "award": "TDC",
+   "year": "2023",
+   "prize": "2023: TDC Winner (Variable Font)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/46270/yasar/"
+  },
+  {
+   "fid": "AF130",
+   "font": "Zaatar Typeface",
+   "designers": [
+    "Abdo Mohamed",
+    "Hey Porter!"
+   ],
+   "foundry": "Boharat Type Foundry",
+   "award": "TDC",
+   "year": "2023",
+   "prize": "2023: TDC Winner (Single Axis Type Family (ie weight or width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/46242/zaatar-typeface/"
+  },
+  {
+   "fid": "AF133",
+   "font": "Zhian",
+   "designers": [],
+   "foundry": "Studio Metaphor / Frontline Typo",
+   "award": "TDC",
+   "year": "2023",
+   "prize": "2023: TDC Winner (Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/46237/zhian-typeface/"
+  },
+  {
+   "fid": "AF026",
+   "font": "Canela Arabic",
+   "designers": [
+    "Wael Morcos",
+    "Khajag Apelian"
+   ],
+   "foundry": "Commercial Type",
+   "award": "TDC",
+   "year": "2024",
+   "prize": "2024: TDC Winner (Single Axis Type Family (ie weight or width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/53794/canela-aarbic/"
+  },
+  {
+   "fid": "AF033",
+   "font": "Darvish",
+   "designers": [],
+   "foundry": "Standard Font",
+   "award": "TDC",
+   "year": "2024",
+   "prize": "2024: TDC Winner (Single Axis Type Family (ie weight or width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/53798/darvish/"
+  },
+  {
+   "fid": "AF038",
+   "font": "Decutto",
+   "designers": [
+    "Michael Rafailyk"
+   ],
+   "foundry": "Michael Rafailyk",
+   "award": "TDC",
+   "year": "2024",
+   "prize": "2024: TDC Winner (Single Axis Type Family (ie weight or width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/53797/decutto/"
+  },
+  {
+   "fid": "AF051",
+   "font": "Geste",
+   "designers": [
+    "Hirbod Lotfian"
+   ],
+   "foundry": "Not stated",
+   "award": "TDC",
+   "year": "2024",
+   "prize": "2024: TDC Winner (Superfamily (non-related styles))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/53813/geste/"
+  },
+  {
+   "fid": "AF053",
+   "font": "Gramophone",
+   "designers": [
+    "Karim Ameri"
+   ],
+   "foundry": "Ameri Type / NoonFont",
+   "award": "TDC",
+   "year": "2024",
+   "prize": "2024: TDC Winner (Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/53792/gramophone-font/"
+  },
+  {
+   "fid": "AF081",
+   "font": "Metawhat?",
+   "designers": [
+    "Hares Bassil",
+    "Khajag Apelian"
+   ],
+   "foundry": "Sharaf Studio (custom)",
+   "award": "TDC",
+   "year": "2024",
+   "prize": "2024: TDC Winner (Variable Font)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/53821/metawhata/"
+  },
+  {
+   "fid": "AF110",
+   "font": "Sakkal Saad Poster",
+   "designers": [
+    "Mamoun Sakkal",
+    "Aida Sakkal"
+   ],
+   "foundry": "Sakkal Design",
+   "award": "TDC",
+   "year": "2024",
+   "prize": "2024: TDC Winner (Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/53789/sakkal-saad-poster-arabic-typeface/"
+  },
+  {
+   "fid": "AF121",
+   "font": "Tabrizi Jali",
+   "designers": [
+    "Borna Izadpanah"
+   ],
+   "foundry": "Borna Izadpanah",
+   "award": "TDC",
+   "year": "2024",
+   "prize": "2024: TDC Winner (Single Style Typeface); 2024: Best of Type Design (Type Design)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/53787/tabrizi-jali/"
+  },
+  {
+   "fid": "AF002",
+   "font": "29LT Azahar",
+   "designers": [
+    "Naïma Ben Ayed"
+   ],
+   "foundry": "29LT",
+   "award": "TDC",
+   "year": "2025",
+   "prize": "2025: TDC Winner (Multiple Axis Type Family (ie weight + width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/55784/29lt-azahar-text-display/"
+  },
+  {
+   "fid": "AF003",
+   "font": "29LT Idris",
+   "designers": [
+    "Pascal Zoghbi"
+   ],
+   "foundry": "29LT",
+   "award": "TDC",
+   "year": "2025",
+   "prize": "2025: TDC Winner (Multiple Axis Type Family (ie weight + width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/55783/29lt-idris-flat-sharp/"
+  },
+  {
+   "fid": "AF041",
+   "font": "Edameh",
+   "designers": [
+    "Nasser Khadem"
+   ],
+   "foundry": "Shiraz Foundry / NoonFont",
+   "award": "TDC",
+   "year": "2025",
+   "prize": "2025: TDC Winner (Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/55767/edameh-font/"
+  },
+  {
+   "fid": "AF052",
+   "font": "Gofteh",
+   "designers": [
+    "Alireza Nematollahi"
+   ],
+   "foundry": "Shiraz Foundry / NoonFont",
+   "award": "TDC",
+   "year": "2025",
+   "prize": "2025: TDC Winner (Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/55768/gofteh-font/"
+  },
+  {
+   "fid": "AF074",
+   "font": "Mahal",
+   "designers": [
+    "Nasser Khadem"
+   ],
+   "foundry": "Shiraz Foundry / NoonFont",
+   "award": "TDC",
+   "year": "2025",
+   "prize": "2025: TDC Winner (Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/55766/mahal-font/"
+  },
+  {
+   "fid": "AF104",
+   "font": "Rapida Arabic / Hebrew",
+   "designers": [
+    "Michelangelo Nigra"
+   ],
+   "foundry": "Typotheque / Hagilda",
+   "award": "TDC",
+   "year": "2025",
+   "prize": "2025: TDC Winner (Single Axis Type Family (ie weight or width))",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/55775/rapida-hebrew-arabic/"
+  },
+  {
+   "fid": "AF114",
+   "font": "Shekanj",
+   "designers": [
+    "Amir Mahdi Moslehi"
+   ],
+   "foundry": "TPTQ Arabic",
+   "award": "TDC",
+   "year": "2025",
+   "prize": "2025: TDC Winner (Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/55769/shekanj/"
+  },
+  {
+   "fid": "AF122",
+   "font": "Talheen",
+   "designers": [
+    "Ethar Elnour Mohamed Elaagib"
+   ],
+   "foundry": "Not stated",
+   "award": "TDC",
+   "year": "2025",
+   "prize": "2025: TDC Winner (Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/55765/talheen/"
+  },
+  {
+   "fid": "AF029",
+   "font": "CoFo Sans Pro Arabic",
+   "designers": [
+    "Wael Morcos",
+    "Khajag Apelian",
+    "Lana Soufeh"
+   ],
+   "foundry": "Contrast Foundry",
+   "award": "TDC",
+   "year": "2026",
+   "prize": "2026: TDC Merit (Text + Display Typefaces / Single Axis Type Family)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/65108/cofo-sans-arabic/"
+  },
+  {
+   "fid": "AF050",
+   "font": "Futura 100 Multiscript",
+   "designers": [
+    "Azza Alameddine"
+   ],
+   "foundry": "TypeTogether / Bauer Types",
+   "award": "TDC",
+   "year": "2026",
+   "prize": "2026: TDC Merit (Text + Display Typefaces / Superfamily)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/65115/futura-100/"
+  },
+  {
+   "fid": "AF079",
+   "font": "Mazhik",
+   "designers": [
+    "Sahar Afshar"
+   ],
+   "foundry": "Dogray Type Foundry",
+   "award": "TDC",
+   "year": "2026",
+   "prize": "2026: TDC Type High Bronze (Text + Display Typefaces / Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/65095/mazhik/"
+  },
+  {
+   "fid": "AF107",
+   "font": "Roshan",
+   "designers": [
+    "Kristyan Sarkis"
+   ],
+   "foundry": "TPTQ Arabic",
+   "award": "TDC",
+   "year": "2026",
+   "prize": "2026: TDC Merit (Text + Display Typefaces / Single Axis Type Family)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/65105/roshan-multiscript-font-family/"
+  },
+  {
+   "fid": "AF127",
+   "font": "VW Bespoke Arabic Typeface",
+   "designers": [
+    "Khajag Apelian",
+    "Wael Morcos",
+    "Lana Soufeh"
+   ],
+   "foundry": "Maktoob / Morcos Key (custom)",
+   "award": "TDC",
+   "year": "2026",
+   "prize": "2026: TDC Type High Silver (Text + Display Typefaces / Single Style Typeface)",
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/65089/vw-bespoke-arabic-typeface/"
+  },
+  {
+   "fid": "AF076",
+   "font": "Maqroo",
+   "designers": [
+    "Revati Patil",
+    "Abdelrahman Gad"
+   ],
+   "foundry": "Omantel / Leo Burnett Dubai (custom)",
+   "award": "The One Show",
+   "year": "2024",
+   "prize": "2024: Merit (Design / Innovation / New Ideas in Design)",
+   "url": "https://www.oneclub.org/awards/theoneshow/-award/52029/maqroo/"
+  },
+  {
+   "fid": "AF089",
+   "font": "Nabil",
+   "designers": [
+    "Emanuela Conidi"
+   ],
+   "foundry": "Not stated (graduation project)",
+   "award": "Tokyo TDC",
+   "year": "2009",
+   "prize": "2009: Type Design Prize (Type Design)",
+   "url": "https://tokyotypedirectorsclub.org/en/award/2009_type/"
+  },
+  {
+   "fid": "AF050",
+   "font": "Futura 100 Multiscript",
+   "designers": [
+    "Azza Alameddine"
+   ],
+   "foundry": "TypeTogether / Bauer Types",
+   "award": "Tokyo TDC",
+   "year": "2026",
+   "prize": "2026: Grand Prize (Type Design)",
+   "url": "https://tokyotypedirectorsclub.org/en/news/tdc2026-results/"
+  },
+  {
+   "fid": "AF115",
+   "font": "SST",
+   "designers": [
+    "Nadine Chahine"
+   ],
+   "foundry": "Monotype / Sony Design",
+   "award": "iF Design Award",
+   "year": "2016",
+   "prize": "2016: iF Design Award (Communication / Corporate Typeface)",
+   "url": "https://www.sony.com/ja/SonyInfo/design/news/awards/if_design_2016.html"
+  }
+ ]
+}

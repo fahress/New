@@ -4,37 +4,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { slugify, useToast } from '@/components/dashboard/ui';
 import { db, type Row } from '@/lib/admin/db';
 import { dupKey, LINK_TABLES, useData, type Tag } from '@/lib/admin/store';
+import { similar } from '@/lib/admin/fuzzy';
+
+const PAGE = 100;
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '');
 
 /** One font found by the Oct 2026 web survey that isn't on Fahress yet (see lib/admin/survey-fonts.json). */
 type SurveyFont = {
   n: string; d: string[]; f: string; sc: string[]; g: string[]; st: string[]; t: string[];
   y: number | null; w: number | null; v: boolean; l: 'free' | 'paid'; u: string; s: string; a: string; lc: number | null; no: string; b?: number;
 };
-
-/** Edit distance, capped (only small distances matter here). */
-function lev(a: string, b: string): number {
-  if (Math.abs(a.length - b.length) > 2) return 9;
-  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
-  for (let i = 1; i <= a.length; i++) {
-    const cur = [i];
-    for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
-    prev = cur;
-  }
-  return prev[b.length];
-}
-const PREFIX = /^(ht|tptq|29lt|ko|bh|fs|as|te|ms|diwan|ff|pf|ge|dt)(?=[a-z])/;
-const loose = (k: string) => k.replace(PREFIX, '').replace(/(pro|std|vf|variable|regular)$/, '');
-/** Names that are probably the same thing spelled differently (not exact matches). */
-function similar(a: string, b: string): boolean {
-  if (!a || !b || a === b) return false;
-  const la = loose(a), lb = loose(b);
-  if (la.length >= 4 && la === lb) return true;
-  const n = Math.min(a.length, b.length);
-  return n >= 5 && lev(a, b) <= (n >= 9 ? 2 : 1);
-}
-
-const PAGE = 100;
-const norm = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '');
 
 export default function ImportPage() {
   const { data, reload } = useData();

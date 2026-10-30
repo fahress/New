@@ -1,6 +1,6 @@
 import 'server-only';
 import { cache } from 'react';
-import type { Archive, Award, Font, Person, PersonType, Tag } from './types';
+import type { Archive, Award, Font, FontAward, Person, PersonType, Tag } from './types';
 import { slugify } from './format';
 import { placeOf } from './places';
 
@@ -76,7 +76,7 @@ export const getArchive = cache(async (): Promise<Archive> => {
     table('styles'),
     table('types'),
     table('language_groups'),
-    table('font_awards', 'font_id,award_id,url'),
+    table('font_awards', '*'),
     table('font_designers', 'font_id,designer_id,created_at'),
     table('font_genres', 'font_id,genre_id'),
     table('font_languages', 'font_id,lang_id'),
@@ -91,10 +91,10 @@ export const getArchive = cache(async (): Promise<Archive> => {
     if (!list.includes(str(r.designer_id))) list.push(str(r.designer_id));
     peopleByFont.set(str(r.font_id), list);
   }
-  const awardsByFont = new Map<string, { awardId: string; url: string | null }[]>();
+  const awardsByFont = new Map<string, FontAward[]>();
   for (const r of fa) {
     const list = awardsByFont.get(str(r.font_id)) ?? [];
-    list.push({ awardId: str(r.award_id), url: str(r.url) || null });
+    list.push({ awardId: str(r.award_id), url: str(r.url) || null, year: str(r.year) || null, prize: str(r.prize) || null });
     awardsByFont.set(str(r.font_id), list);
   }
   const genres = link(fg, 'genre_id');

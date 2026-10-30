@@ -159,7 +159,7 @@ export default async function FontPage({ params }: Props) {
             <dt className="mono muted">License</dt><dd><Link href={`/fonts?license=${f.license}`} className="pill">{licenseLabel(f.license)}</Link></dd>
             {f.year ? (<><dt className="mono muted">Released</dt><dd><Link href={`/fonts?year=${f.year}`} className="ul">{f.year}</Link></dd></>) : null}
             {awards.length ? (
-              <><dt className="mono muted">Awards</dt><dd>{awards.map((w) => (w.url ? <a key={w.awardId} href={w.url} target="_blank" rel="noopener" className="pill pill--solid">★ {w.award!.name} ↗</a> : <span key={w.awardId} className="pill pill--solid">★ {w.award!.name}</span>))}</dd></>
+              <><dt className="mono muted">Awards</dt><dd>{awards.map((w) => { const label = `★ ${w.award!.name}${w.year ? ` ${w.year}` : ''}`; return w.url ? <a key={w.awardId} href={w.url} target="_blank" rel="noopener" className="pill pill--solid" title={w.prize ?? undefined}>{label} ↗</a> : <span key={w.awardId} className="pill pill--solid" title={w.prize ?? undefined}>{label}</span>; })}</dd></>
             ) : null}
           </dl>
           {f.purchaseLinks.length ? (

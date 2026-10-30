@@ -24,7 +24,7 @@ export type Person = {
   claimed?: boolean;
 };
 
-export type FontAward = { awardId: string; url: string | null };
+export type FontAward = { awardId: string; url: string | null; year?: string | null; prize?: string | null };
 
 export type Award = { id: string; name: string; image: string | null };
 
