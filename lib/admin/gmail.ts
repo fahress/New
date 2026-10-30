@@ -10,9 +10,9 @@ import type { Staff } from './server';
  * - Every request uses the caller's own Supabase login, so no Supabase secret key is needed.
  */
 
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID ?? '';
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET ?? '';
-const SECRET = process.env.MAIL_TOKEN_SECRET ?? '';
+const CLIENT_ID = (process.env.GOOGLE_CLIENT_ID ?? '').trim().replace(/^"|"$/g, '');
+const CLIENT_SECRET = (process.env.GOOGLE_CLIENT_SECRET ?? '').trim().replace(/^"|"$/g, '');
+const SECRET = (process.env.MAIL_TOKEN_SECRET ?? '').trim();
 const SCOPES = ['https://www.googleapis.com/auth/gmail.modify', 'openid', 'email'];
 const API = 'https://gmail.googleapis.com/gmail/v1/users/me/';
 
