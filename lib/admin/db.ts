@@ -47,6 +47,11 @@ export const db = {
       t.push(...made);
       return made;
     }
+    // fonts.user_id is required: record the signed-in staff member as the one who added it
+    if (table === 'fonts' && list.some((r) => !r.user_id)) {
+      const { data: u } = await supabase().auth.getUser();
+      if (u.user) for (const r of list) r.user_id ??= u.user.id;
+    }
     const { data, error } = await supabase().from(table).insert(list).select();
     if (error) explain(error, `add to ${table}`);
     return (data ?? []) as Row[];
