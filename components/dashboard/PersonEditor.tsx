@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { db, type Row } from '@/lib/admin/db';
 import { coverOf, dupKey, img, useData } from '@/lib/admin/store';
 import { personHref } from '@/lib/format';
+import { mergePeople } from '@/lib/admin/merge';
 import { placeOf } from '@/lib/places';
 import { ConfirmButton, CountryPicker, Field, SingleImage, StatusPill, slugify, useToast } from './ui';
 
@@ -96,6 +97,30 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
     }
   }
 
+  const [mergeQ, setMergeQ] = useState('');
+  const [mergeTo, setMergeTo] = useState('');
+  const mergeOptions = useMemo(() => {
+    const n = mergeQ.trim().toLowerCase();
+    if (!data || !n) return [];
+    return data.people.filter((p) => String(p.id) !== id && String(p.name).toLowerCase().includes(n)).slice(0, 8);
+  }, [data, mergeQ, id]);
+
+  async function mergeInto() {
+    const target = personById.get(mergeTo);
+    if (!id || !existing || !target) return;
+    setBusy(true);
+    try {
+      await mergePeople(data!, target, [existing]);
+      await db.refreshSite();
+      await reload();
+      toast(`Merged ${form.name} into ${target.name}`);
+      router.replace(`/dashboard/${target.type === 'foundry' ? 'foundries' : 'designers'}/${target.id}`);
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Merge failed', 'err');
+      setBusy(false);
+    }
+  }
+
   async function remove() {
     if (!id) return;
     setBusy(true);
@@ -174,6 +199,20 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
               ))}
             </div>
           </section>
+
+          {id ? (
+            <section className="dz-section">
+              <h2 className="dz-section__title">Merge into another profile</h2>
+              <p className="dz-hint" style={{ marginTop: -8 }}>Same person or foundry under another spelling? Their font credits move to the profile you pick, empty details are filled from this one, the old web address redirects, and this profile is removed.</p>
+              <input className="dz-input" placeholder="Search designers and foundries…" value={mergeQ} onChange={(e) => { setMergeQ(e.target.value); setMergeTo(''); }} />
+              {mergeOptions.length > 0 && !mergeTo && (
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10 }}>
+                  {mergeOptions.map((p) => <button key={String(p.id)} type="button" className="dz-btn dz-btn--sm" onClick={() => { setMergeTo(String(p.id)); setMergeQ(String(p.name)); }}>{String(p.name)} · {p.type === 'foundry' ? 'Foundry' : 'Designer'} · {fontsOf(String(p.id)).length} fonts</button>)}
+                </div>
+              )}
+              {mergeTo ? <div style={{ marginTop: 12 }}><ConfirmButton className="dz-btn dz-btn--primary" onConfirm={mergeInto}>Merge {form.name} into {String(personById.get(mergeTo)?.name)}</ConfirmButton></div> : null}
+            </section>
+          ) : null}
 
           {id ? (
             <section className="dz-section" style={{ borderColor: '#b42318' }}>
