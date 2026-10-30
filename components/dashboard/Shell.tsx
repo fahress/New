@@ -7,6 +7,7 @@ import { DEMO, supabase } from '@/lib/admin/client';
 import { DataProvider, coverOf, img, useData } from '@/lib/admin/store';
 import { duplicateFonts, duplicatePeople } from '@/lib/admin/checks';
 import { Loading, Toasts } from './ui';
+import { useMailStatus } from '@/lib/admin/mail';
 
 const NAV = [
   { href: '/dashboard', label: 'Overview' },
@@ -63,17 +64,18 @@ export default function Shell({ children }: { children: React.ReactNode }) {
 function Frame({ email, children }: { email: string; children: React.ReactNode }) {
   const path = usePathname();
   const { data, error } = useData();
+  const mailStatus = useMailStatus();
   const [menu, setMenu] = useState(false);
   useEffect(() => setMenu(false), [path]);
   const badges = useMemo(() => {
     if (!data) return {} as Record<string, number>;
     return {
       pending: data.fonts.filter((f) => f.status === 'pending').length,
-      inbox: (data.submissions ?? []).filter((s) => s.status === 'new').length,
+      inbox: (data.submissions ?? []).filter((s) => s.status === 'new').length + (mailStatus?.unread ?? 0),
       dups: duplicateFonts(data).length + duplicatePeople(data).length,
       broken: (data.linkChecks ?? []).filter((l) => l.verdict === 'broken').length,
     } as Record<string, number>;
-  }, [data]);
+  }, [data, mailStatus]);
 
   const active = (href: string) => (href === '/dashboard' ? path === href : path === href || path.startsWith(`${href}/`));
 

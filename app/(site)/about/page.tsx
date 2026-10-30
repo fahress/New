@@ -28,6 +28,7 @@ export default async function About() {
         <p style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Link href="/submit" className="btn">Submit a font</Link>
           <Link href="/account" className="btn btn--ghost">Claim your profile</Link>
+          <Link href="/contact" className="btn btn--ghost">Contact us</Link>
           <a href="https://www.instagram.com/fahresstype" target="_blank" rel="noopener" className="btn btn--ghost">Follow on Instagram ↗</a>
         </p>
       </div>

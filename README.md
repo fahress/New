@@ -35,3 +35,27 @@ Import this repository in Vercel and deploy — no environment variables are req
 ## Offline development
 
 Set `FAHRESS_FIXTURE=/path/to/snapshot.json` (an export of the tables as `{ "fonts": [...], "designers": [...], ... }`) to build without network access.
+
+## Messages: Gmail + the contact form in the dashboard
+
+**Dashboard → Inbox → Messages** shows one list with:
+
+- **Website messages** from the new contact form at `/contact` (also linked in the footer and on About), and
+- **Your Gmail inbox** (e.g. admin@fahress.com). You can read conversations, see attachments, reply, reply all, write new emails, archive ("Done"), mark unread and delete. Emails are sent through Gmail, so they also appear in Gmail's Sent folder.
+
+Replying to a website message sends an email from your Gmail and moves the message to *Done*. The sidebar Inbox badge counts new website items + unread Gmail. Only **admins** see the mailbox; editors still see website messages.
+
+### One-time setup
+
+1. **Database** — Supabase → SQL Editor → run `supabase/messages-update.sql` (safe to run again).
+2. **Google OAuth client** — in [Google Cloud Console](https://console.cloud.google.com/):
+   1. Create a project (or use an existing one) and enable the **Gmail API**.
+   2. *OAuth consent screen*: User type **External** (or **Internal** if fahress.com is a Google Workspace domain), app name "Fahress Dashboard", add the scope `https://www.googleapis.com/auth/gmail.modify`.
+      Then set **Publishing status → In production**. (In "Testing", Google expires the sign-in every 7 days.) Google will show an "unverified app" warning when you connect — click *Advanced → Go to Fahress Dashboard*. That's expected for a private tool used only by you.
+   3. *Credentials → Create credentials → OAuth client ID → Web application*. Authorised redirect URIs:
+      - `https://fahress.com/api/dashboard/gmail/callback`
+      - `http://localhost:3000/api/dashboard/gmail/callback` (for local testing)
+3. **Vercel → Settings → Environment Variables**: add `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and `MAIL_TOKEN_SECRET` (any random 32+ character text, e.g. from `openssl rand -base64 32`). Redeploy.
+4. Open **Dashboard → Inbox → Connect Gmail** and sign in with the mailbox you want.
+
+**Security:** the Google sign-in is encrypted with `MAIL_TOKEN_SECRET` and stored in the `mail_account` table, which only dashboard admins can read. No Supabase secret key is used, and emails are not copied into the database. They are read live from Gmail. HTML emails are shown in a sandbox where no scripts can run.
