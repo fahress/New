@@ -18,6 +18,7 @@ const NAV = [
   { href: '/dashboard/awards', label: 'Awards' },
   { href: '/dashboard/taxonomy', label: 'Classification' },
   { group: 'Tools' },
+  { href: '/dashboard/import', label: 'Import from survey' },
   { href: '/dashboard/duplicates', label: 'Duplicates', badge: 'dups' as const },
   { href: '/dashboard/links', label: 'Link health', badge: 'broken' as const },
   { href: '/dashboard/stats', label: 'Clicks & stats' },
