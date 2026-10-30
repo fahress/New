@@ -8,7 +8,7 @@ import { dupKey, img, useData } from '@/lib/admin/store';
 import source from '@/lib/admin/award-import.json';
 
 type Program = { name: string; logo?: string | null; bio?: string | null };
-type Rec = { fid: string; font: string; designers: string[]; foundry: string; award: string; year: string; prize: string; url: string | null };
+type Rec = { fid: string; font: string; alias?: string; designers: string[]; foundry: string; award: string; year: string; prize: string; url: string | null };
 const programs = source.programs as Program[];
 const records = source.records as Rec[];
 const awardKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -47,7 +47,7 @@ export default function ImportAwards() {
     if (!data) return out;
     const keyed = data.fonts.map((f) => ({ f, k: dupKey(String(f.name)) }));
     for (const r of fonts) {
-      const k = dupKey(r.font);
+      const k = dupKey(r.alias ?? r.font);
       const exact = keyed.find((x) => x.k === k)?.f;
       const maybe = exact ? [] : keyed.filter((x) => similar(k, x.k) || (k.length >= 6 && x.k.length >= 6 && (x.k.startsWith(k) || k.startsWith(x.k)))).map((x) => x.f).slice(0, 4);
       out.set(r.fid, { exact, maybe });

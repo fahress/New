@@ -162,7 +162,7 @@
    "designers": [
     "Bahman Eslami"
    ],
-   "foundry": "TPTQ Arabic",
+   "foundry": "TPTQ",
    "award": "ATypI",
    "year": "2011",
    "prize": "2011: Letter.2 (ATypI type design competition) — Winner — selected among 53 typefaces (Type Design)",
@@ -174,7 +174,7 @@
    "designers": [
     "Titus Nemeth"
    ],
-   "foundry": "Rosetta",
+   "foundry": "Rosettatype",
    "award": "ATypI",
    "year": "2011",
    "prize": "2011: Letter.2 (ATypI type design competition) — Winner — selected among 53 typefaces (Type Design)",
@@ -186,7 +186,7 @@
    "designers": [
     "Kristyan Sarkis"
    ],
-   "foundry": "TPTQ Arabic / Typotheque",
+   "foundry": "TPTQ",
    "award": "ATypI",
    "year": "2011",
    "prize": "2011: Letter.2 (ATypI type design competition) — Winner — selected among 53 typefaces (Type Design)",
@@ -210,11 +210,12 @@
    "designers": [
     "Tim Holloway"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "ATypI",
    "year": "2001",
    "prize": "2001: bukva:raz! (ATypI type design competition) — Winner — 100 selected typefaces (Arabic script)",
-   "url": "https://typenetwork.com/font-designers/tim-holloway"
+   "url": "https://typenetwork.com/font-designers/tim-holloway",
+   "alias": "Markazi Text"
   },
   {
    "fid": "AF087",
@@ -222,7 +223,7 @@
    "designers": [
     "Naser Imache"
    ],
-   "foundry": "Salt & Pepper / S6 Foundry",
+   "foundry": "Salt & Pepper",
    "award": "A’ Design Award",
    "year": "2020",
    "prize": "2020: Silver (Graphics, Illustration and Visual Communication Design)",
@@ -235,7 +236,7 @@
     "Ibrahim Hamdi",
     "Abdo Mohamed"
    ],
-   "foundry": "Protype Foundry",
+   "foundry": "Protype",
    "award": "Cannes Lions",
    "year": "2024",
    "prize": "2024: Bronze Lion (Industry Craft / Typography: Brand & Communications Design)",
@@ -288,11 +289,12 @@
    "designers": [
     "Azza Alameddine"
    ],
-   "foundry": "TypeTogether / Bauer Types",
+   "foundry": "TypeTogether",
    "award": "Communication Arts Typography Competition",
    "year": "2026",
    "prize": "2026: Best of Show (Typography Annual)",
-   "url": "https://www.typetogether.com/fonts/futura-100-arabic"
+   "url": "https://www.typetogether.com/fonts/futura-100-arabic",
+   "alias": "Futura®100 Arabic"
   },
   {
    "fid": "AF021",
@@ -300,7 +302,7 @@
    "designers": [
     "Elena Schneider"
    ],
-   "foundry": "Newlyn / MTN (custom)",
+   "foundry": "Newlyn",
    "award": "D&AD",
    "year": "2019",
    "prize": "2019: Wood Pencil (Typography / Type Design)",
@@ -313,7 +315,7 @@
     "Wael Morcos",
     "Khajag Apelian"
    ],
-   "foundry": "IBM / Bold Monday",
+   "foundry": "IBM",
    "award": "D&AD",
    "year": "2020",
    "prize": "2020: Wood Pencil (Typography / Type Design)",
@@ -336,7 +338,7 @@
     "Revati Patil",
     "Abdelrahman Gad"
    ],
-   "foundry": "Omantel / Leo Burnett Dubai (custom)",
+   "foundry": "Omantel",
    "award": "D&AD",
    "year": "2024",
    "prize": "2024: Wood Pencil (Health & Wellbeing)",
@@ -349,7 +351,7 @@
     "Ibrahim Hamdi",
     "Abdo Mohamed"
    ],
-   "foundry": "Protype Foundry",
+   "foundry": "Protype",
    "award": "D&AD",
    "year": "2024",
    "prize": "2024: Wood Pencil (Type Design & Lettering)",
@@ -363,7 +365,7 @@
     "Wael Morcos",
     "Lana Soufeh"
    ],
-   "foundry": "Maktoob / Morcos Key (custom)",
+   "foundry": "Maktoob",
    "award": "D&AD",
    "year": "2025",
    "prize": "2025: Wood Pencil (Type Design & Lettering)",
@@ -376,7 +378,7 @@
     "Revati Patil",
     "Abdelrahman Gad"
    ],
-   "foundry": "Omantel / Leo Burnett Dubai (custom)",
+   "foundry": "Omantel",
    "award": "Dubai Lynx",
    "year": "2024",
    "prize": "2024: Grand Prix (Industry Craft / Typography: Brand & Communications Design)",
@@ -389,7 +391,7 @@
     "Ibrahim Hamdi",
     "Abdo Mohamed"
    ],
-   "foundry": "Protype Foundry",
+   "foundry": "Protype",
    "award": "Dubai Lynx",
    "year": "2024",
    "prize": "2024: 1 Silver + 2 Bronze (Multiple categories — exact categories not stated by foundry)",
@@ -401,7 +403,7 @@
    "designers": [
     "Titus Nemeth"
    ],
-   "foundry": "Rosetta",
+   "foundry": "Rosettatype",
    "award": "European Design Awards",
    "year": "2007",
    "prize": "2007: 1st Prize (Original Typeface)",
@@ -413,7 +415,7 @@
    "designers": [
     "Emanuela Conidi"
    ],
-   "foundry": "Not stated (graduation project)",
+   "foundry": "",
    "award": "European Design Awards",
    "year": "2009",
    "prize": "2009: Bronze (Original Typeface)",
@@ -461,7 +463,7 @@
    "designers": [
     "Elena Schneider"
    ],
-   "foundry": "Rosetta",
+   "foundry": "Rosettatype",
    "award": "European Design Awards",
    "year": "2014",
    "prize": "2014: Bronze (Original Typeface)",
@@ -473,7 +475,7 @@
    "designers": [
     "Kristyan Sarkis"
    ],
-   "foundry": "Typotheque / TPTQ Arabic",
+   "foundry": "Typotheque",
    "award": "European Design Awards",
    "year": "2019",
    "prize": "2019: Gold (Original Typeface)",
@@ -498,11 +500,12 @@
    "designers": [
     "Azza Alameddine"
    ],
-   "foundry": "TypeTogether / Bauer Types",
+   "foundry": "TypeTogether",
    "award": "European Design Awards",
    "year": "2026",
    "prize": "2026: Bronze (Typeface Design — exact subcategory not stated)",
-   "url": "https://www.typetogether.com/fonts/futura-100-arabic"
+   "url": "https://www.typetogether.com/fonts/futura-100-arabic",
+   "alias": "Futura®100 Arabic"
   },
   {
    "fid": "AF030",
@@ -560,7 +563,7 @@
    "designers": [
     "Elena Schneider"
    ],
-   "foundry": "Rosetta",
+   "foundry": "Rosettatype",
    "award": "GRANSHAN",
    "year": "2013",
    "prize": "2013: 1st Prize (A2 Display Typeface)",
@@ -573,7 +576,7 @@
     "Naïma Ben Ayed",
     "Damien Collot"
    ],
-   "foundry": "Dalton Maag / Intel (custom)",
+   "foundry": "Dalton Maag",
    "award": "GRANSHAN",
    "year": "2014",
    "prize": "2014: 1st Prize (A2 Display Typeface)",
@@ -585,7 +588,7 @@
    "designers": [
     "Omid Emamian"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "GRANSHAN",
    "year": "2014",
    "prize": "2014: 2nd Prize (A2 Display Typeface)",
@@ -597,7 +600,7 @@
    "designers": [
     "Borna Izadpanah"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "GRANSHAN",
    "year": "2015",
    "prize": "2015: 1st Prize + Grand Prize (A2 Display Typeface)",
@@ -621,7 +624,7 @@
    "designers": [
     "Mehdi Ravandi"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "GRANSHAN",
    "year": "2016",
    "prize": "2016: 3rd Prize (C2 Multiscript Display Typefaces)",
@@ -660,7 +663,7 @@
    "designers": [
     "Borna Izadpanah"
    ],
-   "foundry": "Google Fonts",
+   "foundry": "Google",
    "award": "GRANSHAN",
    "year": "2016",
    "prize": "2016: 2nd Prize (C2 Multiscript Display Typefaces)",
@@ -672,7 +675,7 @@
    "designers": [
     "Rui Abreu"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "GRANSHAN",
    "year": "2016",
    "prize": "2016: 1st Prize (A2 Display Typeface)",
@@ -696,7 +699,7 @@
    "designers": [
     "Amir Mahdi Moslehi"
    ],
-   "foundry": "Bagh-e Tafarroj Studio / Google Fonts",
+   "foundry": "Bagh-e Tafarroj Studio",
    "award": "GRANSHAN",
    "year": "2017",
    "prize": "2017: 2nd Prize (A2 Display Typeface)",
@@ -744,7 +747,7 @@
    "designers": [
     "Maha Akl"
    ],
-   "foundry": "TPTQ Arabic",
+   "foundry": "TPTQ",
    "award": "GRANSHAN",
    "year": "2019",
    "prize": "2019: 3rd Prize (A2 Display Typeface)",
@@ -757,7 +760,7 @@
     "Wael Morcos",
     "Khajag Apelian"
    ],
-   "foundry": "IBM / Bold Monday",
+   "foundry": "IBM",
    "award": "GRANSHAN",
    "year": "2019",
    "prize": "2019: 2nd Prize (B2 Display Typefaces with a latin complement)",
@@ -782,7 +785,7 @@
     "Mahdi Ershadi",
     "Reza Bakhtiarifard"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "GRANSHAN",
    "year": "2021/2022",
    "prize": "2021/2022: 3rd Prize (A1 Text Typefaces)",
@@ -794,7 +797,7 @@
    "designers": [
     "Hirbod Lotfian"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "GRANSHAN",
    "year": "2021/2022",
    "prize": "2021/2022: 2nd Prize (A1 Text Typefaces)",
@@ -806,7 +809,7 @@
    "designers": [
     "Amir Mahdi Moslehi"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "GRANSHAN",
    "year": "2021/2022",
    "prize": "2021/2022: 1st Prize (A2 Display Typeface)",
@@ -830,7 +833,7 @@
    "designers": [
     "Yara Khoury Nammour"
    ],
-   "foundry": "AlMohtaraf Design House (custom)",
+   "foundry": "Mohtaraf",
    "award": "GRANSHAN",
    "year": "2021/2022",
    "prize": "2021/2022: 2nd Prize (A2 Display Typeface)",
@@ -842,11 +845,12 @@
    "designers": [
     "Najla Badran"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "GRANSHAN",
    "year": "2021/2022",
    "prize": "2021/2022: 3rd Prize (A2 Display Typeface)",
-   "url": "https://granshan.com/grand-exhibition/reeshet-khudair-base-2021-2022-arabic-display"
+   "url": "https://granshan.com/grand-exhibition/reeshet-khudair-base-2021-2022-arabic-display",
+   "alias": "Reeshet Khodeir"
   },
   {
    "fid": "AF108",
@@ -867,7 +871,7 @@
    "designers": [
     "Moslem Ebrahimi"
    ],
-   "foundry": "FontIran (publisher)",
+   "foundry": "FontIran",
    "award": "GRANSHAN",
    "year": "2023/2024",
    "prize": "2023/2024: 2nd Prize (A2 Display Typeface)",
@@ -885,7 +889,7 @@
     "Filip Blažek",
     "Cadson Demak"
    ],
-   "foundry": "Monotype (custom for Opel)",
+   "foundry": "Monotype",
    "award": "GRANSHAN",
    "year": "2023/2024",
    "prize": "2023/2024: 2nd Prize (C1 Multiscript Text Typefaces)",
@@ -895,7 +899,7 @@
    "fid": "AF133",
    "font": "Zhian",
    "designers": [],
-   "foundry": "Studio Metaphor / Frontline Typo",
+   "foundry": "Studio Metaphor",
    "award": "GRANSHAN",
    "year": "2023/2024",
    "prize": "2023/2024: 3rd Prize (A2 Display Typeface)",
@@ -905,10 +909,9 @@
    "fid": "AF032",
    "font": "Cultural Talents Tournament",
    "designers": [
-    "Milk Company LTD",
     "Alaa Tameem"
    ],
-   "foundry": "Milk Company LTD (custom)",
+   "foundry": "Milk Company",
    "award": "German Design Award",
    "year": "2026",
    "prize": "2026: Winner (Excellent Communications Design / Typography)",
@@ -930,13 +933,14 @@
    "fid": "AF027",
    "font": "Change",
    "designers": [
-    "Sultan Mohammad / Sultan Maqtari"
+    "Sultan Maqtari"
    ],
    "foundry": "Sultan Fonts",
    "award": "Horouf Bilingual Type Design Competition",
    "year": "2014",
    "prize": "2014: 2nd place (Type Designers)",
-   "url": "https://arabic380.rssing.com/chan-26039740/all_p3.html"
+   "url": "https://arabic380.rssing.com/chan-26039740/all_p3.html",
+   "alias": "SF Change"
   },
   {
    "fid": "AF132",
@@ -944,7 +948,7 @@
    "designers": [
     "Ahmad Al Hindi"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "Horouf Bilingual Type Design Competition",
    "year": "2014",
    "prize": "2014: 3rd place (Graphic Designers)",
@@ -1052,7 +1056,7 @@
    "fid": "AF065",
    "font": "Infinix Display",
    "designers": [],
-   "foundry": "Infinix (custom)",
+   "foundry": "Infinix",
    "award": "Red Dot Award",
    "year": "2023",
    "prize": "2023: Red Dot (Brands & Communication Design)",
@@ -1116,7 +1120,8 @@
    "award": "TDC",
    "year": "2003",
    "prize": "2003: Certificate of Excellence (Typeface Design)",
-   "url": "https://www.sakkal.com/type/tdc_competition.html"
+   "url": "https://www.sakkal.com/type/tdc_competition.html",
+   "alias": "Sakkal Seta"
   },
   {
    "fid": "AF088",
@@ -1128,7 +1133,8 @@
    "award": "TDC",
    "year": "2004",
    "prize": "2004: Certificate of Excellence (Typeface Design)",
-   "url": "https://www.sakkal.com/WhatsNew.html"
+   "url": "https://www.sakkal.com/WhatsNew.html",
+   "alias": "Microsoft Uighur"
   },
   {
    "fid": "AF009",
@@ -1162,7 +1168,7 @@
    "designers": [
     "Titus Nemeth"
    ],
-   "foundry": "Rosetta",
+   "foundry": "Rosettatype",
    "award": "TDC",
    "year": "2007",
    "prize": "2007: Certificate of Excellence (Typeface Design)",
@@ -1174,7 +1180,7 @@
    "designers": [
     "Habib Khoury"
    ],
-   "foundry": "AvanType / Brandinstinct",
+   "foundry": "AvanType",
    "award": "TDC",
    "year": "2008",
    "prize": "2008: Certificate of Excellence (Typeface Design)",
@@ -1187,7 +1193,7 @@
     "Lara Assouad Khoury",
     "Fred Smeijers"
    ],
-   "foundry": "OurType / Khatt Foundation",
+   "foundry": "OurType",
    "award": "TDC",
    "year": "2008",
    "prize": "2008: Certificate of Excellence (Typeface Design)",
@@ -1212,7 +1218,7 @@
    "designers": [
     "Titus Nemeth"
    ],
-   "foundry": "Rosetta",
+   "foundry": "Rosettatype",
    "award": "TDC",
    "year": "2010",
    "prize": "2010: Certificate of Excellence (Typeface Design)",
@@ -1249,7 +1255,7 @@
    "designers": [
     "Lara Assouad Khoury"
    ],
-   "foundry": "Dar Onboz (publisher)",
+   "foundry": "Dar Onboz",
    "award": "TDC",
    "year": "2011",
    "prize": "2011: Certificate of Excellence (Typeface Design)",
@@ -1261,7 +1267,7 @@
    "designers": [
     "Kristyan Sarkis"
    ],
-   "foundry": "TPTQ Arabic / Typotheque",
+   "foundry": "TPTQ",
    "award": "TDC",
    "year": "2011",
    "prize": "2011: Certificate of Excellence (Typeface Design)",
@@ -1285,11 +1291,12 @@
    "designers": [
     "Kristyan Sarkis"
    ],
-   "foundry": "TPTQ Arabic / Typotheque",
+   "foundry": "TPTQ",
    "award": "TDC",
    "year": "2012, 2016",
    "prize": "2012: Certificate of Excellence (Typeface Design); 2016: Certificate of Excellence (Typeface Design)",
-   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2012/"
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2012/",
+   "alias": "Greta Text Arabic"
   },
   {
    "fid": "AF019",
@@ -1315,7 +1322,8 @@
    "award": "TDC",
    "year": "2014",
    "prize": "2014: Certificate of Excellence (Typeface Design)",
-   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2014/"
+   "url": "https://archive.tdc.org/competitionwriteup/tdc-typeface-design-winners-2014/",
+   "alias": "29LT Azer"
   },
   {
    "fid": "AF034",
@@ -1351,7 +1359,7 @@
     "Abdelrahim Fouad",
     "Patil Gabodigian"
    ],
-   "foundry": "Al Mohtaraf",
+   "foundry": "Mohtaraf",
    "award": "TDC",
    "year": "2015",
    "prize": "2015: Certificate of Excellence (Typeface Design)",
@@ -1376,7 +1384,7 @@
    "designers": [
     "Borna Izadpanah"
    ],
-   "foundry": "Google Fonts",
+   "foundry": "Google",
    "award": "TDC",
    "year": "2017",
    "prize": "2017: Certificate of Excellence (Typeface Design)",
@@ -1388,7 +1396,7 @@
    "designers": [
     "Kristyan Sarkis"
    ],
-   "foundry": "TPTQ Arabic / Khatt Foundation",
+   "foundry": "TPTQ",
    "award": "TDC",
    "year": "2017",
    "prize": "2017: Certificate of Excellence (Typeface Design)",
@@ -1400,7 +1408,7 @@
    "designers": [
     "Amir Mahdi Moslehi"
    ],
-   "foundry": "Bagh-e Tafarroj Studio / Google Fonts",
+   "foundry": "Bagh-e Tafarroj Studio",
    "award": "TDC",
    "year": "2018",
    "prize": "2018: Certificate of Excellence (Typeface Design)",
@@ -1413,7 +1421,7 @@
     "Reza Bakhtiarifard",
     "Omid Emamian"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "TDC",
    "year": "2018",
    "prize": "2018: Certificate of Excellence (Typeface Design)",
@@ -1426,7 +1434,7 @@
     "Reza Bakhtiarifard",
     "Omid Emamian"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "TDC",
    "year": "2018",
    "prize": "2018: Certificate of Excellence (Typeface Design)",
@@ -1462,7 +1470,7 @@
    "designers": [
     "Maha Akl"
    ],
-   "foundry": "TPTQ Arabic",
+   "foundry": "TPTQ",
    "award": "TDC",
    "year": "2020",
    "prize": "2020: Certificate of Excellence (Typeface Design)",
@@ -1513,7 +1521,7 @@
    "designers": [
     "Bahman Eslami"
    ],
-   "foundry": "Bahman Eslami / Interval Type (custom)",
+   "foundry": "Bahman Eslami",
    "award": "TDC",
    "year": "2022",
    "prize": "2022: TDC Winner (Super Family / Type System / Variable Font)",
@@ -1525,7 +1533,7 @@
    "designers": [
     "Hirbod Lotfian"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "TDC",
    "year": "2022",
    "prize": "2022: TDC Winner (Type Family)",
@@ -1537,7 +1545,7 @@
    "designers": [
     "Damoon Khanjanzadeh"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "TDC",
    "year": "2022",
    "prize": "2022: TDC Winner (Single Typeface)",
@@ -1561,7 +1569,7 @@
    "designers": [
     "Yara Khoury Nammour"
    ],
-   "foundry": "AlMohtaraf Design House (custom)",
+   "foundry": "Mohtaraf",
    "award": "TDC",
    "year": "2022",
    "prize": "2022: TDC Winner (Single Typeface)",
@@ -1583,7 +1591,7 @@
    "designers": [
     "Lara Captan"
    ],
-   "foundry": "YouTube / Google (custom)",
+   "foundry": "YouTube",
    "award": "TDC",
    "year": "2022",
    "prize": "2022: TDC Winner (Super Family / Type System / Variable Font)",
@@ -1600,7 +1608,8 @@
    "award": "TDC",
    "year": "2023",
    "prize": "2023: TDC Winner (Multiple Axis Type Family (ie weight + width))",
-   "url": "https://www.oneclub.org/awards/tdcawards/-award/46259/29lt-ada-sharp-flat-and-round/"
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/46259/29lt-ada-sharp-flat-and-round/",
+   "alias": "29LT Ada (Flat / Round / Sharp)"
   },
   {
    "fid": "AF056",
@@ -1608,7 +1617,7 @@
    "designers": [
     "Borna Izadpanah"
    ],
-   "foundry": "Google Fonts",
+   "foundry": "Google",
    "award": "TDC",
    "year": "2023",
    "prize": "2023: TDC Winner (Single Style Typeface)",
@@ -1655,7 +1664,7 @@
    "designers": [
     "Reina Akkoush"
    ],
-   "foundry": "Not stated (student project)",
+   "foundry": "",
    "award": "TDC",
    "year": "2023",
    "prize": "2023: TDC Winner (Variable Font)",
@@ -1678,7 +1687,7 @@
    "fid": "AF133",
    "font": "Zhian",
    "designers": [],
-   "foundry": "Studio Metaphor / Frontline Typo",
+   "foundry": "Studio Metaphor",
    "award": "TDC",
    "year": "2023",
    "prize": "2023: TDC Winner (Single Style Typeface)",
@@ -1725,7 +1734,7 @@
    "designers": [
     "Hirbod Lotfian"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "TDC",
    "year": "2024",
    "prize": "2024: TDC Winner (Superfamily (non-related styles))",
@@ -1737,7 +1746,7 @@
    "designers": [
     "Karim Ameri"
    ],
-   "foundry": "Ameri Type / NoonFont",
+   "foundry": "Ameri Type",
    "award": "TDC",
    "year": "2024",
    "prize": "2024: TDC Winner (Single Style Typeface)",
@@ -1750,7 +1759,7 @@
     "Hares Bassil",
     "Khajag Apelian"
    ],
-   "foundry": "Sharaf Studio (custom)",
+   "foundry": "Sharaf Studio",
    "award": "TDC",
    "year": "2024",
    "prize": "2024: TDC Winner (Variable Font)",
@@ -1811,7 +1820,7 @@
    "designers": [
     "Nasser Khadem"
    ],
-   "foundry": "Shiraz Foundry / NoonFont",
+   "foundry": "Shiraz Foundry",
    "award": "TDC",
    "year": "2025",
    "prize": "2025: TDC Winner (Single Style Typeface)",
@@ -1823,7 +1832,7 @@
    "designers": [
     "Alireza Nematollahi"
    ],
-   "foundry": "Shiraz Foundry / NoonFont",
+   "foundry": "Shiraz Foundry",
    "award": "TDC",
    "year": "2025",
    "prize": "2025: TDC Winner (Single Style Typeface)",
@@ -1835,7 +1844,7 @@
    "designers": [
     "Nasser Khadem"
    ],
-   "foundry": "Shiraz Foundry / NoonFont",
+   "foundry": "Shiraz Foundry",
    "award": "TDC",
    "year": "2025",
    "prize": "2025: TDC Winner (Single Style Typeface)",
@@ -1847,7 +1856,7 @@
    "designers": [
     "Michelangelo Nigra"
    ],
-   "foundry": "Typotheque / Hagilda",
+   "foundry": "Typotheque",
    "award": "TDC",
    "year": "2025",
    "prize": "2025: TDC Winner (Single Axis Type Family (ie weight or width))",
@@ -1859,7 +1868,7 @@
    "designers": [
     "Amir Mahdi Moslehi"
    ],
-   "foundry": "TPTQ Arabic",
+   "foundry": "TPTQ",
    "award": "TDC",
    "year": "2025",
    "prize": "2025: TDC Winner (Single Style Typeface)",
@@ -1871,7 +1880,7 @@
    "designers": [
     "Ethar Elnour Mohamed Elaagib"
    ],
-   "foundry": "Not stated",
+   "foundry": "",
    "award": "TDC",
    "year": "2025",
    "prize": "2025: TDC Winner (Single Style Typeface)",
@@ -1897,11 +1906,12 @@
    "designers": [
     "Azza Alameddine"
    ],
-   "foundry": "TypeTogether / Bauer Types",
+   "foundry": "TypeTogether",
    "award": "TDC",
    "year": "2026",
    "prize": "2026: TDC Merit (Text + Display Typefaces / Superfamily)",
-   "url": "https://www.oneclub.org/awards/tdcawards/-award/65115/futura-100/"
+   "url": "https://www.oneclub.org/awards/tdcawards/-award/65115/futura-100/",
+   "alias": "Futura®100 Arabic"
   },
   {
    "fid": "AF079",
@@ -1921,7 +1931,7 @@
    "designers": [
     "Kristyan Sarkis"
    ],
-   "foundry": "TPTQ Arabic",
+   "foundry": "TPTQ",
    "award": "TDC",
    "year": "2026",
    "prize": "2026: TDC Merit (Text + Display Typefaces / Single Axis Type Family)",
@@ -1935,7 +1945,7 @@
     "Wael Morcos",
     "Lana Soufeh"
    ],
-   "foundry": "Maktoob / Morcos Key (custom)",
+   "foundry": "Maktoob",
    "award": "TDC",
    "year": "2026",
    "prize": "2026: TDC Type High Silver (Text + Display Typefaces / Single Style Typeface)",
@@ -1948,7 +1958,7 @@
     "Revati Patil",
     "Abdelrahman Gad"
    ],
-   "foundry": "Omantel / Leo Burnett Dubai (custom)",
+   "foundry": "Omantel",
    "award": "The One Show",
    "year": "2024",
    "prize": "2024: Merit (Design / Innovation / New Ideas in Design)",
@@ -1960,7 +1970,7 @@
    "designers": [
     "Emanuela Conidi"
    ],
-   "foundry": "Not stated (graduation project)",
+   "foundry": "",
    "award": "Tokyo TDC",
    "year": "2009",
    "prize": "2009: Type Design Prize (Type Design)",
@@ -1972,11 +1982,12 @@
    "designers": [
     "Azza Alameddine"
    ],
-   "foundry": "TypeTogether / Bauer Types",
+   "foundry": "TypeTogether",
    "award": "Tokyo TDC",
    "year": "2026",
    "prize": "2026: Grand Prize (Type Design)",
-   "url": "https://tokyotypedirectorsclub.org/en/news/tdc2026-results/"
+   "url": "https://tokyotypedirectorsclub.org/en/news/tdc2026-results/",
+   "alias": "Futura®100 Arabic"
   },
   {
    "fid": "AF115",
@@ -1984,7 +1995,7 @@
    "designers": [
     "Nadine Chahine"
    ],
-   "foundry": "Monotype / Sony Design",
+   "foundry": "Monotype",
    "award": "iF Design Award",
    "year": "2016",
    "prize": "2016: iF Design Award (Communication / Corporate Typeface)",
