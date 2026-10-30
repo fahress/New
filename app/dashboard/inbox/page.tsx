@@ -5,8 +5,11 @@ import { ConfirmButton, timeAgo, useToast } from '@/components/dashboard/ui';
 import { db, type Row } from '@/lib/admin/db';
 import { newFontHref } from '@/lib/admin/prefill';
 import { img, useData } from '@/lib/admin/store';
+import Mailbox from '@/components/dashboard/Mailbox';
+import { useMailStatus } from '@/lib/admin/mail';
 
 const TABS = [
+  { id: 'message', label: 'Messages' },
   { id: 'font', label: 'Font submissions' },
   { id: 'correction', label: 'Corrections' },
   { id: 'claim', label: 'Profile claims' },
@@ -18,10 +21,11 @@ const FIELD_LABEL: Record<string, string> = { name: 'Name', bio: 'Bio', country:
 export default function Inbox() {
   const { data, personById, fontById, reload } = useData();
   const toast = useToast();
-  const [tab, setTab] = useState<(typeof TABS)[number]['id']>('font');
+  const [tab, setTab] = useState<(typeof TABS)[number]['id']>('message');
   const [show, setShow] = useState<'new' | 'done'>('new');
   const [busy, setBusy] = useState<string | null>(null);
 
+  const mailStatus = useMailStatus();
   const subs = useMemo(() => data?.submissions ?? [], [data]);
   if (!data) return null;
   if (!data.upgraded) return (
@@ -31,7 +35,7 @@ export default function Inbox() {
     </>
   );
 
-  const count = (k: string) => subs.filter((s) => s.kind === k && s.status === 'new').length;
+  const count = (k: string) => subs.filter((s) => s.kind === k && s.status === 'new').length + (k === 'message' ? mailStatus?.unread ?? 0 : 0);
   const list = subs.filter((s) => s.kind === tab && (show === 'new' ? s.status === 'new' : s.status !== 'new'));
   const isAdmin = data.role === 'admin';
 
@@ -62,16 +66,18 @@ export default function Inbox() {
       <div className="dz-head">
         <div>
           <p className="dz-eyebrow">Inbox</p>
-          <h1 className="display">{subs.filter((s) => s.status === 'new').length || 'Nothing'} new</h1>
-          <p>What designers, foundries and visitors send from the site.</p>
+          <h1 className="display">{subs.filter((s) => s.status === 'new').length + (mailStatus?.unread ?? 0) || 'Nothing'} new</h1>
+          <p>Your email and everything designers, foundries and visitors send from the site — in one place.</p>
         </div>
       </div>
       <div className="dz-toolbar">
         <div className="dz-seg">{TABS.map((t) => <button key={t.id} type="button" className={tab === t.id ? 'is-on' : ''} onClick={() => setTab(t.id)}>{t.label} {count(t.id) || ''}</button>)}</div>
-        <div className="dz-seg"><button type="button" className={show === 'new' ? 'is-on' : ''} onClick={() => setShow('new')}>New</button><button type="button" className={show === 'done' ? 'is-on' : ''} onClick={() => setShow('done')}>Handled</button></div>
+        {tab !== 'message' ? <div className="dz-seg"><button type="button" className={show === 'new' ? 'is-on' : ''} onClick={() => setShow('new')}>New</button><button type="button" className={show === 'done' ? 'is-on' : ''} onClick={() => setShow('done')}>Handled</button></div> : null}
       </div>
 
-      {list.length === 0 ? <div className="dz-empty">Nothing here.</div> : (
+      {tab === 'message' ? <Mailbox /> : null}
+
+      {tab === 'message' ? null : list.length === 0 ? <div className="dz-empty">Nothing here.</div> : (
         <div style={{ display: 'grid', gap: 16 }}>
           {list.map((s) => {
             const p = (s.payload as Row) ?? {};

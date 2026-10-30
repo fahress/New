@@ -14,6 +14,8 @@ export async function GET() {
     { id: 's2', created_at: now, kind: 'correction', status: 'new', font_id: font.id, message: 'The buy link has moved.', payload: {} },
     { id: 's3', created_at: now, kind: 'claim', status: 'new', designer_id: person.id, user_id: 'u-demo', email: 'me@example.com', message: 'This is me.', payload: { name: person.name, proof: 'https://instagram.com/example' } },
     { id: 's4', created_at: now, kind: 'profile_edit', status: 'new', designer_id: person.id, user_id: 'u-demo', payload: { name: person.name, changes: { bio: 'New bio text from the designer.', country: 'Jordan', social_links: { website_url: 'https://example.com' } } } },
+    { id: 's5', created_at: now, kind: 'message', status: 'new', name: 'Layla Haddad', email: 'layla@example.com', message: 'Hello! Is there a license for using Sample Kufi in an app? We are a small studio in Amman.', payload: { subject: 'Licensing / where to buy', page: '/fonts' } },
+    { id: 's6', created_at: new Date(Date.now() - 86400000).toISOString(), kind: 'message', status: 'new', name: 'أحمد', email: 'ahmed@example.com', message: 'السلام عليكم، أود التعاون معكم في مشروع أرشفة الخطوط.', payload: { subject: 'Partnership or press' } },
   ];
   d.link_checks ??= [];
   d.font_redirects ??= [];

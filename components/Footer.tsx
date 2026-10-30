@@ -16,12 +16,13 @@ export default function Footer() {
           <Link href="/submit" className="ul">Submit a font</Link>
           <Link href="/account" className="ul">Designer account</Link>
           <Link href="/foundries" className="ul">Foundries</Link>
+          <Link href="/contact" className="ul">Contact</Link>
           <a href="https://www.instagram.com/fahresstype" className="ul" target="_blank" rel="noopener">Instagram ↗</a>
         </nav>
       </div>
       <div className="wrap site-footer__base">
         <span className="mono">© Fahress</span>
-        <span className="mono" style={{ textTransform: 'none' }}>admin@fahress.com</span>
+        <Link href="/contact" className="mono ul" style={{ textTransform: 'none' }}>admin@fahress.com</Link>
       </div>
     </footer>
   );
