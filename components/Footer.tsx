@@ -17,6 +17,7 @@ export default function Footer() {
           <Link href="/account" className="ul">Designer account</Link>
           <Link href="/foundries" className="ul">Foundries</Link>
           <Link href="/contact" className="ul">Contact</Link>
+          <Link href="/privacy" className="ul">Privacy</Link>
           <a href="https://www.instagram.com/fahresstype" className="ul" target="_blank" rel="noopener">Instagram ↗</a>
         </nav>
       </div>
