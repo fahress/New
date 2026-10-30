@@ -442,4 +442,4 @@ create policy "admins manage the mail account" on public.mail_account for all to
 -- 11. Results ---------------------------------------------------------------------
 select 'team' as what, r.role as detail, u.email as value from public.dashboard_roles r join auth.users u on u.id = r.user_id
 union all
-select 'countries', type, count(*) filter (where country is not null and country <> '')::text || ' of ' || count(*)::text from public.designers group by type;
+select 'countries', type::text, count(*) filter (where country is not null and country <> '')::text || ' of ' || count(*)::text from public.designers group by type;
