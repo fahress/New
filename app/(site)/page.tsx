@@ -3,6 +3,7 @@ import Link from 'next/link';
 import FontCard from '@/components/FontCard';
 import HomeSearch, { type SearchIndex } from '@/components/HomeSearch';
 import HoverRows from '@/components/HoverRows';
+import RandomAwards from '@/components/RandomAwards';
 import RandomWall from '@/components/RandomWall';
 import { getArchive } from '@/lib/data';
 import { SCRIPT_ARABIC, excerpt, label, personHref, storageUrl, thumbUrl } from '@/lib/format';
@@ -150,16 +151,7 @@ export default async function Home() {
             <h2 className="display h-lg">Award-winning Arabic type</h2>
             <Link href="/fonts?award=yes" className="ul">All award winners →</Link>
           </div>
-          <div className="award-list">
-            {awarded.slice(0, 8).map((f) => (
-              <Link key={f.id} href={`/fonts/${f.slug}`} className="award-row">
-                <span className="award-row__img"><img className="spec" src={thumbUrl(f.cover, 384)} alt="" loading="lazy" /></span>
-                <span className="award-row__name">{f.name}</span>
-                <span className="muted" style={{ fontSize: 15 }}>{creditOf(a, f)}</span>
-                <span className="mono">{f.awards.map((w) => a.awards.find((x) => x.id === w.awardId)?.name).filter(Boolean).join(' · ')}</span>
-              </Link>
-            ))}
-          </div>
+          <RandomAwards rows={awarded.map((f) => ({ id: f.id, s: f.slug, n: f.name, c: f.cover, by: creditOf(a, f), aw: f.awards.map((w) => a.awards.find((x) => x.id === w.awardId)?.name).filter(Boolean).join(' · ') }))} />
         </section>
       ) : null}
 
