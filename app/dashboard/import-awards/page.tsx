@@ -58,9 +58,9 @@ export default function ImportAwards() {
   if (!data) return null;
   const awardByKey = new Map(data.awards.map((a) => [awardKey(String(a.name)), a]));
   const decision = (fid: string) => {
-    if (choice[fid]) return choice[fid];
     const m = match.get(fid);
     if (m?.exact) return String(m.exact.id);
+    if (choice[fid]) return choice[fid];
     return m?.maybe.length ? 'skip' : 'new';
   };
   const counts = { linked: 0, create: 0, skip: 0 };
