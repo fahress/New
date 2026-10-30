@@ -8,8 +8,30 @@ import { dupKey, LINK_TABLES, useData, type Tag } from '@/lib/admin/store';
 /** One font found by the Oct 2026 web survey that isn't on Fahress yet (see lib/admin/survey-fonts.json). */
 type SurveyFont = {
   n: string; d: string[]; f: string; sc: string[]; g: string[]; st: string[]; t: string[];
-  y: number | null; w: number | null; v: boolean; l: 'free' | 'paid'; u: string; s: string; a: string; lc: number | null; no: string;
+  y: number | null; w: number | null; v: boolean; l: 'free' | 'paid'; u: string; s: string; a: string; lc: number | null; no: string; b?: number;
 };
+
+/** Edit distance, capped (only small distances matter here). */
+function lev(a: string, b: string): number {
+  if (Math.abs(a.length - b.length) > 2) return 9;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[b.length];
+}
+const PREFIX = /^(ht|tptq|29lt|ko|bh|fs|as|te|ms|diwan|ff|pf|ge|dt)(?=[a-z])/;
+const loose = (k: string) => k.replace(PREFIX, '').replace(/(pro|std|vf|variable|regular)$/, '');
+/** Names that are probably the same thing spelled differently (not exact matches). */
+function similar(a: string, b: string): boolean {
+  if (!a || !b || a === b) return false;
+  const la = loose(a), lb = loose(b);
+  if (la.length >= 4 && la === lb) return true;
+  const n = Math.min(a.length, b.length);
+  return n >= 5 && lev(a, b) <= (n >= 9 ? 2 : 1);
+}
 
 const PAGE = 100;
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '');
@@ -20,6 +42,8 @@ export default function ImportPage() {
   const [list, setList] = useState<SurveyFont[] | null>(null);
   const [q, setQ] = useState('');
   const [site, setSite] = useState('');
+  const [round, setRound] = useState('');
+  const [onlyDup, setOnlyDup] = useState(false);
   const [script, setScript] = useState('');
   const [shown, setShown] = useState(PAGE);
   const [picked, setPicked] = useState<Set<number>>(new Set());
@@ -30,21 +54,42 @@ export default function ImportPage() {
 
   const peopleByKey = useMemo(() => new Map((data?.people ?? []).map((p) => [dupKey(String(p.name)), p])), [data]);
   const fontKeys = useMemo(() => new Set((data?.fonts ?? []).map((f) => dupKey(String(f.name)))), [data]);
+  /** For each survey row: dashboard fonts with a very similar (but not identical) name, plus similar rows inside the survey itself. */
+  const maybeDup = useMemo(() => {
+    const out = new Map<number, string[]>();
+    if (!list || !data) return out;
+    const fonts = data.fonts.map((f) => ({ k: dupKey(String(f.name)), label: `${f.name} (${f.status})` }));
+    const own = list.map((r) => dupKey(r.n));
+    list.forEach((r, i) => {
+      const k = own[i];
+      if (fontKeys.has(k)) return;
+      const hits = fonts.filter((f) => similar(k, f.k)).map((f) => f.label);
+      own.forEach((o, j) => { if (j !== i && (o === k || similar(k, o)) && !fontKeys.has(o)) hits.push(`${list[j].n} (also in this list)`); });
+      if (hits.length) out.set(i, [...new Set(hits)].slice(0, 4));
+    });
+    return out;
+  }, [list, data, fontKeys]);
+  const similarPerson = useMemo(() => {
+    const ppl = (data?.people ?? []).map((p) => ({ k: dupKey(String(p.name)), name: String(p.name) }));
+    return (name: string) => { const k = dupKey(name); return ppl.find((p) => similar(k, p.k))?.name; };
+  }, [data]);
 
   const rows = useMemo(() => {
     if (!list) return [];
     const n = q.trim().toLowerCase();
-    return list.map((r, i) => ({ r, i, inDash: fontKeys.has(dupKey(r.n)) })).filter(({ r }) => {
+    return list.map((r, i) => ({ r, i, inDash: fontKeys.has(dupKey(r.n)), dup: maybeDup.get(i) })).filter(({ r, dup }) => {
+      if (onlyDup && !dup) return false;
       if (site && r.s !== site) return false;
+      if (round && String(r.b ?? 1) !== round) return false;
       if (script && !(script === '-' ? r.sc.length === 0 : r.sc.includes(script))) return false;
       return !n || `${r.n} ${r.d.join(' ')} ${r.f}`.toLowerCase().includes(n);
     });
-  }, [list, q, site, script, fontKeys]);
+  }, [list, q, site, script, fontKeys, round, onlyDup, maybeDup]);
 
   if (!data || !list) return <div className="dz-loading"><span className="dz-spin" />Loading the survey…</div>;
 
   const sites = [...new Set(list.map((r) => r.s))].sort();
-  const open = rows.filter((x) => !x.inDash);
+  const open = rows.filter((x) => !x.inDash && !x.dup);
   const allPicked = open.length > 0 && open.every((x) => picked.has(x.i));
   const toggle = (i: number) => setPicked((p) => { const s = new Set(p); if (s.has(i)) s.delete(i); else s.add(i); return s; });
   const credits = (r: SurveyFont) => [...new Map([...r.d, r.f].filter(Boolean).map((name) => [dupKey(name), name])).values()];
@@ -119,7 +164,7 @@ export default function ImportPage() {
         <div>
           <p className="dz-eyebrow">Import</p>
           <h1 className="display">Fonts from the web survey</h1>
-          <p>{list.length} Arabic typefaces found on foundry sites and stores (Oct 2026) that weren&apos;t on Fahress. Tick the ones you want — each becomes a <b>draft</b> with its credits, classification, year and link filled in. Nothing appears on the site until you publish it.</p>
+          <p>{list.length} Arabic typefaces found on foundry sites and stores (two survey rounds, Oct 2026) that weren&apos;t on Fahress. “Select all” skips possible duplicates — check those and tick them one by one. Tick the ones you want — each becomes a <b>draft</b> with its credits, classification, year and link filled in. Nothing appears on the site until you publish it.</p>
         </div>
       </div>
 
@@ -134,6 +179,10 @@ export default function ImportPage() {
 
       <div className="dz-toolbar">
         <input className="dz-input" placeholder="Search by name, designer or foundry…" value={q} onChange={(e) => { setQ(e.target.value); setShown(PAGE); }} />
+        <select className="dz-select" value={round} onChange={(e) => { setRound(e.target.value); setShown(PAGE); }} aria-label="Survey round">
+          <option value="">Both survey rounds</option><option value="1">Round 1</option><option value="2">Round 2</option>
+        </select>
+        <label className="dz-check"><input type="checkbox" checked={onlyDup} onChange={(e) => setOnlyDup(e.target.checked)} /> Possible duplicates only ({maybeDup.size})</label>
         <select className="dz-select" value={site} onChange={(e) => { setSite(e.target.value); setShown(PAGE); }} aria-label="Found on">
           <option value="">All sources</option>
           {sites.map((s) => <option key={s} value={s}>{s} ({list.filter((r) => r.s === s).length})</option>)}
@@ -143,7 +192,7 @@ export default function ImportPage() {
           {data.scripts.map((s) => <option key={s.id} value={String(s.name)}>{s.name}</option>)}
           <option value="-">No script</option>
         </select>
-        <span className="dz-muted" style={{ fontSize: 13 }}>{rows.length} shown · {rows.length - open.length} already in the dashboard</span>
+        <span className="dz-muted" style={{ fontSize: 13 }}>{rows.length} shown · {rows.filter((x) => x.inDash).length} already in the dashboard · {rows.filter((x) => !x.inDash && x.dup).length} possible duplicates (tick them one by one)</span>
       </div>
 
       {(picked.size > 0 || progress) && (
@@ -172,16 +221,17 @@ export default function ImportPage() {
             </tr>
           </thead>
           <tbody>
-            {rows.slice(0, shown).map(({ r, i, inDash }) => (
+            {rows.slice(0, shown).map(({ r, i, inDash, dup }) => (
               <tr key={i} style={inDash ? { opacity: 0.45 } : undefined}>
                 <td><input type="checkbox" aria-label={`Select ${r.n}`} checked={picked.has(i)} disabled={inDash || !!progress} onChange={() => toggle(i)} /></td>
                 <td>
                   <b>{r.n}</b>{inDash ? <><br /><small className="dz-muted">Already in the dashboard</small></> : null}
+                  {!inDash && dup ? <><br /><span className="dz-tag dz-tag--warn">Possible duplicate of: {dup.join(' · ')}</span></> : null}
                   {r.no ? <><br /><small className="dz-muted">{r.no}</small></> : null}
                 </td>
                 <td>
                   {credits(r).length ? credits(r).map((c) => (
-                    <span key={c} style={{ display: 'inline-block', marginRight: 6 }}>{c}{peopleByKey.has(dupKey(c)) ? '' : <span className="dz-tag" style={{ marginLeft: 4 }}>new</span>}</span>
+                    <span key={c} style={{ display: 'inline-block', marginRight: 6 }}>{c}{peopleByKey.has(dupKey(c)) ? '' : similarPerson(c) ? <span className="dz-tag dz-tag--warn" style={{ marginLeft: 4 }}>new — similar to {similarPerson(c)}</span> : <span className="dz-tag" style={{ marginLeft: 4 }}>new</span>}</span>
                   )) : <span className="dz-tag dz-tag--warn">No credit</span>}
                 </td>
                 <td><small>{[...r.sc, ...r.g, ...r.st, ...r.t].join(' · ') || '—'}</small></td>
