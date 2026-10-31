@@ -330,7 +330,7 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 .badge-ring svg { position: absolute; inset: 0; animation: spin 26s linear infinite; }
 .badge-ring img, .badge-ring .mono-avatar { position: absolute; left: 40px; top: 40px; width: 160px; height: 160px; font-size: 56px; }
 .dhero__bio { display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; align-items: flex-end; padding-bottom: 64px; }
-.dhero__bio p { margin: 0; flex: 1 1 520px; max-width: 820px; font-family: var(--f-display); font-size: clamp(20px, 2.1vw, 28px); line-height: 1.4; letter-spacing: -.01em; white-space: pre-line; }
+.dhero__bio p { margin: 0; flex: 1 1 520px; max-width: 820px; font-family: var(--f-display); font-size: clamp(15px, 1.47vw, 19.5px); line-height: 1.55; letter-spacing: -.01em; white-space: pre-line; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; }
 .facts-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); border-bottom: 1px solid var(--ink); }
 .facts-strip > div { padding: 26px 24px; border-left: 1px solid var(--line); }
