@@ -431,6 +431,10 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
               <Field label="Types"><MultiPicker options={tagOpts(data.types)} value={form.types} onChange={(v) => set('types', v)} /></Field>
               <Field label="Language support" hint="Language groups the font covers. Individual languages are filled in from these." wide>
                 <MultiPicker options={tagOpts(data.groups)} value={form.groups} onChange={(v) => set('groups', v)} />
+                <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                  <button type="button" className="dz-btn dz-btn--sm" disabled={form.groups.length === data.groups.length} onClick={() => set('groups', tagOpts(data.groups).map((o) => o.id))}>All</button>
+                  {form.groups.length ? <button type="button" className="dz-btn dz-btn--sm" onClick={() => set('groups', [])}>Clear</button> : null}
+                </div>
               </Field>
             </div>
           </section>
