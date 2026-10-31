@@ -22,6 +22,18 @@ export async function staffFrom(request: Request): Promise<Staff | null> {
   return { userId: u.id, email: u.email ?? '', role: r, token };
 }
 
+/** Like staffFrom, but explains why someone was turned away. */
+export async function staffCheck(request: Request): Promise<Staff | { status: number; message: string }> {
+  const staff = await staffFrom(request);
+  if (staff) return staff;
+  const token = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '');
+  if (!token) return { status: 401, message: 'You’re not signed in to the dashboard. Reload the page and sign in again.' };
+  const user = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` }, cache: 'no-store' });
+  if (!user.ok) return { status: 401, message: 'Your dashboard sign-in has expired. Reload the page (or sign out and back in), then try again.' };
+  const u = (await user.json()) as { email?: string };
+  return { status: 403, message: `${u.email ?? 'This account'} isn’t on the dashboard team. Sign in with an admin or editor account.` };
+}
+
 /** Signed in at all (any Fahress account). */
 export async function userFrom(request: Request): Promise<{ id: string } | null> {
   const token = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '');

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { safeFetch, staffFrom } from '@/lib/admin/server';
+import { safeFetch, staffCheck } from '@/lib/admin/server';
 
 export const maxDuration = 60;
 
@@ -21,7 +21,8 @@ async function check(url: string): Promise<Result> {
 }
 
 export async function POST(request: Request) {
-  if (!(await staffFrom(request))) return new NextResponse('Only the dashboard team can use this.', { status: 401 });
+  const who = await staffCheck(request);
+  if ('message' in who) return new NextResponse(who.message, { status: who.status });
   const { urls } = (await request.json().catch(() => ({}))) as { urls?: string[] };
   const list = [...new Set((urls ?? []).filter((u) => typeof u === 'string'))].slice(0, 25);
   const results = await Promise.all(list.map(check));

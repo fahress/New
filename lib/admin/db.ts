@@ -143,14 +143,26 @@ export const db = {
   },
 
   /** Authorised call to one of the site's own dashboard API routes. */
+  /** A fresh sign-in token for the site's own server routes (renewed if it's about to run out). */
+  async token(force = false): Promise<string> {
+    if (DEMO) return '';
+    const sb = supabase();
+    let { data: { session } } = await sb.auth.getSession();
+    if (session && (force || (session.expires_at ?? 0) * 1000 - Date.now() < 120_000)) {
+      const r = await sb.auth.refreshSession();
+      if (r.data.session) session = r.data.session;
+    }
+    return session?.access_token ?? '';
+  },
+
   async api<T = unknown>(path: string, body?: unknown, method = 'POST'): Promise<T> {
-    const { data } = DEMO ? { data: { session: null } } : await supabase().auth.getSession();
-    const token = data.session?.access_token ?? '';
-    const res = await fetch(path, {
+    const send = async (token: string) => fetch(path, {
       method,
       headers: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: body === undefined ? undefined : JSON.stringify(body),
     });
+    let res = await send(await db.token());
+    if (res.status === 401 && !DEMO) res = await send(await db.token(true));
     if (!res.ok) throw new DbError((await res.text().catch(() => '')) || `Request failed (${res.status})`);
     return (await res.json()) as T;
   },

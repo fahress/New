@@ -133,8 +133,8 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
     const files: File[] = [];
     for (const u of urls) {
       try {
-        const { data: s } = await (await import('@/lib/admin/client')).supabase().auth.getSession();
-        const res = await fetch('/api/dashboard/image', { method: 'POST', headers: { 'content-type': 'application/json', ...(s.session ? { Authorization: `Bearer ${s.session.access_token}` } : {}) }, body: JSON.stringify({ url: u }) });
+        const token = await db.token();
+        const res = await fetch('/api/dashboard/image', { method: 'POST', headers: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ url: u }) });
         if (!res.ok) throw new Error();
         const blob = await res.blob();
         const name = decodeURIComponent(u.split('?')[0].split('/').pop() || 'image') .replace(/[^\w.-]+/g, '-');

@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
-import { safeFetch, staffFrom } from '@/lib/admin/server';
+import { safeFetch, staffCheck } from '@/lib/admin/server';
 
 export const maxDuration = 30;
 const MAX = 15 * 1024 * 1024;
 
 /** Fetches an image from another site for the dashboard, so it can be re-uploaded to Fahress storage. */
 export async function POST(request: Request) {
-  if (!(await staffFrom(request))) return new NextResponse('Only the dashboard team can use this.', { status: 401 });
+  const who = await staffCheck(request);
+  if ('message' in who) return new NextResponse(who.message, { status: who.status });
   const { url } = (await request.json().catch(() => ({}))) as { url?: string };
   if (!url) return new NextResponse('Missing url', { status: 400 });
   try {
