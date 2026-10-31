@@ -6,7 +6,7 @@ import Modal from './Modal';
 import { useMember } from './useMember';
 
 /** "Claim this account" on a designer or foundry page. Once the Fahress team approves, the member manages the profile and its fonts from their account. */
-export default function ClaimProfile({ designerId, name, slug, kind }: { designerId: string; name: string; slug: string; kind: 'designer' | 'foundry' }) {
+export default function ClaimProfile({ designerId, name, slug, kind, className = 'btn btn--ghost', label = 'Claim this account' }: { designerId: string; name: string; slug: string; kind: 'designer' | 'foundry'; className?: string; label?: string }) {
   const me = useMember();
   const [open, setOpen] = useState(false);
   const [proof, setProof] = useState('');
@@ -34,7 +34,7 @@ export default function ClaimProfile({ designerId, name, slug, kind }: { designe
   const noun = kind === 'foundry' ? 'foundry' : 'designer';
   return (
     <>
-      <button type="button" className="btn btn--ghost" onClick={() => setOpen(true)}>Claim this account</button>
+      <button type="button" className={className} onClick={() => setOpen(true)}>{label}</button>
       {open ? (
         <Modal title={`Claim ${name}`} onClose={() => setOpen(false)}>
           {me === undefined ? <p className="muted">One moment…</p> : !me ? (

@@ -1,5 +1,6 @@
 'use client';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 /** A simple centred pop-up. Closes on Escape or a click on the backdrop. */
 export default function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
@@ -10,7 +11,8 @@ export default function Modal({ title, onClose, children }: { title: string; onC
     document.body.style.overflow = 'hidden';
     return () => { window.removeEventListener('keydown', key); document.body.style.overflow = overflow; };
   }, [onClose]);
-  return (
+  // rendered at the end of <body> so dark page sections don't restyle it
+  return createPortal(
     <div className="modal" role="dialog" aria-modal="true" aria-label={title} onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="modal__box">
         <div className="modal__head">
@@ -19,6 +21,7 @@ export default function Modal({ title, onClose, children }: { title: string; onC
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

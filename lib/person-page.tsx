@@ -47,6 +47,8 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
   const years = fonts.map((f) => f.year).filter((y): y is number => !!y);
   const active = years.length ? (Math.min(...years) === Math.max(...years) ? String(years[0]) : `${Math.min(...years)}–${Math.max(...years)}`) : '—';
   const free = fonts.filter((f) => f.license === 'free').length;
+  const awarded = fonts.some((f) => f.awards.length > 0);
+  const role = `${awarded ? 'Award-winning type ' : 'Type '}${p.type === 'foundry' ? 'foundry' : 'designer'}`;
 
   // people who share typefaces with this designer / foundry
   const collab = new Map<string, number>();
@@ -71,7 +73,7 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
         <div className="wrap dhero__in">
           <div style={{ flex: '999 1 600px', minWidth: 0 }}>
             <p className="mono" style={{ margin: '0 0 22px', color: 'var(--mute-inv)', display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
-              {p.type === 'foundry' ? 'Type foundry' : 'Type designer'}
+              {role}
               {p.claimed ? <span className="verified" style={{ background: 'var(--paper)', color: 'var(--ink)' }} title={`This profile is managed by ${p.name}`}>✓ Verified</span> : null}
             </p>
             <h1 className="display" aria-label={p.name}>
@@ -85,6 +87,7 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
               ))}
             </h1>
           </div>
+          <div className="dhero__side">
           <div className="badge-ring" aria-hidden={!p.logo}>
             <svg viewBox="0 0 240 240" width="240" height="240" aria-hidden="true">
               <defs><path id="ring" d="M120,120 m-104,0 a104,104 0 1,1 208,0 a104,104 0 1,1 -208,0" /></defs>
@@ -93,6 +96,8 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
               </text>
             </svg>
             {p.logo ? <img className={`avatar${p.type === 'designer' ? ' avatar--grey' : ''}`} src={thumbUrl(p.logo, 384)} alt={`${p.name}`} /> : <span className="mono-avatar">{p.name[0]}</span>}
+          </div>
+          {!p.claimed ? <ClaimProfile designerId={p.id} name={p.name} slug={p.slug} kind={p.type === 'foundry' ? 'foundry' : 'designer'} className="btn" label={p.type === 'foundry' ? 'Is this your foundry? Claim this account' : 'Is this you? Claim this account'} /> : null}
           </div>
         </div>
         <div className="wrap dhero__bio">
@@ -126,7 +131,6 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
           <p className="muted">No typefaces linked yet.</p>
         )}
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start', marginTop: 48, paddingTop: 20, borderTop: '1px solid var(--line)' }}>
-          {!p.claimed ? <ClaimProfile designerId={p.id} name={p.name} slug={p.slug} kind={p.type === 'foundry' ? 'foundry' : 'designer'} /> : null}
           <div style={{ flex: '1 1 320px', maxWidth: 560 }}><SuggestCorrection designerId={p.id} about={p.name} /></div>
         </div>
       </section>
