@@ -5,6 +5,7 @@ import HomeSearch, { type SearchIndex } from '@/components/HomeSearch';
 import HoverRows from '@/components/HoverRows';
 import RandomAwards from '@/components/RandomAwards';
 import RandomWall from '@/components/RandomWall';
+import FoundryTicker from '@/components/FoundryTicker';
 import { getArchive } from '@/lib/data';
 import { SCRIPT_ARABIC, excerpt, label, personHref, storageUrl, thumbUrl } from '@/lib/format';
 import { creditOf, toCard } from '@/lib/view';
@@ -16,6 +17,8 @@ export default async function Home() {
   const a = await getArchive();
   const designers = a.people.filter((p) => p.type === 'designer' && p.fontIds.length > 0);
   const foundries = a.people.filter((p) => p.type === 'foundry' && p.fontIds.length > 0);
+  // countries the credited designers and foundries come from
+  const countries = new Set([...designers, ...foundries].map((p) => (p.from ?? '').trim().toLowerCase()).filter(Boolean)).size;
 
   // newest releases by release year (then most recently added within the same year)
   const newest = a.fonts
@@ -91,7 +94,7 @@ export default async function Home() {
           <div className="counter"><b>{a.fonts.length}</b><span className="mono">Typefaces indexed</span></div>
           <div className="counter"><b>{designers.length}</b><span className="mono">Designers credited</span></div>
           <div className="counter"><b>{foundries.length}</b><span className="mono">Foundries</span></div>
-          <div className="counter"><b>{a.scripts.length}</b><span className="mono">Calligraphic scripts</span></div>
+          <div className="counter"><b>{countries}</b><span className="mono">Countries</span></div>
         </div>
       </section>
 
@@ -156,14 +159,7 @@ export default async function Home() {
       ) : null}
 
       <section className="ticker-band" aria-label="Foundries in the archive" style={{ marginTop: 64, borderTop: '1px solid var(--ink)' }}>
-        <div className="ticker">
-          {[...foundries, ...foundries].map((p, i) => (
-            <span key={p.id + i} style={{ display: 'inline-flex', gap: 48 }}>
-              <Link href={personHref(p.type, p.slug)} className="ul" tabIndex={i >= foundries.length ? -1 : undefined}>{p.name}</Link>
-              <span aria-hidden="true">✳</span>
-            </span>
-          ))}
-        </div>
+        <FoundryTicker items={foundries.map((p) => ({ id: p.id, name: p.name, slug: p.slug, type: p.type }))} />
       </section>
 
       <section className="wrap cta">

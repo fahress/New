@@ -193,7 +193,7 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 .xfade img:nth-child(4) { animation-delay: 12s; }
 
 .ticker-band { border-bottom: 1px solid var(--ink); overflow: hidden; padding-block: 30px; }
-.ticker { display: flex; gap: 48px; width: max-content; animation: slide 60s linear infinite; font-family: var(--f-display); font-size: clamp(30px, 3.4vw, 44px); font-weight: 500; letter-spacing: -.02em; white-space: nowrap; }
+.ticker { display: flex; gap: 48px; width: max-content; animation: slide 120s linear infinite; font-family: var(--f-display); font-size: clamp(30px, 3.4vw, 44px); font-weight: 500; letter-spacing: -.02em; white-space: nowrap; }
 .ticker-band:hover .ticker { animation-play-state: paused; }
 .ticker a { text-decoration: none; }
 
