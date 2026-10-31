@@ -21,10 +21,15 @@ export default async function Home() {
   const countries = new Set([...designers, ...foundries].map((p) => (p.from ?? '').trim().toLowerCase()).filter(Boolean)).size;
 
   // newest releases by release year (then most recently added within the same year)
-  const newest = a.fonts
-    .filter((f) => f.year)
-    .sort((x, y) => (y.year ?? 0) - (x.year ?? 0) || y.createdAt.localeCompare(x.createdAt))
-    .slice(0, 8);
+  // one font per designer / foundry: a font is skipped if anyone credited on it already has one in the list
+  const newest: Font[] = [];
+  const shown = new Set<string>();
+  for (const f of a.fonts.filter((x) => x.year).sort((x, y) => (y.year ?? 0) - (x.year ?? 0) || y.createdAt.localeCompare(x.createdAt))) {
+    if (f.people.some((id) => shown.has(id))) continue;
+    newest.push(f);
+    f.people.forEach((id) => shown.add(id));
+    if (newest.length === 8) break;
+  }
 
   // Designer spotlight rotates weekly among designers with a bio and at least 4 typefaces.
   const pool = designers.filter((p) => p.fontIds.length >= 4 && p.bio.length > 40 && p.logo);
