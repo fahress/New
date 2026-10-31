@@ -31,6 +31,7 @@ export function duplicatePeople(data: Data): Row[][] {
 export function issues(data: Data, linked: (id: string, k: keyof Data['links']) => string[], fontsOf: (id: string) => Row[]): Issue[] {
   const live = data.fonts.filter((f) => f.status === 'published' || f.status === 'featured');
   const fontItem = (f: Row) => ({ href: fontHref(f), label: String(f.name) });
+  const fontNote = (f: Row) => ({ ...fontItem(f), note: String(f.status) === 'draft' ? 'Draft' : String(f.status) === 'pending' ? 'In review' : 'Live' });
   const personItem = (p: Row) => ({ href: personHref(p), label: String(p.name), note: p.type === 'foundry' ? 'Foundry' : 'Designer' });
 
   const broken = new Set((data.linkChecks ?? []).filter((l) => l.verdict === 'broken').map((l) => String(l.url)));
@@ -60,6 +61,9 @@ export function issues(data: Data, linked: (id: string, k: keyof Data['links']) 
     { id: 'no-link', label: 'Live fonts without a link to buy or download', items: live.filter((f) => !(Array.isArray(f.purchase_links) && f.purchase_links.filter(Boolean).length)).map(fontItem) },
     { id: 'no-year', label: 'Live fonts without a release year', items: live.filter((f) => !f.year).map(fontItem) },
     { id: 'no-script', label: 'Live fonts without a script', items: live.filter((f) => !linked(String(f.id), 'scripts').length).map(fontItem) },
+    { id: 'no-description', label: 'Fonts without a description', items: data.fonts.filter((f) => !String(f.description ?? '').trim()).map(fontNote) },
+    { id: 'no-languages', label: 'Fonts without language support', items: data.fonts.filter((f) => !(Array.isArray(f.language_group) && f.language_group.length)).map(fontNote) },
+    { id: 'no-weights', label: 'Fonts without the number of weights', items: data.fonts.filter((f) => !f.weights).map(fontNote) },
   ];
   if (data.hasCountry) {
     list.push({ id: 'no-country', label: 'Designers and foundries without a country', items: data.people.filter((p) => !p.country).map(personItem) });
