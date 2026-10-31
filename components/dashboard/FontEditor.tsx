@@ -108,12 +108,19 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
     if (!/^https?:\/\//i.test(url)) { toast('Paste a full link starting with https://', 'err'); return; }
     setFilling(true);
     try {
-      const r = await db.api<{ url: string; host: string; title: string; description: string; year: number | null; designers: string[]; images: string[] }>('/api/dashboard/scrape', { url });
+      const r = await db.api<{ url: string; host: string; title: string; description: string; year: number | null; license: string | null; designers: string[]; images: string[] }>('/api/dashboard/scrape', { url });
       const isStore = !/behance\.net|instagram\.com|dribbble\.com/.test(r.host);
-      applyFill({ name: r.title, description: r.description, year: r.year, designers: r.designers, images: r.images, links: isStore ? [r.url] : [], source: r.url });
-      if (!isStore) setForm((f) => ({ ...f, cases: f.cases.includes(r.url) ? f.cases : [...f.cases, r.url] }));
-      toast(`Filled from ${r.host} — check everything before saving`);
+      applyFill({ name: r.title, description: r.description, year: r.year, license: r.license ?? undefined, designers: r.designers, images: r.images, links: isStore ? [r.url] : [], source: r.url });
+      // scripts named on the page (e.g. "Arabic", "Persian") are ticked if none are chosen yet
+      const said = `${r.title} ${r.description}`.toLowerCase();
+      const word = (n: string) => String(n).toLowerCase().replace(/[^a-z\u0600-\u06ff ]/g, '').trim();
+      const scripts = data!.scripts.filter((sc) => word(sc.name).length >= 3 && new RegExp(`\\b${word(sc.name)}\\b`).test(said)).map((sc) => String(sc.id));
+      setForm((f) => ({ ...f, scripts: f.scripts.length ? f.scripts : scripts, cases: !isStore && !f.cases.includes(r.url) ? [...f.cases, r.url] : f.cases }));
       setFillUrl('');
+      // bring the first images straight in when the font has none yet; the rest stay below to pick from
+      const take = form.images.length ? [] : r.images.slice(0, 8);
+      toast(`Filled from ${r.host}${take.length ? ` — importing ${take.length} image${take.length === 1 ? '' : 's'}` : ''}. Check everything before saving.`);
+      if (take.length) await importImages(take);
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Could not read that page', 'err');
     } finally {
@@ -309,19 +316,19 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
       <div className="dz-editor">
         <div>
           <section className="dz-section dz-autofill">
-            <h2 className="dz-section__title">Fill from a link <small>MyFonts, Behance, a foundry page…</small></h2>
+            <h2 className="dz-section__title">{id ? 'Fill from a link' : 'Start from a link'} <small>MyFonts, Behance, a foundry page…</small></h2>
             <div className="dz-linkrow">
-              <input className="dz-input" placeholder="Paste the font's page — https://…" value={fillUrl} onChange={(e) => setFillUrl(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); fillFromLink(); } }} />
+              <input className="dz-input" autoFocus={!id && !prefill} placeholder="Paste the font's page — https://…" value={fillUrl} onChange={(e) => setFillUrl(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); fillFromLink(); } }} />
               <button type="button" className="dz-btn dz-btn--primary" disabled={filling || !fillUrl.trim()} onClick={fillFromLink}>{filling ? 'Reading…' : 'Fill in'}</button>
             </div>
-            <p className="dz-hint" style={{ margin: '8px 0 0' }}>Fills the empty fields with the name, description, year, designer and images it finds. Nothing is saved until you press save.</p>
+            <p className="dz-hint" style={{ margin: '8px 0 0' }}>{id ? 'Fills the empty fields with the name, description, year, designer, script and images it finds.' : 'Paste the font’s page and press Fill in — the name, description, year, designer, script, buy link and the first images are brought in for you.'} Nothing is saved until you press save.</p>
           </section>
 
           <section className="dz-section">
             <h2 className="dz-section__title">Details</h2>
             <div className="dz-grid">
               <Field label="Font name" required error={err(!!form.name.trim())} wide>
-                <input className="dz-input" value={form.name} autoFocus={!id} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value, slug: f.slugTouched ? f.slug : slugify(e.target.value) }))} />
+                <input className="dz-input" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value, slug: f.slugTouched ? f.slug : slugify(e.target.value) }))} />
               </Field>
               {dupes.length > 0 && (
                 <div className="dz-warn dz-field--wide">

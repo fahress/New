@@ -38,9 +38,11 @@ const names = (v: unknown): string[] => {
 };
 
 function cleanTitle(t: string, host: string) {
-  return t
+  // "29LT Zawi - Multilingual Arabic & Latin Fonts - …" → "29LT Zawi"; "Ocean Brush Arabic Font | Webfont & Desktop" → "Ocean Brush Arabic"
+  const first = t.split(/\s+[|–—·•:-]\s+/)[0]?.trim() || t;
+  return first
     .replace(/\s*[|–—-]\s*(Behance|MyFonts|Fonts\.com|Creative Market|Envato.*|Dribbble|Instagram|Google Fonts|29LT|Linotype|Monotype).*$/i, '')
-    .replace(/\s*(Font|Typeface|Font Family|Arabic Font|Typeface Family)\s*$/i, '')
+    .replace(/\s*(Fonts?|Typefaces?|Font Family|Typeface Family|Webfont.*)\s*$/i, '')
     .replace(/^(Download|Buy)\s+/i, '')
     .replace(new RegExp(`\\s*[|–—-]\\s*${host.split('.')[0]}.*$`, 'i'), '')
     .trim();
@@ -52,7 +54,13 @@ function images(html: string, base: URL, meta: Record<string, string[]>, ld: Rec
     if (!u) return;
     try {
       const abs = new URL(decode(u), base).toString();
-      if (/^data:/.test(abs) || /\.(svg|ico)(\?|$)/i.test(abs) || /(logo|icon|avatar|sprite|favicon|badge|emoji|pixel|tracking|placeholder|blank)/i.test(abs)) return;
+      if (/^data:/.test(abs) || /\.(svg|ico)(\?|$)/i.test(abs) || /(logo|icon|avatar|sprite|favicon|badge|emoji|pixel|tracking|placeholder|blank|banner|top_hat)/i.test(abs)) return;
+      // MyFonts: only the font's own gallery (not site promos), at full size
+      if (/myfonts\.com$/.test(base.hostname)) {
+        if (!/cdn\.myfonts\.net\/.*\/images\/pim\//.test(abs)) return;
+        urls.push(abs.replace(/width=\d+,height=\d+/, 'width=1600,height=1600'));
+        return;
+      }
       urls.push(abs);
     } catch { /* skip */ }
   };
@@ -101,7 +109,9 @@ export async function POST(request: Request) {
   const rawTitle = meta['og:title']?.[0] || names(ld.find((x) => x.name)?.name)[0] || decode(/<title[^>]*>([^<]*)<\/title>/i.exec(html)?.[1] ?? '');
   const description = meta['og:description']?.[0] || meta['description']?.[0] || '';
   const dates = [meta['article:published_time']?.[0], ...ld.map((x) => x.datePublished as string | undefined)].filter(Boolean) as string[];
-  const yearMatch = dates.map((d) => /(19|20)\d{2}/.exec(d)?.[0]).find(Boolean);
+  const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const stated = /(?:released?(?: date| in| on)?|release year|published(?: in| on)?|first published|launched(?: in)?)\s*[:\-–]?\s*(?:[A-Za-z]+\s+)?(?:\d{1,2},?\s+)?((?:19|20)\d\d)\b/i.exec(text)?.[1];
+  const yearMatch = dates.map((d) => /(19|20)\d{2}/.exec(d)?.[0]).find(Boolean) ?? stated;
 
   const designers = new Set<string>();
   for (const x of ld) [...names(x.author), ...names(x.creator), ...names(x.designer)].forEach((n) => designers.add(n));
@@ -113,7 +123,8 @@ export async function POST(request: Request) {
     host,
     title: cleanTitle(decode(rawTitle), host),
     description: description.slice(0, 1200),
-    year: yearMatch ? Number(yearMatch) : null,
+    year: yearMatch && Number(yearMatch) <= new Date().getFullYear() ? Number(yearMatch) : null,
+    license: /fonts\.google\.com$/.test(host) || /\b(free for (personal and )?commercial use|free download|SIL Open Font License|OFL)\b/i.test(text.slice(0, 200000)) ? 'free' : null,
     designers: [...designers].filter((n) => n.length < 80).slice(0, 6),
     images: images(html, base, meta, ld),
   });
