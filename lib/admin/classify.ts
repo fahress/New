@@ -8,7 +8,8 @@ export type Guess = {
   from: Record<string, 'head' | 'body'>;
 };
 
-type Rule = { name: string; re: RegExp; minBody?: number };
+/** headOnly: the word is too common in page text ("extended" language support, "pixel-perfect"…) to trust unless the title or description says it */
+type Rule = { name: string; re: RegExp; minBody?: number; headOnly?: boolean };
 
 // matched against the taxonomy names in the database (case-insensitive)
 const SCRIPT_RULES: Rule[] = [
@@ -25,20 +26,20 @@ const STYLE_RULES: Rule[] = [
   { name: 'serif', re: /(?<!sans[\s-]?)\bserif(ed)?\b|\bmodern serif\b/gi },
   { name: 'slab', re: /\bslab\b/gi },
   { name: 'rounded', re: /\brounded\b/gi },
-  { name: 'condescend', re: /\bcondensed\b|\bcompressed\b|\bnarrow\b/gi },
-  { name: 'extended', re: /(?<!latin\s)\b(extended|expanded)\b(?!\s+(latin|additional|character|set|language|support))/gi },
-  { name: 'script', re: /\bscript (font|typeface)\b|\bbrush script\b|\bcursive\b/gi },
+  { name: 'condescend', headOnly: true, re: /\bcondensed\b|\bcompressed\b|\bnarrow\b/gi },
+  { name: 'extended', headOnly: true, re: /(?<!latin\s)\b(extended|expanded)\b(?!\s+(latin|additional|character|set|language|support))/gi },
+  { name: 'script', headOnly: true, re: /\bscript (font|typeface)\b|\bbrush script\b|\bcursive\b/gi },
 ];
 const TYPE_RULES: Rule[] = [
-  { name: 'pixel', re: /\bpixel(ated)?\b|\bbitmap\b/gi },
-  { name: 'hand written', re: /\bhand[\s-]?(written|writing|drawn|lettered|made)\b|\bhandwriting\b|\bbrush\b/gi },
+  { name: 'pixel', headOnly: true, re: /\bpixel(ated)?\b|\bbitmap\b/gi },
+  { name: 'hand written', headOnly: true, re: /\bhand[\s-]?(written|writing|drawn|lettered|made)\b|\bhandwriting\b|\bbrush\b/gi },
   { name: 'stencil', re: /\bstencil\b/gi },
   { name: 'geometric', re: /\bgeometric(al)?\b/gi },
-  { name: 'inline', re: /\binline\b/gi },
-  { name: 'shadow', re: /\bshadow(ed)?\b/gi },
+  { name: 'inline', headOnly: true, re: /\binline\b/gi },
+  { name: 'shadow', headOnly: true, re: /\bshadow(ed)?\b/gi },
   { name: 'color', re: /\bcolou?r font\b|\bcolr\b|\bchromatic\b|\bopentype[\s-]svg\b/gi },
   { name: 'inktrap', re: /\bink[\s-]?traps?\b/gi },
-  { name: 'rough', re: /\brough\b|\bdistressed\b|\bgrunge\b|\btextured\b/gi },
+  { name: 'rough', headOnly: true, re: /\brough\b|\bdistressed\b|\bgrunge\b|\btextured\b/gi },
   { name: 'high contrast', re: /\bhigh[\s-]contrast\b/gi },
 ];
 const GENRE_RULES: Rule[] = [
@@ -76,11 +77,11 @@ export function classify(page: Page, names: { scripts: Map<string, string>; styl
     for (const r of rules) {
       const id = ids.get(r.name);
       if (!id) continue;
-      if (count(r.re, head)) { out.push(id); from[`${field}:${id}`] = 'head'; } else if (count(r.re, body) >= (r.minBody ?? minBody)) { out.push(id); from[`${field}:${id}`] = 'body'; }
+      if (count(r.re, head)) { out.push(id); from[`${field}:${id}`] = 'head'; } else if (!r.headOnly && count(r.re, body) >= (r.minBody ?? minBody)) { out.push(id); from[`${field}:${id}`] = 'body'; }
     }
     return out;
   };
-  const scripts = pick(SCRIPT_RULES, names.scripts, 'scripts', 2);
+  const scripts = pick(SCRIPT_RULES, names.scripts, 'scripts', 1);
   let styles = pick(STYLE_RULES, names.styles, 'styles');
   // "serif" found only because "sans serif" was mentioned is handled by the lookbehind; drop serif when sans is in the title
   if (styles.includes(names.styles.get('serif') ?? '-') && styles.includes(names.styles.get('sans serif') ?? '-') && from[`styles:${names.styles.get('sans serif')}`] === 'head' && from[`styles:${names.styles.get('serif')}`] === 'body') styles = styles.filter((x) => x !== names.styles.get('serif'));
@@ -106,7 +107,7 @@ export function classify(page: Page, names: { scripts: Map<string, string>; styl
   // weights: a stated number first, then the weight names listed on the page
   let weights: number | null = null;
   const stated = /\b(\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|eighteen|twenty)\s+(weights|font weights)\b/i.exec(all)
-    ?? (/\bitalic/i.test(all) ? null : /\b(\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+(styles|fonts)\b/i.exec(all));
+    ?? null;
   if (stated) { const n = Number(stated[1]) || NUM[stated[1].toLowerCase()] || 0; if (n >= 1 && n <= 20) { weights = n; from.weights = 'body'; } }
   if (!weights) {
     const found = WEIGHT_NAMES.filter(([, re]) => re.test(body)).map(([n]) => n);

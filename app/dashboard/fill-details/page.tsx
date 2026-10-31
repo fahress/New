@@ -64,22 +64,31 @@ export default function FillDetails() {
     setPhase('reading');
     const out: Plan[] = [];
     setProgress({ done: 0, total: todo.length, current: '' });
-    for (const [i, f] of todo.entries()) {
-      if (stop.current) break;
+    // three pages at a time
+    let next = 0;
+    let done = 0;
+    const one = async (f: Row) => {
       const url = linkOf(f);
       const base = { id: String(f.id), name: String(f.name), host: hostOf(url), url };
-      setProgress({ done: i, total: todo.length, current: base.name });
       const empty = { scripts: [], styles: [], types: [], genres: [], groups: [], year: null, weights: null, variable: false };
-      if (notAFontPage(url)) { out.push({ ...base, add: empty, error: 'The link isn’t a page about this font (home page, article or PDF)' }); continue; }
+      if (notAFontPage(url)) { out.push({ ...base, add: empty, error: 'The link isn’t a page about this font (home page, article or PDF)' }); return; }
       try {
         const page = await db.api<Page>('/api/dashboard/read-page', { url });
-        if ((page.text ?? '').length < 200 && !page.description) { out.push({ ...base, add: empty, error: 'The page has almost no text (it may need a sign-in or loads its content later)' }); continue; }
+        if ((page.text ?? '').length < 200 && !page.description) { out.push({ ...base, add: empty, error: 'The page has almost no text (it may need a sign-in or loads its content later)' }); return; }
         out.push({ ...base, add: empty, guess: classify(page, names!) });
       } catch (e) {
         out.push({ ...base, add: empty, error: e instanceof Error ? e.message : 'Could not read the page' });
       }
-      await sleep(300);
-    }
+    };
+    await Promise.all([0, 1, 2].map(async () => {
+      while (!stop.current && next < todo.length) {
+        const f = todo[next++];
+        await one(f);
+        done++;
+        setProgress({ done, total: todo.length, current: String(f.name) });
+        await sleep(200);
+      }
+    }));
 
     // words that turn up on most pages of one site come from its menus, not the font — drop them unless they're in the font's title or description
     const byHost = new Map<string, Plan[]>();
