@@ -3,8 +3,14 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useMemo, useState } from 'react';
 import { STATUSES, StatusPill, useToast } from '@/components/dashboard/ui';
-import { db } from '@/lib/admin/db';
+import { db, type Row } from '@/lib/admin/db';
 import { coverOf, img, useData } from '@/lib/admin/store';
+
+/** Presentation images on a font (the cover counts if it isn't already in the list). */
+const imageCount = (f: Row) => {
+  const list = Array.isArray(f.images) ? f.images.filter(Boolean).map(String) : [];
+  return list.length + (f.cover && !list.includes(String(f.cover)) ? 1 : 0);
+};
 
 export default function FontsPage() {
   return <Suspense><Fonts /></Suspense>;
@@ -19,6 +25,7 @@ function Fonts() {
   const status = params.get('status') ?? '';
   const [script, setScript] = useState('');
   const [license, setLicense] = useState('');
+  const [imgs, setImgs] = useState('');
   const [sort, setSort] = useState<'new' | 'az' | 'year' | 'updated'>('new');
   const [shown, setShown] = useState(60);
   const [picked, setPicked] = useState<string[]>([]);
@@ -30,6 +37,7 @@ function Fonts() {
     let list = data.fonts.filter((f) => {
       if (status && f.status !== status) return false;
       if (license && f.license !== license) return false;
+      if (imgs) { const n = imageCount(f); if (imgs === '5' ? n < 5 : n !== Number(imgs)) return false; }
       if (script && !linked(String(f.id), 'scripts').includes(script)) return false;
       if (!n) return true;
       const credit = peopleOf(String(f.id)).map((p) => String(p.name)).join(' ');
@@ -39,9 +47,12 @@ function Fonts() {
     if (sort === 'year') list = list.slice().sort((a, b) => Number(b.year ?? 0) - Number(a.year ?? 0));
     if (sort === 'updated') list = list.slice().sort((a, b) => String(b.updated_at ?? b.created_at).localeCompare(String(a.updated_at ?? a.created_at)));
     return list;
-  }, [data, q, status, script, license, sort, linked, peopleOf]);
+  }, [data, q, status, script, license, imgs, sort, linked, peopleOf]);
 
   if (!data) return null;
+  // counts for the image filter, within the current status tab
+  const imageCounts: Record<number, number> = {};
+  for (const f of data.fonts) { if (status && f.status !== status) continue; const n = Math.min(imageCount(f), 5); imageCounts[n] = (imageCounts[n] ?? 0) + 1; }
   const setStatus = (s: string) => router.replace(s ? `/dashboard/fonts?status=${s}` : '/dashboard/fonts');
   const counts = Object.fromEntries(STATUSES.map((s) => [s.id, data.fonts.filter((f) => f.status === s.id).length]));
   const allPicked = rows.length > 0 && rows.slice(0, shown).every((r) => picked.includes(String(r.id)));
@@ -89,6 +100,11 @@ function Fonts() {
           <option value="">All scripts</option>
           {data.scripts.map((s) => <option key={s.id} value={String(s.id)}>{s.name}</option>)}
         </select>
+        <select className="dz-select" value={imgs} onChange={(e) => { setImgs(e.target.value); setShown(60); }} aria-label="Images">
+          <option value="">Any number of images</option>
+          {[0, 1, 2, 3, 4].map((n) => <option key={n} value={String(n)}>{n === 0 ? 'No images' : `${n} image${n === 1 ? '' : 's'}`} ({imageCounts[n] ?? 0})</option>)}
+          <option value="5">5 or more images ({imageCounts[5] ?? 0})</option>
+        </select>
         <select className="dz-select" value={license} onChange={(e) => setLicense(e.target.value)} aria-label="License">
           <option value="">Any license</option>
           <option value="free">Free</option><option value="paid">Paid</option><option value="custom">Custom</option>
@@ -120,6 +136,7 @@ function Fonts() {
               <th style={{ width: 100 }}>Cover</th>
               <th>Font</th>
               <th>Credit</th>
+              <th>Images</th>
               <th>Year</th>
               <th>License</th>
               <th>Status</th>
@@ -135,6 +152,7 @@ function Fonts() {
                   <td>{coverOf(f) ? <img className="dz-thumb" src={img(coverOf(f), 256)} alt="" loading="lazy" /> : <span className="dz-thumb" />}</td>
                   <td><Link className="dz-row-link" href={`/dashboard/fonts/${id}`}>{String(f.name)}</Link><br /><small className="dz-muted">/{String(f.slug)}</small></td>
                   <td>{people.length ? people.map((p) => String(p.name)).join(', ') : <span className="dz-tag dz-tag--warn">No credit</span>}</td>
+                  <td>{imageCount(f) ? imageCount(f) : <span className="dz-tag dz-tag--warn">0</span>}</td>
                   <td>{f.year ? String(f.year) : <span className="dz-muted">—</span>}</td>
                   <td style={{ textTransform: 'capitalize' }}>{String(f.license ?? '')}</td>
                   <td><StatusPill status={String(f.status)} /></td>
