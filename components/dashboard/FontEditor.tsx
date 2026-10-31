@@ -58,6 +58,13 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
   const [remote, setRemote] = useState<string[]>([]);
   const [newNames, setNewNames] = useState<string[]>([]);
   const [fillUrl, setFillUrl] = useState('');
+  // the font's own source / buy link is ready in "Fill from a link"
+  useEffect(() => {
+    if (!existing) return;
+    const link = String(existing.source_url || (Array.isArray(existing.purchase_links) ? existing.purchase_links[0] : '') || '');
+    if (/^https?:\/\//.test(link)) setFillUrl((u) => u || link);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [existing?.id]);
   const [filling, setFilling] = useState(false);
   const [importing, setImporting] = useState(0);
   const isEditor = data?.role === 'editor';

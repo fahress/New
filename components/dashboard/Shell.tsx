@@ -21,6 +21,7 @@ const NAV = [
   { group: 'Tools' },
   { href: '/dashboard/import', label: 'Import from survey' },
   { href: '/dashboard/import-awards', label: 'Import awards' },
+  { href: '/dashboard/fill-images', label: 'Fill draft images' },
   { href: '/dashboard/duplicates', label: 'Duplicates', badge: 'dups' as const },
   { href: '/dashboard/links', label: 'Link health', badge: 'broken' as const },
   { href: '/dashboard/stats', label: 'Clicks & stats' },
