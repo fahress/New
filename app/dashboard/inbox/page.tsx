@@ -217,7 +217,7 @@ export default function Inbox() {
                     )}
                     {s.kind === 'font_claim' && font && isAdmin && ownedBy(s).filter((o) => !linked(String(font.id), 'designers').includes(String(o.id))).map((o) => (
                       <button key={String(o.id)} type="button" className="dz-btn dz-btn--primary" disabled={busy === id} onClick={() => close(s, 'accepted', `${o.name} added to ${font.name}`, async () => {
-                        await db.insert('font_designers', [{ font_id: String(font.id), designer_id: String(o.id) }]);
+                        await db.link('font_designers', [{ font_id: String(font.id), designer_id: String(o.id) }]);
                         await db.log({ action: 'update', entity: 'font', entity_id: String(font.id), label: `${font.name}: credited ${o.name} (claim)`, after: { designer_id: o.id } });
                         await db.refreshSite();
                       })}>Credit {String(o.name)}</button>

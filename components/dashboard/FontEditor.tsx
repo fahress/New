@@ -188,7 +188,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
     const num = kind !== 'designers' && kind !== 'awards';
     for (const old of current) if (!ids.includes(old)) await db.remove(table, { font_id: fontId, [key]: old });
     const add = ids.filter((x) => !current.includes(x));
-    if (add.length) await db.insert(table, add.map((x) => ({ font_id: fontId, [key]: num ? Number(x) : x })));
+    if (add.length) await db.link(table, add.map((x) => ({ font_id: fontId, [key]: num ? Number(x) : x })));
   }
 
   async function save(nextStatus?: string) {
@@ -224,10 +224,10 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
         const sameSet = curPeople.length === form.people.length && curPeople.every((p) => form.people.includes(p));
         if (sameSet) {
           for (const p of curPeople) await db.remove('font_designers', { font_id: fontId, designer_id: p });
-          for (const p of form.people) await db.insert('font_designers', { font_id: fontId, designer_id: p });
+          await db.link('font_designers', form.people.map((p) => ({ font_id: fontId, designer_id: p })));
         } else {
           for (const p of curPeople) if (!form.people.includes(p)) await db.remove('font_designers', { font_id: fontId, designer_id: p });
-          for (const p of form.people) if (!curPeople.includes(p)) await db.insert('font_designers', { font_id: fontId, designer_id: p });
+          await db.link('font_designers', form.people.filter((p) => !curPeople.includes(p)).map((p) => ({ font_id: fontId, designer_id: p })));
         }
       }
       // awards carry an optional link

@@ -25,12 +25,23 @@ async function demoTables() {
 const matches = (r: Row, m: Match) => Object.entries(m).every(([k, v]) => String(r[k]) === String(v));
 
 /* ---------- public API ---------- */
+/** Stable sort for paged reads: link tables have no id column, so they sort by their two keys. */
+const ORDER: Record<string, [string, string?]> = {
+  font_scripts: ['font_id', 'script_id'], font_genres: ['font_id', 'genre_id'], font_styles: ['font_id', 'style_id'], font_types: ['font_id', 'type_id'],
+  font_designers: ['font_id', 'designer_id'], font_awards: ['font_id', 'award_id'], font_languages: ['font_id', 'lang_id'],
+};
+
 export const db = {
   async all(table: string, select = '*'): Promise<Row[]> {
     if (DEMO) return structuredClone((await demoTables())[table] ?? []);
     const out: Row[] = [];
+    // Read in pages of 1000 in a fixed order — without one, the database may return pages that
+    // overlap or skip rows, and the dashboard then thinks a link is missing when it isn't.
+    const [first, second] = ORDER[table] ?? ['id'];
     for (let from = 0; ; from += 1000) {
-      const { data, error } = await supabase().from(table).select(select).range(from, from + 999);
+      let q = supabase().from(table).select(select).order(first);
+      if (second) q = q.order(second);
+      const { data, error } = await q.range(from, from + 999);
       if (error) explain(error, `read ${table}`);
       out.push(...((data ?? []) as Row[]));
       if (!data || data.length < 1000) break;
@@ -90,6 +101,15 @@ export const db = {
     const { data, error } = await q;
     if (error) return null;
     return (data ?? []) as Row[];
+  },
+
+  /** Adds font ↔ tag / designer links, skipping any that already exist. */
+  async link(table: string, rows: Row[]): Promise<void> {
+    if (!rows.length) return;
+    const key = ORDER[table]?.[1];
+    if (DEMO || !key) { await db.insert(table, rows); return; }
+    const { error } = await supabase().from(table).upsert(rows, { onConflict: `font_id,${key}`, ignoreDuplicates: true });
+    if (error) explain(error, `add to ${table}`);
   },
 
   async upsert(table: string, rows: Row[], onConflict: string): Promise<void> {

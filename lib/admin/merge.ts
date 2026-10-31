@@ -32,7 +32,7 @@ export async function mergeFonts(data: Data, keeper: Row, losers: Row[]) {
       const rows = data.links[kind as keyof Data['links']];
       const have = new Set(rows.filter((r) => String(r.font_id) === kid).map((r) => String(r[key])));
       const add = rows.filter((r) => String(r.font_id) === lid && !have.has(String(r[key])));
-      if (add.length) await db.insert(table, add.map((r) => ({ font_id: kid, [key]: r[key], ...(kind === 'awards' ? { url: r.url ?? null } : {}) })));
+      if (add.length) await db.link(table, add.map((r) => ({ font_id: kid, [key]: r[key], ...(kind === 'awards' ? { url: r.url ?? null } : {}) })));
       await db.remove(table, { font_id: lid });
     }
     images = union(images, [loser.cover, ...arr(loser.images)]);
@@ -62,7 +62,7 @@ export async function mergePeople(data: Data, keeper: Row, losers: Row[]) {
     const credits = data.links.designers.filter((r) => String(r.designer_id) === lid);
     const have = new Set(data.links.designers.filter((r) => String(r.designer_id) === kid).map((r) => String(r.font_id)));
     const add = credits.filter((r) => !have.has(String(r.font_id)));
-    if (add.length) await db.insert('font_designers', add.map((r) => ({ font_id: r.font_id, designer_id: kid })));
+    if (add.length) await db.link('font_designers', add.map((r) => ({ font_id: r.font_id, designer_id: kid })));
     await db.remove('font_designers', { designer_id: lid });
     await db.remove('designers', { id: lid });
     if (data.redirects !== null && loser.slug && loser.slug !== keeper.slug) await db.upsert('font_redirects', [{ from_slug: loser.slug, to_slug: keeper.slug, kind: loser.type === 'foundry' ? 'foundry' : 'designer' }], 'from_slug');
