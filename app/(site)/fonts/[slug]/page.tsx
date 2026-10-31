@@ -4,6 +4,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import FontCard from '@/components/FontCard';
 import Gallery from '@/components/Gallery';
 import SuggestCorrection from '@/components/SuggestCorrection';
+import ClaimFont from '@/components/claims/ClaimFont';
 import { getArchive, getRedirect } from '@/lib/data';
 import { excerpt, hostOf, label, licenseLabel, slugify, storageUrl, thumbUrl, weightsLabel, personHref } from '@/lib/format';
 import { creditOf, toCard } from '@/lib/view';
@@ -174,7 +175,8 @@ export default async function FontPage({ params }: Props) {
               </div>
             </div>
           ) : null}
-          <div className="panel__sec" style={{ borderTop: '1px solid var(--ink)' }}>
+          <div className="panel__sec" style={{ borderTop: '1px solid var(--ink)', display: 'grid', gap: 14 }}>
+            <ClaimFont fontId={f.id} fontName={f.name} slug={f.slug} />
             <SuggestCorrection fontId={f.id} about={f.name} />
           </div>
         </aside>

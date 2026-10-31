@@ -6,6 +6,7 @@ import SuggestCorrection from '@/components/SuggestCorrection';
 import WorkGrid from '@/components/WorkGrid';
 import { getArchive, getRedirect } from '@/lib/data';
 import { excerpt, hostOf, personHref, storageUrl, thumbUrl } from '@/lib/format';
+import ClaimProfile from '@/components/claims/ClaimProfile';
 import { tagNames, toCard } from '@/lib/view';
 
 export async function personParams(kind: PersonType) {
@@ -125,7 +126,7 @@ export async function PersonPage({ slug, kind }: { slug: string; kind: PersonTyp
           <p className="muted">No typefaces linked yet.</p>
         )}
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start', marginTop: 48, paddingTop: 20, borderTop: '1px solid var(--line)' }}>
-          {!p.claimed ? <Link href={`/account?claim=${p.slug}`} className="ul" style={{ fontSize: 14 }}>Is this you? Claim this profile →</Link> : null}
+          {!p.claimed ? <ClaimProfile designerId={p.id} name={p.name} slug={p.slug} kind={p.type === 'foundry' ? 'foundry' : 'designer'} /> : null}
           <div style={{ flex: '1 1 320px', maxWidth: 560 }}><SuggestCorrection designerId={p.id} about={p.name} /></div>
         </div>
       </section>

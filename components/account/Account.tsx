@@ -10,7 +10,10 @@ type Row = Record<string, any>; // eslint-disable-line @typescript-eslint/no-exp
 type Session = { id: string; email: string };
 
 const SOCIAL = [['website_url', 'Website'], ['instagram_url', 'Instagram'], ['behance_url', 'Behance'], ['linkedin_url', 'LinkedIn']] as const;
-const KIND: Record<string, string> = { font: 'Font submission', correction: 'Correction', claim: 'Profile claim', profile_edit: 'Profile changes' };
+const KIND: Record<string, string> = { font: 'Font submission', correction: 'Correction', claim: 'Profile claim', profile_edit: 'Profile changes', font_claim: 'Font claim', font_edit: 'Font changes', message: 'Message' };
+const LICENSES = [['paid', 'Paid'], ['free', 'Free'], ['custom', 'Custom / not for sale']] as const;
+/** Only same-site paths, so the sign-in page can't be used to bounce people elsewhere. */
+const safeNext = (v: string | null) => (v && v.startsWith('/') && !v.startsWith('//') ? v : null);
 const STATUS: Record<string, string> = { new: 'Waiting for review', accepted: 'Accepted', rejected: 'Declined' };
 
 export default function Account() {
@@ -49,7 +52,8 @@ function SignIn() {
     setBusy(true);
     setMsg(null);
     const sb = supabase();
-    const back = `${window.location.origin}/account${claiming ? `?claim=${encodeURIComponent(claiming)}` : ''}`;
+    const next = safeNext(params.get('next'));
+    const back = `${window.location.origin}/account${claiming ? `?claim=${encodeURIComponent(claiming)}` : next ? `?next=${encodeURIComponent(next)}` : ''}`;
     if (mode === 'in') {
       const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password });
       if (error) setMsg({ text: error.message === 'Invalid login credentials' ? 'That email and password don’t match.' : error.message, err: true });
@@ -74,7 +78,7 @@ function SignIn() {
           <li><b>Submit new releases</b> straight to the archive.</li>
           <li><b>See how many visitors</b> Fahress sends to your store each month.</li>
         </ul>
-        {claiming ? <p className="form-note">Sign in or create an account to claim this profile.</p> : null}
+        {claiming ? <p className="form-note">Sign in or create an account to claim this profile.</p> : params.get('next') ? <p className="form-note">Sign in or create an account, and we&apos;ll take you straight back.</p> : null}
       </div>
       <form className="form acct-card" onSubmit={submit}>
         <div className="seg seg--pill" role="tablist" style={{ justifySelf: 'start' }}>
@@ -112,15 +116,23 @@ function Dashboard({ me }: { me: Session }) {
   const [mine, setMine] = useState<Row[] | null>(null);
   const [subs, setSubs] = useState<Row[]>([]);
   const [stats, setStats] = useState<Row[] | null>(null);
+  const [fonts, setFonts] = useState<Row[]>([]);
   const params = useSearchParams();
+
+  useEffect(() => {
+    const next = safeNext(params.get('next'));
+    if (next) window.location.replace(next);
+  }, [params]);
 
   const load = useCallback(async () => {
     const sb = supabase();
-    const [{ data: owned }, { data: own }, st] = await Promise.all([
+    const [{ data: owned }, { data: own }, st, mf] = await Promise.all([
       sb.from('designers').select('*').eq('user_id', me.id),
       sb.from('submissions').select('*').eq('user_id', me.id).order('created_at', { ascending: false }),
       sb.rpc('my_click_stats'),
+      sb.rpc('my_fonts'),
     ]);
+    setFonts(mf.error ? [] : ((mf.data as Row[]) ?? []));
     setMine(owned ?? []);
     setSubs(own ?? []);
     setStats(st.error ? null : (st.data as Row[]));
@@ -140,7 +152,11 @@ function Dashboard({ me }: { me: Session }) {
         </div>
       </div>
 
-      {mine.map((p) => <OwnedProfile key={p.id} p={p} me={me} stats={stats} pending={subs.some((s) => s.kind === 'profile_edit' && s.status === 'new' && s.designer_id === p.id)} onSent={load} />)}
+      {mine.map((p) => (
+        <OwnedProfile key={p.id} p={p} me={me} stats={stats} pending={subs.some((s) => s.kind === 'profile_edit' && s.status === 'new' && s.designer_id === p.id)} onSent={load}>
+          <MyFonts p={p} me={me} fonts={fonts.filter((f) => f.designer_id === p.id)} subs={subs} onSent={load} />
+        </OwnedProfile>
+      ))}
 
       {mine.length === 0 ? (
         pendingClaims.length ? (
@@ -154,7 +170,10 @@ function Dashboard({ me }: { me: Session }) {
           <div className="acct-subs">
             {subs.map((s) => (
               <div key={s.id}>
-                <span>{KIND[s.kind] ?? s.kind}{s.payload?.name ? ` · ${s.payload.name}` : ''}</span>
+                <span>
+                  {KIND[s.kind] ?? s.kind}{s.payload?.name ? ` · ${s.payload.name}` : ''}
+                  {s.reply ? <small style={{ display: 'block', marginTop: 4, color: s.status === 'rejected' ? '#b42318' : 'var(--mute)' }}>{s.status === 'rejected' ? 'Why: ' : 'Note: '}{s.reply}</small> : null}
+                </span>
                 <span className={`pill pill--sm${s.status === 'accepted' ? ' pill--solid' : ''}`}>{STATUS[s.status] ?? s.status}</span>
                 <span className="muted">{new Date(s.created_at).toLocaleDateString()}</span>
               </div>
@@ -166,7 +185,7 @@ function Dashboard({ me }: { me: Session }) {
   );
 }
 
-function OwnedProfile({ p, me, stats, pending, onSent }: { p: Row; me: Session; stats: Row[] | null; pending: boolean; onSent: () => void }) {
+function OwnedProfile({ p, me, stats, pending, onSent, children }: { p: Row; me: Session; stats: Row[] | null; pending: boolean; onSent: () => void; children?: React.ReactNode }) {
   const [edit, setEdit] = useState(false);
   const mineStats = (stats ?? []).filter((r) => r.designer_id === p.id);
   const total30 = mineStats.reduce((n, r) => n + Number(r.clicks_30d ?? 0), 0);
@@ -198,6 +217,7 @@ function OwnedProfile({ p, me, stats, pending, onSent }: { p: Row; me: Session; 
         </details>
       )}
       {edit ? <EditProfile p={p} me={me} onClose={() => setEdit(false)} onSent={() => { setEdit(false); onSent(); }} /> : null}
+      {children}
     </section>
   );
 }
@@ -260,6 +280,146 @@ function EditProfile({ p, me, onClose, onSent }: { p: Row; me: Session; onClose:
       {err ? <p className="form-error">{err}</p> : null}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
         <button className="btn" disabled={busy}>Send for review</button>
+        <button type="button" className="btn btn--ghost" onClick={onClose}>Cancel</button>
+      </div>
+    </form>
+  );
+}
+
+/* ---------------- fonts under a claimed profile ---------------- */
+const STATUS_LABEL: Record<string, string> = { published: 'On the site', featured: 'On the site · featured', draft: 'Draft — not on the site', pending: 'Draft — not on the site' };
+
+function MyFonts({ p, me, fonts, subs, onSent }: { p: Row; me: Session; fonts: Row[]; subs: Row[]; onSent: () => void }) {
+  const [editing, setEditing] = useState<string | null>(null);
+  const [sent, setSent] = useState<string | null>(null);
+  const waiting = (id: string) => subs.some((s) => s.kind === 'font_edit' && s.status === 'new' && s.font_id === id);
+  const sorted = fonts.slice().sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  return (
+    <div style={{ display: 'grid', gap: 14, borderTop: '1px solid var(--line)', paddingTop: 24 }}>
+      <div>
+        <h3 className="display" style={{ margin: "0 0 6px", fontSize: 22 }}>Your fonts <span className="muted">({fonts.length})</span></h3>
+        <p className="muted" style={{ margin: 0, fontSize: 14 }}>Edit the fonts credited to {p.name}, or put a draft on the site. Every change is checked by the Fahress team before it goes live. Fonts can&apos;t be deleted from here — email admin@fahress.com if one should be removed.</p>
+      </div>
+      {sent ? <p className="form-note" style={{ margin: 0 }}>Sent — your changes to {sent} are waiting for review.</p> : null}
+      {sorted.length === 0 ? <p className="muted" style={{ margin: 0 }}>No fonts are credited to this profile yet. <Link href="/submit" className="ul">Submit one</Link>.</p> : (
+        <div className="acct-fonts">
+          {sorted.map((f) => (
+            <div key={f.id} style={editing === f.id ? { gridTemplateColumns: 'minmax(0, 1fr)' } : undefined}>
+              {editing === f.id ? (
+                <FontEdit f={f} me={me} designerId={String(p.id)} onClose={() => setEditing(null)} onSent={() => { setEditing(null); setSent(String(f.name)); onSent(); }} />
+              ) : (
+                <>
+                  {f.cover || f.images?.[0] ? <img src={thumbUrl(f.cover || f.images[0], 256)} alt="" loading="lazy" /> : <span className="acct-fonts__ph" />}
+                  <span style={{ minWidth: 0 }}>
+                    {f.status === 'published' || f.status === 'featured' ? <Link href={`/fonts/${f.slug}`} className="ul">{f.name}</Link> : <b style={{ fontWeight: 500 }}>{f.name}</b>}
+                    <small className="muted" style={{ display: 'block' }}>{STATUS_LABEL[f.status] ?? f.status}</small>
+                  </span>
+                  {waiting(String(f.id)) ? <span className="pill pill--sm">Waiting for review</span> : <button type="button" className="btn btn--ghost" style={{ minHeight: 38 }} onClick={() => { setEditing(String(f.id)); setSent(null); }}>Edit</button>}
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+async function uploadImage(me: Session, file: File): Promise<string | null> {
+  if (!file.type.startsWith('image/') || file.size > 10e6) return null;
+  const path = `submissions/${me.id}/${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-').slice(-60)}`;
+  const { error } = await supabase().storage.from('studio').upload(path, file, { upsert: false, contentType: file.type });
+  return error ? null : path;
+}
+
+function FontEdit({ f, me, designerId, onClose, onSent }: { f: Row; me: Session; designerId: string; onClose: () => void; onSent: () => void }) {
+  const startImages: string[] = Array.from(new Set([f.cover, ...(Array.isArray(f.images) ? f.images : [])].filter(Boolean).map(String)));
+  const live = f.status === 'published' || f.status === 'featured';
+  const [x, setX] = useState({
+    name: String(f.name ?? ''), year: f.year ? String(f.year) : '', license: String(f.license ?? ''), description: String(f.description ?? ''),
+    links: (Array.isArray(f.purchase_links) ? f.purchase_links : []).join('\n'), images: startImages, live,
+  });
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  async function add(files: FileList) {
+    setBusy(true); setErr(null);
+    const added: string[] = [];
+    for (const file of Array.from(files).slice(0, 12)) { const path = await uploadImage(me, file); if (path) added.push(path); else setErr('Some images couldn’t be uploaded — use JPG, PNG or WebP under 10 MB.'); }
+    setX((v) => ({ ...v, images: [...v.images, ...added] }));
+    setBusy(false);
+  }
+  const move = (i: number, d: number) => setX((v) => { const a = v.images.slice(); const j = i + d; if (j < 0 || j >= a.length) return v; [a[i], a[j]] = [a[j], a[i]]; return { ...v, images: a }; });
+
+  async function send(e: React.FormEvent) {
+    e.preventDefault();
+    const changes: Row = {};
+    if (x.name.trim() && x.name.trim() !== String(f.name ?? '')) changes.name = x.name.trim();
+    const year = x.year.trim() ? Number(x.year.trim()) : null;
+    if (year !== (f.year ? Number(f.year) : null)) {
+      if (year !== null && (!Number.isInteger(year) || year < 1900 || year > new Date().getFullYear() + 1)) { setErr('Enter the release year as four digits, e.g. 2021.'); return; }
+      changes.year = year;
+    }
+    if (x.license && x.license !== String(f.license ?? '')) changes.license = x.license;
+    if (x.description.trim() !== String(f.description ?? '').trim()) changes.description = x.description.trim();
+    const links = x.links.split(/\s*\n\s*/).map((u) => u.trim()).filter(Boolean);
+    if (links.some((u) => !/^https?:\/\/\S+\.\S+/.test(u))) { setErr('Each link should start with https:// — one per line.'); return; }
+    if (JSON.stringify(links) !== JSON.stringify(Array.isArray(f.purchase_links) ? f.purchase_links : [])) changes.purchase_links = links;
+    if (JSON.stringify(x.images) !== JSON.stringify(startImages)) { changes.images = x.images; changes.cover = x.images[0] ?? null; }
+    if (x.live !== live) changes.status = x.live ? 'published' : 'draft';
+    if (!Object.keys(changes).length) { onClose(); return; }
+    const before = Object.fromEntries(Object.keys(changes).map((k) => [k, k === 'images' ? startImages : f[k] ?? null]));
+    setBusy(true); setErr(null);
+    const { error } = await supabase().from('submissions').insert({ kind: 'font_edit', font_id: f.id, designer_id: designerId, user_id: me.id, email: me.email, payload: { name: f.name, changes, before } });
+    setBusy(false);
+    if (error) setErr('Couldn’t send your changes. Please try again.'); else onSent();
+  }
+
+  return (
+    <form className="form" onSubmit={send} style={{ padding: '8px 0 16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'baseline' }}>
+        <b style={{ fontSize: 18 }}>Editing {String(f.name)}</b>
+        <small className="muted">Checked by the Fahress team before it goes live.</small>
+      </div>
+      <div className="form-grid">
+        <label className="field"><span>Name</span><input className="input" required value={x.name} onChange={(e) => setX({ ...x, name: e.target.value })} /></label>
+        <label className="field"><span>Release year</span><input className="input" inputMode="numeric" maxLength={4} placeholder="e.g. 2021" value={x.year} onChange={(e) => setX({ ...x, year: e.target.value.replace(/\D/g, '') })} /></label>
+        <label className="field"><span>License</span>
+          <select className="input" value={x.license} onChange={(e) => setX({ ...x, license: e.target.value })}>
+            <option value="">—</option>
+            {LICENSES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+          </select>
+        </label>
+        <label className="field" style={{ alignContent: 'start' }}><span>On the site</span>
+          <span style={{ display: 'flex', gap: 10, alignItems: 'center', minHeight: 48 }}>
+            <input type="checkbox" checked={x.live} onChange={(e) => setX({ ...x, live: e.target.checked })} style={{ width: 20, height: 20, accentColor: 'var(--ink)' }} />
+            {x.live ? 'Published' : 'Draft (hidden)'}
+          </span>
+        </label>
+      </div>
+      <label className="field"><span>About the typeface</span><textarea className="textarea" maxLength={6000} value={x.description} onChange={(e) => setX({ ...x, description: e.target.value })} /></label>
+      <label className="field"><span>Where to buy or download</span><textarea className="textarea" style={{ minHeight: 90 }} value={x.links} onChange={(e) => setX({ ...x, links: e.target.value })} placeholder={'https://… (one link per line)'} /><small>The first link is the main button on the font page.</small></label>
+      <div className="field">
+        <span>Presentation images</span>
+        <div className="acct-imgs">
+          {x.images.map((im, i) => (
+            <figure key={im}>
+              <img src={thumbUrl(im, 256)} alt="" />
+              <figcaption>
+                {i === 0 ? <b>Cover</b> : <button type="button" onClick={() => move(i, -i)}>Make cover</button>}
+                {i > 0 ? <button type="button" onClick={() => move(i, -1)} aria-label="Move left">←</button> : null}
+                {i < x.images.length - 1 ? <button type="button" onClick={() => move(i, 1)} aria-label="Move right">→</button> : null}
+                <button type="button" onClick={() => setX({ ...x, images: x.images.filter((v) => v !== im) })}>Remove</button>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        <label className="btn btn--ghost" style={{ cursor: 'pointer', justifySelf: 'start', minHeight: 40 }}>{busy ? 'Uploading…' : 'Add images'}<input type="file" accept="image/*" multiple hidden onChange={(e) => e.target.files?.length && add(e.target.files)} /></label>
+        <small>The first image is the cover. Wide images (2:1) look best.</small>
+      </div>
+      {err ? <p className="form-error">{err}</p> : null}
+      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+        <button className="btn" disabled={busy}>Save and send for review</button>
         <button type="button" className="btn btn--ghost" onClick={onClose}>Cancel</button>
       </div>
     </form>
