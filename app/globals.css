@@ -324,7 +324,7 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 .dhero { background: var(--ink); color: var(--paper); overflow: hidden; }
 .dhero__in { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end; padding-block: 64px 48px; }
 .dhero h1 { margin: 0; font-size: clamp(56px, 10.5vw, 176px); font-weight: 800; letter-spacing: -.05em; line-height: .86; overflow-wrap: anywhere; }
-.dhero h1 .w { display: inline-block; overflow: hidden; vertical-align: top; }
+.dhero h1 .w { display: inline-block; vertical-align: top; clip-path: inset(0 -.3em 0 -.3em); } /* clip only top & bottom for the drop-in, never the last letter */
 .dhero h1 .l { display: inline-block; animation: drop .9s var(--ease) both; }
 .badge-ring { position: relative; width: 240px; height: 240px; flex: 0 0 auto; }
 .badge-ring svg { position: absolute; inset: 0; animation: spin 26s linear infinite; }
