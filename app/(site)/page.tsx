@@ -21,7 +21,7 @@ export default async function Home() {
   const newest = a.fonts
     .filter((f) => f.year)
     .sort((x, y) => (y.year ?? 0) - (x.year ?? 0) || y.createdAt.localeCompare(x.createdAt))
-    .slice(0, 6);
+    .slice(0, 8);
 
   // Designer spotlight rotates weekly among designers with a bio and at least 4 typefaces.
   const pool = designers.filter((p) => p.fontIds.length >= 4 && p.bio.length > 40 && p.logo);
