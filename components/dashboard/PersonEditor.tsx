@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { db, type Row } from '@/lib/admin/db';
 import { coverOf, dupKey, img, useData } from '@/lib/admin/store';
 import { personHref } from '@/lib/format';
-import { mergePeople } from '@/lib/admin/merge';
+import { mergePeople, profileScore } from '@/lib/admin/merge';
 import { placeOf } from '@/lib/places';
 import { ConfirmButton, CountryPicker, Field, SingleImage, StatusPill, slugify, useToast } from './ui';
 
@@ -61,6 +61,15 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
     return data.people.filter((p) => String(p.id) !== id && dupKey(String(p.name)) === dupKey(form.name));
   }, [data, form.name, id]);
 
+  const [mergeQ, setMergeQ] = useState('');
+  const [mergeTo, setMergeTo] = useState('');
+  const [keepId, setKeepId] = useState('');
+  const mergeOptions = useMemo(() => {
+    const n = mergeQ.trim().toLowerCase();
+    if (!data || !n || mergeTo) return [];
+    return data.people.filter((p) => String(p.id) !== id && String(p.name).toLowerCase().includes(n)).slice(0, 8);
+  }, [data, mergeQ, mergeTo, id]);
+
   if (!data) return null;
   if (id && !existing) return <div className="dz-empty">Not found. <Link href={`/dashboard/${kind === 'foundry' ? 'foundries' : 'designers'}`}>Back</Link></div>;
 
@@ -97,24 +106,22 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
     }
   }
 
-  const [mergeQ, setMergeQ] = useState('');
-  const [mergeTo, setMergeTo] = useState('');
-  const mergeOptions = useMemo(() => {
-    const n = mergeQ.trim().toLowerCase();
-    if (!data || !n) return [];
-    return data.people.filter((p) => String(p.id) !== id && String(p.name).toLowerCase().includes(n)).slice(0, 8);
-  }, [data, mergeQ, id]);
-
-  async function mergeInto() {
-    const target = personById.get(mergeTo);
-    if (!id || !existing || !target) return;
+  async function merge() {
+    const other = personById.get(mergeTo);
+    if (!id || !existing || !other) return;
+    const keeper = keepId === id ? existing : other;
+    const loser = keeper === existing ? other : existing;
+    if (dirty && keeper === existing) { toast('Save or undo your changes first.', 'err'); return; }
     setBusy(true);
     try {
-      await mergePeople(data!, target, [existing]);
+      const moved = fontsOf(String(loser.id)).length;
+      await mergePeople(data!, keeper, [loser]);
       await db.refreshSite();
       await reload();
-      toast(`Merged ${form.name} into ${target.name}`);
-      router.replace(`/dashboard/${target.type === 'foundry' ? 'foundries' : 'designers'}/${target.id}`);
+      toast(`Merged ${loser.name} into ${keeper.name} — ${moved} font${moved === 1 ? '' : 's'} moved`);
+      setMergeQ(''); setMergeTo(''); setKeepId('');
+      if (keeper !== existing) router.replace(`/dashboard/${keeper.type === 'foundry' ? 'foundries' : 'designers'}/${keeper.id}`);
+      else setBusy(false);
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Merge failed', 'err');
       setBusy(false);
@@ -200,17 +207,55 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
             </div>
           </section>
 
-          {id ? (
+          {id && existing ? (
             <section className="dz-section">
-              <h2 className="dz-section__title">Merge into another profile</h2>
-              <p className="dz-hint" style={{ marginTop: -8 }}>Same person or foundry under another spelling? Their font credits move to the profile you pick, empty details are filled from this one, the old web address redirects, and this profile is removed.</p>
-              <input className="dz-input" placeholder="Search designers and foundries…" value={mergeQ} onChange={(e) => { setMergeQ(e.target.value); setMergeTo(''); }} />
-              {mergeOptions.length > 0 && !mergeTo && (
+              <h2 className="dz-section__title">Merge with another profile</h2>
+              <p className="dz-hint" style={{ marginTop: -8 }}>Same person or foundry under another spelling? Pick the other profile. The one with more information (photo, bio, country, links) is highlighted and kept as it is — only the fonts credited to the other one move over. The other profile is then removed{data.redirects !== null ? ' and its web address redirects' : ''}.</p>
+              <input className="dz-input" placeholder="Search designers and foundries…" value={mergeQ} onChange={(e) => { setMergeQ(e.target.value); setMergeTo(''); setKeepId(''); }} />
+              {mergeOptions.length > 0 && (
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10 }}>
-                  {mergeOptions.map((p) => <button key={String(p.id)} type="button" className="dz-btn dz-btn--sm" onClick={() => { setMergeTo(String(p.id)); setMergeQ(String(p.name)); }}>{String(p.name)} · {p.type === 'foundry' ? 'Foundry' : 'Designer'} · {fontsOf(String(p.id)).length} fonts</button>)}
+                  {mergeOptions.map((p) => (
+                    <button key={String(p.id)} type="button" className="dz-btn dz-btn--sm" onClick={() => {
+                      const pid = String(p.id);
+                      setMergeTo(pid); setMergeQ(String(p.name));
+                      setKeepId(profileScore(p, fontsOf(pid).length) > profileScore(existing, fonts.length) ? pid : id);
+                    }}>{String(p.name)} · {p.type === 'foundry' ? 'Foundry' : 'Designer'} · {fontsOf(String(p.id)).length} fonts</button>
+                  ))}
                 </div>
               )}
-              {mergeTo ? <div style={{ marginTop: 12 }}><ConfirmButton className="dz-btn dz-btn--primary" onConfirm={mergeInto}>Merge {form.name} into {String(personById.get(mergeTo)?.name)}</ConfirmButton></div> : null}
+              {mergeTo && personById.get(mergeTo) ? (() => {
+                const other = personById.get(mergeTo)!;
+                const pair = [existing, other];
+                const keep = pair.find((p) => String(p.id) === keepId) ?? existing;
+                const lose = keep === existing ? other : existing;
+                const moving = fontsOf(String(lose.id)).length;
+                return (
+                  <div style={{ marginTop: 14 }}>
+                    <div className="dz-dupgrid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 14 }}>
+                      {pair.map((p) => {
+                        const pid = String(p.id);
+                        const on = keep === p;
+                        const links = Object.values((p.social_links as Row) ?? {}).filter((v) => String(v ?? '').trim()).length;
+                        return (
+                          <label key={pid} className={`dz-dup${on ? ' is-on' : ''}`}>
+                            <input type="radio" name="merge-keep" checked={on} onChange={() => setKeepId(pid)} />
+                            {p.logo ? <img className={`dz-av${p.type === 'foundry' ? ' is-sq' : ' is-grey'}`} style={{ width: 64, height: 64 }} src={img(String(p.logo), 256)} alt="" /> : <span className="dz-mono-av" style={{ width: 64, height: 64 }}>{String(p.name)[0]}</span>}
+                            <b>{String(p.name)}{pid === id ? <span className="dz-muted" style={{ fontWeight: 400 }}> (this profile)</span> : null}</b>
+                            <small className="dz-muted">/{String(p.slug)}</small>
+                            <small className="dz-muted">{p.type === 'foundry' ? 'Foundry' : 'Designer'} · {fontsOf(pid).length} fonts</small>
+                            <small className="dz-muted">{p.logo ? 'Has photo' : 'No photo'} · {String(p.bio ?? '').trim() ? 'has bio' : 'no bio'} · {p.country ? String(p.country) : 'no country'} · {links} link{links === 1 ? '' : 's'}</small>
+                            <span className="dz-dup__keep">{on ? 'Keeps its info' : `Gives its ${fontsOf(pid).length} font${fontsOf(pid).length === 1 ? '' : 's'}, then removed`}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                    <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 14, flexWrap: 'wrap' }}>
+                      <button type="button" className="dz-btn" onClick={() => { setMergeTo(''); setMergeQ(''); setKeepId(''); }}>Cancel</button>
+                      <ConfirmButton className="dz-btn dz-btn--primary" onConfirm={merge}>{`Move ${moving} font${moving === 1 ? '' : 's'} from ${lose.name} to ${keep.name}`}</ConfirmButton>
+                    </div>
+                  </div>
+                );
+              })() : null}
             </section>
           ) : null}
 

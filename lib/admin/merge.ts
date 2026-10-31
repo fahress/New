@@ -48,10 +48,15 @@ export async function mergeFonts(data: Data, keeper: Row, losers: Row[]) {
   await db.update('fonts', { id: kid }, { ...patch, images, purchase_links: purchase, case_studies: cases, language_group: groups, status, updated_at: new Date().toISOString() });
 }
 
+/** How much profile information a designer/foundry has: photo or logo, bio, country and links. Fonts only break ties. */
+export function profileScore(p: Row, fontCount = 0) {
+  const social = Object.values((p.social_links as Row) ?? {}).filter((v) => String(v ?? '').trim()).length;
+  return (p.logo ? 4 : 0) + (String(p.bio ?? '').trim() ? 3 : 0) + (p.country ? 1 : 0) + social + Math.min(fontCount, 50) / 100;
+}
+
+/** Folds `losers` into `keeper`. Only the font credits move over — the keeper's name, photo, bio, country and links stay exactly as they are. The duplicates are deleted and their addresses redirect. */
 export async function mergePeople(data: Data, keeper: Row, losers: Row[]) {
   const kid = String(keeper.id);
-  const patch: Row = {};
-  let social = { ...((keeper.social_links as Row) ?? {}) };
   for (const loser of losers) {
     const lid = String(loser.id);
     const credits = data.links.designers.filter((r) => String(r.designer_id) === lid);
@@ -59,11 +64,9 @@ export async function mergePeople(data: Data, keeper: Row, losers: Row[]) {
     const add = credits.filter((r) => !have.has(String(r.font_id)));
     if (add.length) await db.insert('font_designers', add.map((r) => ({ font_id: r.font_id, designer_id: kid })));
     await db.remove('font_designers', { designer_id: lid });
-    for (const f of ['bio', 'logo', 'country', 'user_id'] as const) if (f in keeper && !keeper[f] && !patch[f] && loser[f]) patch[f] = loser[f];
-    social = { ...((loser.social_links as Row) ?? {}), ...social };
     await db.remove('designers', { id: lid });
     if (data.redirects !== null && loser.slug && loser.slug !== keeper.slug) await db.upsert('font_redirects', [{ from_slug: loser.slug, to_slug: keeper.slug, kind: loser.type === 'foundry' ? 'foundry' : 'designer' }], 'from_slug');
     await db.log({ action: 'merge', entity: 'designer', entity_id: lid, label: `${loser.name} → ${keeper.name}`, before: { row: loser, credits }, after: { into: kid } });
   }
-  await db.update('designers', { id: kid }, { ...patch, social_links: social, updated_at: new Date().toISOString() });
+  await db.update('designers', { id: kid }, { updated_at: new Date().toISOString() });
 }

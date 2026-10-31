@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { StatusPill, useToast } from '@/components/dashboard/ui';
 import { duplicateFonts, duplicatePeople } from '@/lib/admin/checks';
 import type { Row } from '@/lib/admin/db';
-import { mergeFonts, mergePeople, pickKeeper } from '@/lib/admin/merge';
+import { mergeFonts, mergePeople, pickKeeper, profileScore } from '@/lib/admin/merge';
 import { coverOf, img, useData } from '@/lib/admin/store';
 import { db } from '@/lib/admin/db';
 
@@ -19,7 +19,7 @@ export default function Duplicates() {
     const id = String(f.id);
     return (Array.isArray(f.images) ? f.images.length : 0) + (f.description ? 3 : 0) + (f.year ? 1 : 0) + linked(id, 'designers').length * 2 + linked(id, 'scripts').length + (Array.isArray(f.purchase_links) && f.purchase_links.length ? 2 : 0) + (({ featured: 6, published: 5, pending: 1 } as Record<string, number>)[String(f.status)] ?? 0);
   };
-  const personScore = (p: Row) => fontsOf(String(p.id)).length * 3 + (p.bio ? 2 : 0) + (p.logo ? 2 : 0) + Object.keys((p.social_links as Row) ?? {}).length;
+  const personScore = (p: Row) => profileScore(p, fontsOf(String(p.id)).length);
 
   const fontGroups = useMemo(() => (data ? duplicateFonts(data) : []), [data]);
   const peopleGroups = useMemo(() => (data ? duplicatePeople(data) : []), [data]);
@@ -92,7 +92,7 @@ export default function Duplicates() {
         <div>
           <p className="dz-eyebrow">Duplicates</p>
           <h1 className="display">{fg.length + pg.length ? `${fg.length + pg.length} to tidy up` : 'No duplicates'}</h1>
-          <p>Pick the copy to keep. Credits, classification, awards, images and links from the others move into it, the others are deleted{data.redirects !== null ? ', and their old web addresses redirect to the kept one' : ''}. {isEditor ? 'Only admins can merge.' : ''}</p>
+          <p>Pick the copy to keep. For fonts, credits, classification, awards, images and links from the others move into it. For designers and foundries, only the font credits move — the kept profile's name, photo, bio and links stay as they are. The others are deleted{data.redirects !== null ? ', and their old web addresses redirect to the kept one' : ''}. {isEditor ? 'Only admins can merge.' : ''}</p>
         </div>
       </div>
       {fg.length > 0 && <h2 className="dz-h2">Fonts</h2>}
