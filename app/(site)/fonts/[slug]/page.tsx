@@ -125,10 +125,10 @@ export default async function FontPage({ params }: Props) {
 
           {f.caseStudies.length ? (
             <section className="about-font">
-              <h2 className="display h-md">In use</h2>
+              <h2 className="display h-md">{f.caseStudies.length === 1 ? 'Case study' : 'Case studies'}</h2>
               <div className="about-font__text" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {f.caseStudies.map((u) => (
-                  <a key={u} href={u} target="_blank" rel="noopener" className="ul" style={{ alignSelf: 'flex-start' }}>{hostOf(u)} ↗</a>
+                  <a key={u} href={u} target="_blank" rel="noopener" className="ul" style={{ alignSelf: 'flex-start' }}>Read the case study on {hostOf(u)} ↗</a>
                 ))}
               </div>
             </section>

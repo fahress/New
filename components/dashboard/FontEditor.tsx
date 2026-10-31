@@ -458,7 +458,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
               <Field label="Where to buy or download" wide hint="Links to the designer's or foundry's store. The first one is the main button on the site.">
                 <LinkList value={form.purchase} onChange={(v) => set('purchase', v)} placeholder="https://…" />
               </Field>
-              <Field label="Case studies" wide hint="Behance projects, articles or videos about the font.">
+              <Field label="Case studies" wide hint="Links to a case study the designer or foundry made about this font (Behance, their site, an article). Shown as “Case study” on the font page.">
                 <LinkList value={form.cases} onChange={(v) => set('cases', v)} placeholder="https://behance.net/…" />
               </Field>
               <Field label="Source" wide hint="Where you found this font (kept private, for your records).">
