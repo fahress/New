@@ -39,7 +39,8 @@ export default function CoverField({ pool }: { pool: WallFont[] }) {
   const make = useCallback((f: WallFont, tier?: number): Card => {
     const t = tier ?? Math.floor(Math.random() * SIZES.length);
     const [a, b, depth] = SIZES[t];
-    const w = rand(a, b);
+    // phones: same layout, bigger covers so they stay readable
+    const w = rand(a, b) * (typeof window !== 'undefined' && window.innerWidth < 700 ? 1.8 : 1);
     return { key: seq.current++, f, w, depth, x: rand(-2, 100 - w + 2), y: rand(-4, 96) };
   }, []);
 
