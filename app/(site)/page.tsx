@@ -4,7 +4,7 @@ import FontCard from '@/components/FontCard';
 import HomeSearch, { type SearchIndex } from '@/components/HomeSearch';
 import HoverRows from '@/components/HoverRows';
 import RandomAwards from '@/components/RandomAwards';
-import LiveWall from '@/components/LiveWall';
+import RandomWall from '@/components/RandomWall';
 import FoundryTicker from '@/components/FoundryTicker';
 import { getArchive } from '@/lib/data';
 import { SCRIPT_ARABIC, excerpt, label, personHref, storageUrl, thumbUrl } from '@/lib/format';
@@ -91,7 +91,7 @@ export default async function Home() {
 
       <section className="band" aria-label="Recently archived">
         <div className="wrap band__head mono"><span>Live from the index</span><span style={{ color: 'var(--mute-inv)' }}>Hover to pause</span></div>
-        <LiveWall pool={a.fonts.map((f) => ({ s: f.slug, n: f.name, c: f.cover, by: creditOf(a, f) }))} />
+        <RandomWall pool={a.fonts.map((f) => ({ s: f.slug, n: f.name, c: f.cover, by: creditOf(a, f) }))} />
       </section>
 
       <section className="wrap" aria-label="The archive in numbers">
