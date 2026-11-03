@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { isPdfLink, pdfToImages } from '@/lib/admin/pdf';
 import { db, type Row } from '@/lib/admin/db';
 import { LINK_TABLES, coverOf, dupKey, img, useData, type Data } from '@/lib/admin/store';
 import { ConfirmButton, DropZone, Field, MultiPicker, STATUSES, StatusPill, slugify, useToast, useUploader, type Option } from './ui';
@@ -66,6 +67,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existing?.id]);
   const [filling, setFilling] = useState(false);
+  const [pdfProgress, setPdfProgress] = useState('');
   const [importing, setImporting] = useState(0);
   const isEditor = data?.role === 'editor';
 
@@ -110,10 +112,35 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
     setRemote((r) => [...new Set([...r, ...(p.images ?? [])])].slice(0, 30));
   }
 
+  /** A PDF link (e.g. a specimen): every page becomes a presentation image, in order. */
+  async function importPdf(url: string) {
+    const token = await db.token();
+    const res = await fetch('/api/dashboard/pdf', { method: 'POST', headers: { 'content-type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ url }) });
+    if (!res.ok) throw new Error((await res.text().catch(() => '')) || 'Could not fetch the PDF');
+    const name = decodeURIComponent(url.split(/[?#]/)[0].split('/').pop() || 'specimen');
+    await pdfFiles(await res.arrayBuffer(), name);
+    if (!form.source.trim()) setForm((f) => ({ ...f, source: f.source || url }));
+  }
+  async function pdfFiles(buf: ArrayBuffer, name: string) {
+    setPdfProgress('Reading the PDF…');
+    try {
+      const files = await pdfToImages(buf, name, { onPage: (d, t) => setPdfProgress(`Turning PDF pages into images… ${d} / ${t}`) });
+      setPdfProgress(`Uploading ${files.length} page${files.length === 1 ? '' : 's'}…`);
+      await addImages(files);
+      toast(`Added ${files.length} page${files.length === 1 ? '' : 's'} from the PDF as images. Reorder or remove them below, then save.`);
+    } finally { setPdfProgress(''); }
+  }
+
   async function fillFromLink() {
     const url = fillUrl.trim();
     if (!/^https?:\/\//i.test(url)) { toast('Paste a full link starting with https://', 'err'); return; }
     setFilling(true);
+    if (isPdfLink(url)) {
+      try { await importPdf(url); setFillUrl(''); }
+      catch (e) { toast(e instanceof Error ? e.message : 'Could not read that PDF', 'err'); }
+      finally { setFilling(false); }
+      return;
+    }
     try {
       const r = await db.api<{ url: string; host: string; title: string; description: string; year: number | null; license: string | null; designers: string[]; images: string[] }>('/api/dashboard/scrape', { url });
       const isStore = !/behance\.net|instagram\.com|dribbble\.com/.test(r.host);
@@ -129,6 +156,8 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
       toast(`Filled from ${r.host}${take.length ? ` — importing ${take.length} image${take.length === 1 ? '' : 's'}` : ''}. Check everything before saving.`);
       if (take.length) await importImages(take);
     } catch (e) {
+      // links without .pdf in them can still be PDFs: try that before giving up
+      try { await importPdf(url); setFillUrl(''); return; } catch { /* not a PDF either */ }
       toast(e instanceof Error ? e.message : 'Could not read that page', 'err');
     } finally {
       setFilling(false);
@@ -295,6 +324,12 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
   }
 
   async function addImages(files: File[]) {
+    const pdfs = files.filter((f) => f.type === 'application/pdf' || /\.pdf$/i.test(f.name));
+    if (pdfs.length) {
+      for (const pdf of pdfs) { try { await pdfFiles(await pdf.arrayBuffer(), pdf.name); } catch { toast(`Couldn't read ${pdf.name}`, 'err'); } }
+      files = files.filter((f) => !pdfs.includes(f));
+      if (!files.length) return;
+    }
     const paths = await upload(files);
     if (paths.length) setForm((f) => ({ ...f, images: [...f.images, ...paths], cover: f.cover || paths[0] }));
   }
@@ -326,9 +361,9 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
             <h2 className="dz-section__title">{id ? 'Fill from a link' : 'Start from a link'} <small>MyFonts, Behance, a foundry page…</small></h2>
             <div className="dz-linkrow">
               <input className="dz-input" autoFocus={!id && !prefill} placeholder="Paste the font's page — https://…" value={fillUrl} onChange={(e) => setFillUrl(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); fillFromLink(); } }} />
-              <button type="button" className="dz-btn dz-btn--primary" disabled={filling || !fillUrl.trim()} onClick={fillFromLink}>{filling ? 'Reading…' : 'Fill in'}</button>
+              <button type="button" className="dz-btn dz-btn--primary" disabled={filling || !fillUrl.trim()} onClick={fillFromLink}>{filling ? (pdfProgress || 'Reading…') : 'Fill in'}</button>
             </div>
-            <p className="dz-hint" style={{ margin: '8px 0 0' }}>{id ? 'Fills the empty fields with the name, description, year, designer, script and images it finds.' : 'Paste the font’s page and press Fill in — the name, description, year, designer, script, buy link and the first images are brought in for you.'} Nothing is saved until you press save.</p>
+            <p className="dz-hint" style={{ margin: '8px 0 0' }}>{id ? 'Fills the empty fields with the name, description, year, designer, script and images it finds.' : 'Paste the font’s page and press Fill in — the name, description, year, designer, script, buy link and the first images are brought in for you.'}  A PDF link (e.g. a specimen) adds every page as a presentation image. Nothing is saved until you press save.</p>
           </section>
 
           <section className="dz-section">
@@ -385,7 +420,10 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
 
           <section className="dz-section">
             <h2 className="dz-section__title">Presentation images <small>first image or ★ = cover</small></h2>
-            <DropZone onFiles={addImages} />
+            <DropZone onFiles={addImages} accept="image/*,application/pdf">
+              <b>Drop images or a PDF here</b><span>or click to choose · JPG, PNG, WEBP, GIF, SVG · a PDF becomes one image per page · big files are shrunk automatically</span>
+            </DropZone>
+            {pdfProgress ? <p className="dz-hint" role="status" style={{ margin: '10px 0 0' }}><span className="dz-spin" /> {pdfProgress}</p> : null}
             {remote.length > 0 && (
               <div className="dz-remote">
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>

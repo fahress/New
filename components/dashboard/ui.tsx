@@ -208,7 +208,7 @@ export function useUploader() {
   return { upload, busy };
 }
 
-export function DropZone({ onFiles, multiple = true, children, compact = false }: { onFiles: (f: File[]) => void; multiple?: boolean; children?: React.ReactNode; compact?: boolean }) {
+export function DropZone({ onFiles, multiple = true, children, compact = false, accept = 'image/*' }: { onFiles: (f: File[]) => void; multiple?: boolean; children?: React.ReactNode; compact?: boolean; accept?: string }) {
   const [over, setOver] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   return (
@@ -222,7 +222,7 @@ export function DropZone({ onFiles, multiple = true, children, compact = false }
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') input.current?.click(); }}
     >
-      <input ref={input} type="file" accept="image/*" multiple={multiple} hidden onChange={(e) => { onFiles([...(e.target.files ?? [])]); e.target.value = ''; }} />
+      <input ref={input} type="file" accept={accept} multiple={multiple} hidden onChange={(e) => { onFiles([...(e.target.files ?? [])]); e.target.value = ''; }} />
       {children ?? <><b>Drop images here</b><span>or click to choose · JPG, PNG, WEBP, GIF, SVG · big files are shrunk automatically</span></>}
     </div>
   );
