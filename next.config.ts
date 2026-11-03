@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: '/search', destination: '/fonts', permanent: true },
+      // addresses from the previous fahress.com
+      { source: '/auth/:path*', destination: '/account', permanent: true },
+      { source: '/login', destination: '/account', permanent: true },
+      { source: '/register', destination: '/account', permanent: true },
+      { source: '/terms', destination: '/privacy', permanent: false },
     ];
   },
 };
