@@ -14,6 +14,15 @@ export function thumbUrl(path: string | null | undefined, w: 256 | 384 | 640 | 1
   return src ? `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75` : '';
 }
 
+/** A cover made with the dashboard's crop tool (a 2:1 cut of one of the presentation images, not shown in the gallery). */
+export const isCoverCrop = (path: string | null | undefined) => /cover-crop/.test(String(path ?? ''));
+/** For a cropped cover: the presentation image it was cut from (its file name is kept in the crop's name). */
+export const cropSourceOf = (cover: string, images: string[]) => {
+  if (!isCoverCrop(cover)) return undefined;
+  const tag = cover.split('cover-crop-of-')[1]?.replace(/\.jpe?g$/i, '');
+  return tag ? images.find((p) => (p.split('/').pop() ?? '').toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/-+/g, '-').includes(tag)) : undefined;
+};
+
 /** Profile address: foundries live under /foundries, designers under /designers. */
 export const personHref = (type: string, slug: string) => (type === 'foundry' ? `/foundries/${slug}` : `/designers/${slug}`);
 

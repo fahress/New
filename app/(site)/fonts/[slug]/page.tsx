@@ -6,7 +6,7 @@ import Gallery from '@/components/Gallery';
 import SuggestCorrection from '@/components/SuggestCorrection';
 import ClaimFont from '@/components/claims/ClaimFont';
 import { getArchive, getRedirect } from '@/lib/data';
-import { excerpt, hostOf, label, licenseLabel, slugify, storageUrl, thumbUrl, weightsLabel, personHref } from '@/lib/format';
+import { excerpt, hostOf, label, licenseLabel, slugify, storageUrl, thumbUrl, weightsLabel, personHref, isCoverCrop } from '@/lib/format';
 import { creditOf, toCard } from '@/lib/view';
 import type { Tag } from '@/lib/types';
 
@@ -55,7 +55,7 @@ export default async function FontPage({ params }: Props) {
   const genres = tagsOf(a.genres, f.genres);
   const groups = tagsOf(a.languageGroups, f.languageGroups);
   const awards = f.awards.map((w) => ({ ...w, award: a.awards.find((x) => x.id === w.awardId) })).filter((w) => w.award);
-  const images = Array.from(new Set([f.cover, ...f.images].filter(Boolean)));
+  const images = Array.from(new Set([isCoverCrop(f.cover) ? '' : f.cover, ...f.images].filter(Boolean)));
   const paragraphs = f.description.split(/\n\s*\n|\n/).map((p) => p.trim()).filter(Boolean);
 
   const lead = people.find((p) => p!.type === 'designer') ?? people[0];

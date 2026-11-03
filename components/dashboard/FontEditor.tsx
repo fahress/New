@@ -7,6 +7,8 @@ import { db, type Row } from '@/lib/admin/db';
 import { LINK_TABLES, coverOf, dupKey, img, useData, type Data } from '@/lib/admin/store';
 import { ConfirmButton, DropZone, Field, MultiPicker, STATUSES, StatusPill, slugify, useToast, useUploader, type Option } from './ui';
 import PersonQuickAdd from './PersonQuickAdd';
+import CoverCrop from './CoverCrop';
+import { cropSourceOf, isCoverCrop } from '@/lib/format';
 import type { Prefill } from '@/lib/admin/prefill';
 
 type Form = {
@@ -35,7 +37,7 @@ function fromRow(f: Row, data: Data, linked: (id: string, k: keyof Data['links']
     scripts: linked(id, 'scripts'), groups: strs(f.language_group), genres: linked(id, 'genres'), styles: linked(id, 'styles'), types: linked(id, 'types'),
     people: linked(id, 'designers'), awards: awardRows.map((a) => ({ id: String(a.award_id), url: String(a.url ?? '') })),
     purchase: strs(f.purchase_links).length ? strs(f.purchase_links) : [''], cases: strs(f.case_studies), source: String(f.source_url ?? ''),
-    images: cover && !images.includes(cover) ? [cover, ...images] : images, cover,
+    images: cover && !images.includes(cover) && !isCoverCrop(cover) ? [cover, ...images] : images, cover,
   };
 }
 
@@ -68,6 +70,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
   }, [existing?.id]);
   const [filling, setFilling] = useState(false);
   const [pdfProgress, setPdfProgress] = useState('');
+  const [cropping, setCropping] = useState<string | null>(null);
   const [importing, setImporting] = useState(0);
   const isEditor = data?.role === 'editor';
 
@@ -244,7 +247,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
       let slug = slugify(form.slug || form.name) || `font-${Date.now()}`;
       const taken = new Set(data!.fonts.filter((f) => String(f.id) !== id).map((f) => String(f.slug)));
       if (taken.has(slug)) { let n = 2; while (taken.has(`${slug}-${n}`)) n++; slug = `${slug}-${n}`; }
-      const cover = form.cover && form.images.includes(form.cover) ? form.cover : form.images[0] ?? '';
+      const cover = form.cover && (form.images.includes(form.cover) || (isCoverCrop(form.cover) && cropSourceOf(form.cover, form.images))) ? form.cover : form.images[0] ?? '';
       const row: Row = {
         name: form.name.trim(), slug, description: form.description.trim(), year: form.year ? Number(form.year) : null,
         weights: form.weights ? Number(form.weights) : null, is_variable: form.variable, license: form.license, status,
@@ -340,6 +343,16 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
     [images[i], images[j]] = [images[j], images[i]];
     return { ...f, images };
   });
+
+  /** the presentation image the cover comes from (itself, or the image a cropped cover was cut from) */
+  const coverSource = (isCoverCrop(form.cover) ? cropSourceOf(form.cover, form.images) : form.cover) || form.images[0] || '';
+  async function applyCrop(file: File) {
+    const tag = (coverSource.split('/').pop() ?? 'image').toLowerCase().replace(/\.[a-z0-9]+$/, '').replace(/[^a-z0-9.]+/g, '-').replace(/-+/g, '-').slice(-50);
+    const path = await db.upload(new File([file], `cover-crop-of-${tag}.jpg`, { type: 'image/jpeg' }));
+    setForm((f) => ({ ...f, cover: path }));
+    setCropping(null);
+    toast('Cover area chosen. Save to keep it.');
+  }
 
   const err = (ok: boolean) => (tried && !ok ? 'Required' : null);
   const credit = form.people.map((p) => data.people.find((x) => String(x.id) === p)?.name).filter(Boolean).join(' · ');
@@ -449,16 +462,16 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
             {form.images.length > 0 && (
               <div className="dz-gallery">
                 {form.images.map((p, i) => {
-                  const isCover = (form.cover || form.images[0]) === p;
+                  const isCover = coverSource === p;
                   return (
                     <div key={p} className={`dz-gimg${isCover ? ' is-cover' : ''}`}>
                       <img src={img(p, 384)} alt="" loading="lazy" />
-                      {isCover ? <span className="dz-gimg__flag">Cover</span> : null}
+                      {isCover ? <span className="dz-gimg__flag">Cover{isCoverCrop(form.cover) ? ' · cropped' : ''}</span> : null}
                       <div className="dz-gimg__bar">
-                        {!isCover ? <button type="button" onClick={() => set('cover', p)}>★ Cover</button> : null}
+                        {!isCover ? <button type="button" onClick={() => set('cover', p)}>★ Cover</button> : <button type="button" onClick={() => setCropping(p)} title="Choose which part shows on the cover">✂ Crop</button>}
                         <button type="button" aria-label="Move left" onClick={() => moveImage(i, -1)}>‹</button>
                         <button type="button" aria-label="Move right" onClick={() => moveImage(i, 1)}>›</button>
-                        <button type="button" aria-label="Remove image" onClick={() => setForm((f) => ({ ...f, images: f.images.filter((x) => x !== p), cover: f.cover === p ? '' : f.cover }))}>✕</button>
+                        <button type="button" aria-label="Remove image" onClick={() => setForm((f) => ({ ...f, images: f.images.filter((x) => x !== p), cover: f.cover === p || (isCover && isCoverCrop(f.cover)) ? '' : f.cover }))}>✕</button>
                       </div>
                     </div>
                   );
@@ -544,7 +557,10 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
 
         <aside className="dz-aside">
           <div className="dz-preview">
-            <div className="dz-preview__img">{form.images.length ? <img src={img(form.cover || form.images[0], 640)} alt="" /> : null}</div>
+            <div className="dz-preview__img" style={{ position: 'relative' }}>
+              {form.images.length ? <img src={img(form.cover || form.images[0], 640)} alt="" /> : null}
+              {form.images.length ? <button type="button" className="dz-btn dz-btn--sm" style={{ position: 'absolute', top: 10, left: 10, background: 'rgba(255,255,255,.92)' }} onClick={() => setCropping(coverSource)} title="Choose which part of the image shows on the cover">✂ Crop</button> : null}
+            </div>
             <div className="dz-preview__meta">
               <b>{form.name || 'Font name'}</b>
               <span className="dz-muted">{credit || 'Designer'}</span>
@@ -589,6 +605,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
           onCreated={(pid) => { setForm((f) => ({ ...f, people: [...f.people, pid] })); setAdding(null); }}
         />
       )}
+      {cropping ? <CoverCrop src={cropping} onCancel={() => setCropping(null)} onDone={applyCrop} /> : null}
     </>
   );
 }
