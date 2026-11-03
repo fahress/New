@@ -24,7 +24,7 @@ export default function Login() {
       <form onSubmit={submit} className="dz-login__card">
         <Logo width={72} draw />
         <h1 className="display">Dashboard</h1>
-        <p className="dz-hint">Sign in with the same account you use on admin.fahress.com.</p>
+        <p className="dz-hint">Sign in with your Fahress dashboard account (the same one you used on admin.fahress.com).</p>
         <label className="dz-field">
           <span className="dz-label">Email</span>
           <input className="dz-input" type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
