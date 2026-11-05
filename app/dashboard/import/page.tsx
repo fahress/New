@@ -159,7 +159,7 @@ export default function ImportPage() {
       <div className="dz-toolbar">
         <input className="dz-input" placeholder="Search by name, designer or foundry…" value={q} onChange={(e) => { setQ(e.target.value); setShown(PAGE); }} />
         <select className="dz-select" value={round} onChange={(e) => { setRound(e.target.value); setShown(PAGE); }} aria-label="Survey round">
-          <option value="">Both survey rounds</option><option value="1">Round 1</option><option value="2">Round 2</option>
+          <option value="">All batches</option><option value="1">Round 1</option><option value="2">Round 2</option><option value="3">Fahd Al Fraikh (Sellfy)</option>
         </select>
         <label className="dz-check"><input type="checkbox" checked={onlyDup} onChange={(e) => setOnlyDup(e.target.checked)} /> Possible duplicates only ({maybeDup.size})</label>
         <select className="dz-select" value={site} onChange={(e) => { setSite(e.target.value); setShown(PAGE); }} aria-label="Found on">
