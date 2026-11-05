@@ -53,15 +53,41 @@ export function safeExternalUrl(raw: string): URL | null {
   return u;
 }
 
-/** fetch that re-checks every redirect hop against safeExternalUrl, with a timeout. */
+/** fetch that re-checks every redirect hop against safeExternalUrl, with a timeout.
+ *  Some stores (Payhip and others behind bot filters) refuse requests that name a bot: those get one retry with ordinary browser headers. */
 export async function safeFetch(raw: string, init: RequestInit = {}, timeoutMs = 10000): Promise<Response> {
+  const res = await safeFetchOnce(raw, init, timeoutMs, BOT_HEADERS);
+  if (![401, 403, 429, 503].includes(res.status)) return res;
+  try { await res.body?.cancel(); } catch { /* ignore */ }
+  return safeFetchOnce(raw, init, timeoutMs, BROWSER_HEADERS);
+}
+
+const BOT_HEADERS: Record<string, string> = { 'user-agent': '', accept: '*/*' };
+const BROWSER_HEADERS: Record<string, string> = {
+  'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+  accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+  'accept-language': 'en-US,en;q=0.9,ar;q=0.8',
+  'sec-ch-ua': '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
+  'sec-ch-ua-mobile': '?0',
+  'sec-ch-ua-platform': '"macOS"',
+  'sec-fetch-dest': 'document',
+  'sec-fetch-mode': 'navigate',
+  'sec-fetch-site': 'none',
+  'sec-fetch-user': '?1',
+  'upgrade-insecure-requests': '1',
+};
+
+async function safeFetchOnce(raw: string, init: RequestInit, timeoutMs: number, base: Record<string, string>): Promise<Response> {
   let url = safeExternalUrl(raw);
   for (let hop = 0; hop < 6; hop++) {
     if (!url) throw new Error('Blocked address');
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), timeoutMs);
     try {
-      const res = await fetch(url, { ...init, redirect: 'manual', signal: ctrl.signal, cache: 'no-store', headers: { 'user-agent': UA, accept: '*/*', ...(init.headers ?? {}) } });
+      const browser = base === BROWSER_HEADERS;
+      // on the browser-style retry the browser headers win, apart from a specific accept the caller asked for (e.g. images)
+      const headers = browser ? { ...base, ...(init.headers as Record<string, string> | undefined), 'user-agent': base['user-agent'] } : { ...base, 'user-agent': UA, ...(init.headers ?? {}) };
+      const res = await fetch(url, { ...init, redirect: 'manual', signal: ctrl.signal, cache: 'no-store', headers });
       const loc = res.headers.get('location');
       if (res.status >= 300 && res.status < 400 && loc) { url = safeExternalUrl(new URL(loc, url).toString()); continue; }
       return res;
