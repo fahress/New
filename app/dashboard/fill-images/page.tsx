@@ -41,6 +41,7 @@ export default function FillImages() {
     return [...c.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   }, [todo]);
   const withLink = todo.filter((f) => linkOf(f) && (!site || hostOf(linkOf(f)) === site));
+  const noLink = todo.filter((f) => !linkOf(f)).length;
   const byHost = useMemoHosts(results);
   if (!data) return null;
   const isAdmin = data.role === 'admin';
@@ -123,7 +124,7 @@ export default function FillImages() {
       </div>
 
       <section className="dz-panel" style={{ display: 'grid', gap: 12 }}>
-        <p style={{ margin: 0 }}><b>{todo.length}</b> drafts have no images — <b>{withLink.length}</b> of them have a link to read{todo.length - withLink.length ? `, ${todo.length - withLink.length} have none` : ''}.</p>
+        <p style={{ margin: 0 }}><b>{todo.length}</b> drafts have no images — <b>{noLink}</b> of them have no link to read.{site ? <> This run: <b>{withLink.length}</b> from {site}.</> : null}</p>
         {phase === 'reading' || phase === 'importing' ? (
           <>
             <p style={{ margin: 0 }}>{phase === 'reading' ? 'Reading pages' : 'Bringing in images'} · {progress.done} of {progress.total}{progress.current ? ` · ${progress.current}` : ''}</p>
