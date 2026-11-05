@@ -106,7 +106,7 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 .rise { animation: rise .9s var(--ease) both; }
 .draw path, .draw polygon { stroke: currentColor; stroke-width: .25; stroke-dasharray: 1; stroke-dashoffset: 1; fill-opacity: 0; animation: draw 2.2s cubic-bezier(.6, 0, .2, 1) forwards, fillin .8s ease 1.8s forwards; }
 /* sits on the same baseline as the words before it; the bottom padding keeps descenders (y) visible */
-.rotator { display: inline-grid; overflow: hidden; vertical-align: baseline; padding-bottom: .14em; margin-bottom: -.14em; }
+.rotator { display: inline-grid; overflow: hidden; vertical-align: baseline; padding: 0 .1em .14em 0; margin: 0 -.1em -.14em 0; }
 .rotator span { grid-area: 1 / 1; transform: translateY(125%); animation: rot 9s cubic-bezier(.7, 0, .2, 1) infinite; }
 .rotator span:nth-child(2) { animation-delay: 3s; }
 .rotator span:nth-child(3) { animation-delay: 6s; }
