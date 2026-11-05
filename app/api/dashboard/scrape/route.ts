@@ -100,7 +100,7 @@ export async function POST(request: Request) {
   } catch (e) {
     return new NextResponse(`Couldn't open that page (${e instanceof Error ? e.message : 'error'}).`, { status: 502 });
   }
-  if (!res.ok) return new NextResponse(`That page answered with an error (${res.status}). Some stores block automatic reading — fill it in by hand.`, { status: 502 });
+  if (!res.ok) return new NextResponse(`That page answered with an error (${res.status}). This store blocks automatic reading — use the “Add to Fahress” bookmark on the store page instead (see below the Fill in box).`, { status: 502 });
   const html = (await res.text()).slice(0, 3_000_000);
   const base = new URL(res.url || url);
   const meta = metas(html);

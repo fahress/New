@@ -11,6 +11,8 @@ export type Prefill = {
   stored?: string[];
   license?: string;
   submissionId?: string;
+  /** set by the "Add to Fahress" bookmark: import the first images straight away */
+  auto?: number;
 };
 
 export function encodePrefill(p: Prefill): string {

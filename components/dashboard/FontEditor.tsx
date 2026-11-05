@@ -8,6 +8,7 @@ import { LINK_TABLES, coverOf, dupKey, img, useData, type Data } from '@/lib/adm
 import { ConfirmButton, DropZone, Field, MultiPicker, STATUSES, StatusPill, slugify, useToast, useUploader, type Option } from './ui';
 import PersonQuickAdd from './PersonQuickAdd';
 import CoverCrop from './CoverCrop';
+import Bookmarklet from './Bookmarklet';
 import { cropSourceOf, isCoverCrop } from '@/lib/format';
 import type { Prefill } from '@/lib/admin/prefill';
 
@@ -79,7 +80,11 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
     const f = existing ? fromRow(existing, data, linked) : blank;
     setForm(f);
     setInitial(JSON.stringify(f));
-    if (!existing && prefill) applyFill(prefill);
+    if (!existing && prefill) {
+      applyFill(prefill);
+      // from the "Add to Fahress" bookmark: bring the first images straight in
+      if (prefill.auto && prefill.images?.length) void importImages(prefill.images.slice(0, 8));
+    }
     // only when switching font
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, !!data, !!existing]);
@@ -377,6 +382,10 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
               <button type="button" className="dz-btn dz-btn--primary" disabled={filling || !fillUrl.trim()} onClick={fillFromLink}>{filling ? (pdfProgress || 'Reading…') : 'Fill in'}</button>
             </div>
             <p className="dz-hint" style={{ margin: '8px 0 0' }}>{id ? 'Fills the empty fields with the name, description, year, designer, script and images it finds.' : 'Paste the font’s page and press Fill in — the name, description, year, designer, script, buy link and the first images are brought in for you.'}  A PDF link (e.g. a specimen) adds every page as a presentation image. Nothing is saved until you press save.</p>
+            <div className="dz-hint" style={{ margin: '10px 0 0', display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+              <span>Store blocks reading (Payhip, Gumroad…)? Drag this to your bookmarks bar once, then click it on the store page:</span>
+              <Bookmarklet />
+            </div>
           </section>
 
           <section className="dz-section">
