@@ -34,7 +34,13 @@ export default function FillImages() {
   const stop = useRef(false);
 
   const todo = useMemo(() => (data?.fonts ?? []).filter((f) => String(f.status) === 'draft' && !(Array.isArray(f.images) && f.images.length) && !f.cover), [data]);
-  const withLink = todo.filter((f) => linkOf(f));
+  const [site, setSite] = useState('');
+  const hosts = useMemo(() => {
+    const c = new Map<string, number>();
+    for (const f of todo) { const u = linkOf(f); if (u) c.set(hostOf(u), (c.get(hostOf(u)) ?? 0) + 1); }
+    return [...c.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [todo]);
+  const withLink = todo.filter((f) => linkOf(f) && (!site || hostOf(linkOf(f)) === site));
   const byHost = useMemoHosts(results);
   if (!data) return null;
   const isAdmin = data.role === 'admin';
@@ -126,7 +132,12 @@ export default function FillImages() {
             <div><button type="button" className="dz-btn" onClick={() => { stop.current = true; }}>Stop after this font</button></div>
           </>
         ) : (
-          <div><button type="button" className="dz-btn dz-btn--primary" disabled={!isAdmin || !withLink.length} onClick={run}>{phase === 'done' ? 'Run again' : `Start — ${withLink.length} drafts`}</button>{!isAdmin ? <span className="dz-muted" style={{ marginLeft: 10 }}>Only admins can run this.</span> : null}</div>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+            <select className="dz-select" value={site} onChange={(e) => setSite(e.target.value)} aria-label="Only drafts from this site">
+              <option value="">All sites</option>
+              {hosts.map(([h, n]) => <option key={h} value={h}>{h} ({n})</option>)}
+            </select>
+            <button type="button" className="dz-btn dz-btn--primary" disabled={!isAdmin || !withLink.length} onClick={run}>{phase === 'done' ? 'Run again' : `Start — ${withLink.length} drafts`}</button>{!isAdmin ? <span className="dz-muted">Only admins can run this.</span> : null}</div>
         )}
       </section>
 
