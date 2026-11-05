@@ -97,7 +97,7 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 @keyframes rise { from { transform: translateY(26px); } to { transform: none; } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes fillin { to { fill-opacity: 1; } }
-@keyframes rot { 0% { transform: translateY(110%); } 6%, 30% { transform: translateY(0); } 36%, 100% { transform: translateY(-110%); } }
+@keyframes rot { 0% { transform: translateY(125%); } 6%, 30% { transform: translateY(0); } 36%, 100% { transform: translateY(-125%); } }
 @keyframes xfade { 0% { opacity: 0; } 4%, 25% { opacity: 1; } 29%, 100% { opacity: 0; } }
 @keyframes drop { from { transform: translateY(70%) rotate(4deg); } to { transform: none; } }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -105,8 +105,9 @@ a.pill:hover, button.pill:hover { background: var(--ink); color: var(--paper); }
 
 .rise { animation: rise .9s var(--ease) both; }
 .draw path, .draw polygon { stroke: currentColor; stroke-width: .25; stroke-dasharray: 1; stroke-dashoffset: 1; fill-opacity: 0; animation: draw 2.2s cubic-bezier(.6, 0, .2, 1) forwards, fillin .8s ease 1.8s forwards; }
-.rotator { display: inline-grid; height: 1.02em; overflow: hidden; vertical-align: bottom; }
-.rotator span { grid-area: 1 / 1; transform: translateY(110%); animation: rot 9s cubic-bezier(.7, 0, .2, 1) infinite; }
+/* sits on the same baseline as the words before it; the bottom padding keeps descenders (y) visible */
+.rotator { display: inline-grid; overflow: hidden; vertical-align: baseline; padding-bottom: .14em; margin-bottom: -.14em; }
+.rotator span { grid-area: 1 / 1; transform: translateY(125%); animation: rot 9s cubic-bezier(.7, 0, .2, 1) infinite; }
 .rotator span:nth-child(2) { animation-delay: 3s; }
 .rotator span:nth-child(3) { animation-delay: 6s; }
 
