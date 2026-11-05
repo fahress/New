@@ -30,6 +30,9 @@ The Supabase tables the site reads need a read-only "Public read" policy (alread
 
 ## Deploying on Vercel
 
+**Live site:** the `main` branch is production — it serves **fahress.com** (www redirects to it) and **admin.fahress.com** (which forwards to fahress.com/dashboard). The owner's standing instruction: every change goes live — commit to `redesign`, then push the same commit to `main` (`git push origin redesign:main`). Test locally first (demo mode, see below) and check the production deployment is Ready afterwards.
+
+
 Import this repository in Vercel and deploy — no environment variables are required. Every branch gets its own preview link; search engines are told not to index previews.
 
 ## Offline development
