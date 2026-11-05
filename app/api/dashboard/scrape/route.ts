@@ -69,16 +69,15 @@ function images(html: string, base: URL, meta: Record<string, string[]>, ld: Rec
   const imgOf = (v: unknown): string[] => (typeof v === 'string' ? [v] : Array.isArray(v) ? v.flatMap(imgOf) : v && typeof v === 'object' && 'url' in v ? imgOf((v as { url: unknown }).url) : []);
   for (const x of ld) imgOf(x.image).forEach(push);
   // Sellfy stores: the product's own gallery is marked itemprop="image"; the rest are other products' thumbnails
-  const sellfy = /\.sellfy\.store$/.test(base.hostname);
-  if (sellfy) urls.length = 0;
+  // (the gallery is sent as data in window.GLOBALS.gallery and drawn by script; the <img> tags in the page are other products)
+  if (/\.sellfy\.store$/.test(base.hostname)) {
+    const start = html.indexOf('window.GLOBALS.gallery');
+    const block = start >= 0 ? html.slice(start, html.indexOf('</script>', start)) : '';
+    const own = [...new Set([...block.matchAll(/https:\/\/media\.sellfy\.store\/images\/[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+\/[A-Za-z0-9_.-]+\.(?:jpe?g|png|gif|webp)/gi)].map((m) => m[0]))];
+    if (own.length) return own.slice(0, 24); // originals, without the ?w= resize
+  }
   for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
     const tag = m[0];
-    if (sellfy) {
-      if (!/itemprop\s*=\s*["']image["']/i.test(tag)) continue;
-      const src = /\bsrc\s*=\s*["']([^"']+)["']/i.exec(tag)?.[1];
-      if (src) push(src.replace(/\?.*$/, '?w=1240'));
-      continue;
-    }
     const srcset = /srcset\s*=\s*["']([^"']+)["']/i.exec(tag)?.[1];
     if (srcset) {
       const best = srcset.split(',').map((s) => s.trim().split(/\s+/)).sort((a, b) => parseInt(b[1] ?? '0') - parseInt(a[1] ?? '0'))[0]?.[0];

@@ -33,14 +33,18 @@ export default function FillImages() {
   const [results, setResults] = useState<Result[]>([]);
   const stop = useRef(false);
 
-  const todo = useMemo(() => (data?.fonts ?? []).filter((f) => String(f.status) === 'draft' && !(Array.isArray(f.images) && f.images.length) && !f.cover), [data]);
   const [site, setSite] = useState('');
+  const [redo, setRedo] = useState(false);
+  const empty = (f: Row) => !(Array.isArray(f.images) && f.images.length) && !f.cover;
+  const drafts = useMemo(() => (data?.fonts ?? []).filter((f) => String(f.status) === 'draft'), [data]);
+  const todo = useMemo(() => drafts.filter(empty), [drafts]);
   const hosts = useMemo(() => {
     const c = new Map<string, number>();
-    for (const f of todo) { const u = linkOf(f); if (u) c.set(hostOf(u), (c.get(hostOf(u)) ?? 0) + 1); }
+    for (const f of drafts) { const u = linkOf(f); if (u) c.set(hostOf(u), (c.get(hostOf(u)) ?? 0) + 1); }
     return [...c.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-  }, [todo]);
-  const withLink = todo.filter((f) => linkOf(f) && (!site || hostOf(linkOf(f)) === site));
+  }, [drafts]);
+  // with a site chosen and "redo" ticked, drafts from that site that already have images are done again (their images replaced)
+  const withLink = (site && redo ? drafts : todo).filter((f) => linkOf(f) && (!site || hostOf(linkOf(f)) === site));
   const noLink = todo.filter((f) => !linkOf(f)).length;
   const byHost = useMemoHosts(results);
   if (!data) return null;
@@ -71,7 +75,8 @@ export default function FillImages() {
     }
     const seen = new Map<string, Set<string>>();
     for (const s of scans) for (const im of s.images) { const k = `${s.host}|${im.split('?')[0]}`; if (!seen.has(k)) seen.set(k, new Set()); seen.get(k)!.add(s.id); }
-    const shared = (s: Scan, im: string) => (seen.get(`${s.host}|${im.split('?')[0]}`)?.size ?? 0) > 1;
+    // Sellfy pages give only the product's own gallery, so nothing there is site-wide (a family can share pictures)
+    const shared = (s: Scan, im: string) => !/\.sellfy\.store$/.test(s.host) && (seen.get(`${s.host}|${im.split('?')[0]}`)?.size ?? 0) > 1;
 
     // 2. bring in the images, font by font
     setPhase('importing');
@@ -97,7 +102,7 @@ export default function FillImages() {
       try {
         // re-check: only drafts that are still empty are changed
         const { data: now } = await supabase().from('fonts').select('id,status,images,cover').eq('id', s.id).maybeSingle();
-        if (!now || String(now.status) !== 'draft' || (Array.isArray(now.images) && now.images.length)) { push({ id: s.id, name: s.name, host: s.host, added: 0, note: 'Skipped — changed meanwhile' }); continue; }
+        if (!now || String(now.status) !== 'draft' || (!(site && redo) && Array.isArray(now.images) && now.images.length)) { push({ id: s.id, name: s.name, host: s.host, added: 0, note: 'Skipped — changed meanwhile' }); continue; }
         await db.update('fonts', { id: s.id }, { images: paths, cover: paths[0], updated_at: new Date().toISOString() });
         await db.log({ action: 'update', entity: 'font', entity_id: s.id, label: `${s.name}: ${paths.length} images from ${s.host}`, after: { images: paths, source: s.url } });
         push({ id: s.id, name: s.name, host: s.host, added: paths.length, note: '' });
@@ -138,6 +143,7 @@ export default function FillImages() {
               <option value="">All sites</option>
               {hosts.map(([h, n]) => <option key={h} value={h}>{h} ({n})</option>)}
             </select>
+            {site ? <label className="dz-muted" style={{ display: 'flex', gap: 6, alignItems: 'center' }}><input type="checkbox" checked={redo} onChange={(e) => setRedo(e.target.checked)} />Also redo this site&apos;s drafts that already have images (replaces them)</label> : null}
             <button type="button" className="dz-btn dz-btn--primary" disabled={!isAdmin || !withLink.length} onClick={run}>{phase === 'done' ? 'Run again' : `Start — ${withLink.length} drafts`}</button>{!isAdmin ? <span className="dz-muted">Only admins can run this.</span> : null}</div>
         )}
       </section>
