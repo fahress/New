@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import FontCard from '@/components/FontCard';
 import HomeSearch, { type SearchIndex } from '@/components/HomeSearch';
 import HoverRows from '@/components/HoverRows';
 import RandomAwards from '@/components/RandomAwards';
+import RandomReleases from '@/components/RandomReleases';
 import RandomWall from '@/components/RandomWall';
 import FoundryTicker from '@/components/FoundryTicker';
 import { getArchive } from '@/lib/data';
@@ -20,16 +20,14 @@ export default async function Home() {
   // countries the credited designers and foundries come from
   const countries = new Set([...designers, ...foundries].map((p) => (p.from ?? '').trim().toLowerCase()).filter(Boolean)).size;
 
-  // newest releases by release year (then most recently added within the same year)
-  // one font per designer / foundry: a font is skipped if anyone credited on it already has one in the list
-  const newest: Font[] = [];
-  const shown = new Set<string>();
-  for (const f of a.fonts.filter((x) => x.year).sort((x, y) => (y.year ?? 0) - (x.year ?? 0) || y.createdAt.localeCompare(x.createdAt))) {
-    if (f.people.some((id) => shown.has(id))) continue;
-    newest.push(f);
-    f.people.forEach((id) => shown.add(id));
-    if (newest.length === 8) break;
-  }
+  // New releases: this year's fonts, shuffled on every visit (one per designer / foundry) — see RandomReleases.
+  // If this year has fewer than 8 artists yet, last year's releases fill the remaining places.
+  const thisYear = new Date().getFullYear();
+  const byYear = (y: number) => a.fonts.filter((x) => x.year === y);
+  const artists = (list: Font[]) => new Set(list.flatMap((f) => f.people)).size;
+  let releasePool = byYear(thisYear);
+  if (artists(releasePool) < 8) releasePool = [...releasePool, ...byYear(thisYear - 1)];
+  const releaseCards = releasePool.map((f) => ({ id: f.id, people: f.people, card: { ...toCard(a, f), script: `${toCard(a, f).script} · ${f.year}` } }));
 
   // Designer spotlight rotates weekly among designers with a bio and at least 4 typefaces.
   const pool = designers.filter((p) => p.fontIds.length >= 4 && p.bio.length > 40 && p.logo);
@@ -108,9 +106,7 @@ export default async function Home() {
           <h2 className="display h-lg">New releases</h2>
           <Link href="/fonts?sort=year" className="ul">All typefaces by release year →</Link>
         </div>
-        <div className="grid">
-          {newest.map((f, i) => <FontCard key={f.id} f={{ ...toCard(a, f), script: `${toCard(a, f).script} · ${f.year}` }} index={i} priority={i < 3} />)}
-        </div>
+        <RandomReleases pool={releaseCards} />
       </section>
 
       <section className="wrap section" id="scripts">
