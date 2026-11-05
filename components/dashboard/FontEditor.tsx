@@ -223,7 +223,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
     { ok: form.genres.length > 0, label: 'Genre' },
     { ok: !!form.weights, label: 'Number of weights' },
     { ok: !!form.year, label: 'Release year' },
-    { ok: purchase.length > 0, label: 'Link to buy or download' },
+    { ok: purchase.length > 0 || form.license === 'custom', label: 'Link to buy or download' },
   ];
   const required = checks.filter((c) => ['Name', 'Presentation images', 'Designer or foundry credited', 'Script', 'Genre', 'Number of weights'].includes(c.label));
   const ready = required.every((c) => c.ok);

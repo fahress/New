@@ -58,7 +58,7 @@ export function issues(data: Data, linked: (id: string, k: keyof Data['links']) 
     },
     { id: 'no-credit', label: 'Live fonts with no designer or foundry credited', items: live.filter((f) => !linked(String(f.id), 'designers').length).map(fontItem) },
     { id: 'no-cover', label: 'Fonts without a presentation image', items: data.fonts.filter((f) => !coverOf(f)).map(fontItem) },
-    { id: 'no-link', label: 'Live fonts without a link to buy or download', items: live.filter((f) => !(Array.isArray(f.purchase_links) && f.purchase_links.filter(Boolean).length)).map(fontItem) },
+    { id: 'no-link', label: 'Live fonts without a link to buy or download', items: live.filter((f) => f.license !== 'custom' && !(Array.isArray(f.purchase_links) && f.purchase_links.filter(Boolean).length)).map(fontItem) },
     { id: 'no-year', label: 'Live fonts without a release year', items: live.filter((f) => !f.year).map(fontItem) },
     { id: 'no-script', label: 'Live fonts without a script', items: live.filter((f) => !linked(String(f.id), 'scripts').length).map(fontItem) },
     { id: 'no-description', label: 'Fonts without a description', items: data.fonts.filter((f) => !String(f.description ?? '').trim()).map(fontNote) },
