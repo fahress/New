@@ -5,6 +5,8 @@ const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
   : 'vwprdpizbxjokwmnotgl.supabase.co';
 
 const nextConfig: NextConfig = {
+  // native image library, used on the server only (image checks for the agent)
+  serverExternalPackages: ['sharp'],
   images: {
     remotePatterns: [{ protocol: 'https', hostname: supabaseHost, pathname: '/storage/v1/object/public/**' }],
     formats: ['image/avif', 'image/webp'],

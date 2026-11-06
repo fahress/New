@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "test": "npm run test:unit && npm run test:ui && npm run test:sql",
+    "test:unit": "tsx --conditions=react-server --test tests/agent/*.test.ts",
+    "test:ui": "tsx --test tests/ui/*.test.tsx",
+    "test:sql": "node tests/sql/maybe-run.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
@@ -14,12 +18,15 @@
     "pdfjs-dist": "^4.10.38",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "server-only": "^0.0.1"
+    "server-only": "^0.0.1",
+    "sharp": "^0.35.5",
+    "undici": "^7.16.0"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "tsx": "^4.20.6",
     "typescript": "5.9.3"
   }
 }
