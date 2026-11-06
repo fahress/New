@@ -35,9 +35,18 @@ The Supabase tables the site reads need a read-only "Public read" policy (alread
 
 Import this repository in Vercel and deploy — no environment variables are required. Every branch gets its own preview link; search engines are told not to index previews.
 
+## Fahress Agent (dashboard)
+
+**Dashboard → Fahress Agent** is a chat assistant for the team: it searches Fahress and the web, compares sources and prepares
+change proposals that a person approves. Keys and all its settings are managed in **Dashboard → Agent settings** — no
+environment variables. Setup (one SQL script and one Supabase Edge Function), the security design and the tests are in
+[`docs/agent.md`](docs/agent.md).
+
 ## Offline development
 
-Set `FAHRESS_FIXTURE=/path/to/snapshot.json` (an export of the tables as `{ "fonts": [...], "designers": [...], ... }`) to build without network access.
+Set `FAHRESS_FIXTURE=/path/to/snapshot.json` (an export of the tables as `{ "fonts": [...], "designers": [...], ... }`) to build without network access. A small synthetic snapshot is in `tests/fixtures/archive.json`.
+
+Tests: `npm test` (unit, UI rendering, and database tests when a local Postgres is available — see `docs/agent.md`).
 
 ## Messages: Gmail + the contact form in the dashboard
 

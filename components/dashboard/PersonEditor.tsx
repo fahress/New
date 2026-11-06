@@ -19,16 +19,16 @@ const SOCIAL = [
   { key: 'myfonts_url', label: 'MyFonts' },
 ];
 
-type Form = { name: string; slug: string; slugTouched: boolean; type: Kind; country: string; bio: string; logo: string; social: Record<string, string> };
+type Form = { name: string; slug: string; slugTouched: boolean; type: Kind; country: string; bio: string; bioAr: string; logo: string; social: Record<string, string> };
 
 function fromRow(p: Row | undefined, kind: Kind): Form {
-  if (!p) return { name: '', slug: '', slugTouched: false, type: kind, country: '', bio: '', logo: '', social: {} };
+  if (!p) return { name: '', slug: '', slugTouched: false, type: kind, country: '', bio: '', bioAr: '', logo: '', social: {} };
   const slug = String(p.slug ?? '');
   // until the database has a country column, show the researched country the site uses
   const country = String(p.country ?? '') || placeOf(slug).from || '';
   return {
     name: String(p.name ?? ''), slug, slugTouched: true, type: p.type === 'foundry' ? 'foundry' : 'designer', country,
-    bio: String(p.bio ?? ''), logo: String(p.logo ?? ''), social: { ...((p.social_links as Record<string, string>) ?? {}) },
+    bio: String(p.bio ?? ''), bioAr: String(p.bio_ar ?? ''), logo: String(p.logo ?? ''), social: { ...((p.social_links as Record<string, string>) ?? {}) },
   };
 }
 
@@ -88,6 +88,7 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
       const social = Object.fromEntries(Object.entries(form.social).map(([k, v]) => [k, v.trim()]).filter(([, v]) => v));
       const row: Row = { name: form.name.trim(), slug, type: form.type, bio: form.bio.trim(), logo: form.logo || null, social_links: social, updated_at: new Date().toISOString() };
       if (data!.hasCountry) row.country = form.country || null;
+      if (data!.people.length && 'bio_ar' in data!.people[0]) row.bio_ar = form.bioAr.trim() || null;
       let pid = id;
       if (pid) await db.update('designers', { id: pid }, row);
       else pid = String((await db.insert('designers', row))[0].id);
@@ -152,7 +153,7 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
         <div>
           <Link href={listHref} className="dz-crumb">← {form.type === 'foundry' ? 'Foundries' : 'Designers'}</Link>
           <h1 className="display" style={{ marginTop: 10 }}>{form.name.trim() || `New ${noun}`}</h1>
-          {existing ? <p><a href={personHref(form.type, String(existing.slug))} target="_blank" rel="noreferrer">View profile on site ↗</a> · {fonts.length} font{fonts.length === 1 ? '' : 's'}</p> : null}
+          {existing ? <p><a href={personHref(form.type, String(existing.slug))} target="_blank" rel="noreferrer">View profile on site ↗</a> · {fonts.length} font{fonts.length === 1 ? '' : 's'} · <Link href={`/dashboard/agent?context=${form.type === 'foundry' ? 'foundry' : 'designer'}:${existing.id}`}>Ask the agent about this {form.type === 'foundry' ? 'foundry' : 'designer'}</Link></p> : null}
         </div>
       </div>
 
@@ -186,8 +187,13 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
                 <input className="dz-input" value={form.slug} onChange={(e) => setForm({ ...form, slug: slugify(e.target.value), slugTouched: true })} />
               </Field>
               <Field label="Bio" wide hint="A few sentences about their background and work.">
-                <textarea className="dz-textarea" value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} />
+                <textarea className="dz-textarea" dir="auto" value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} />
               </Field>
+              {data.people.length && 'bio_ar' in data.people[0] ? (
+                <Field label="Arabic bio" wide hint="النبذة بالعربية (اختيارية).">
+                  <textarea className="dz-textarea" dir="rtl" lang="ar" value={form.bioAr} onChange={(e) => setForm({ ...form, bioAr: e.target.value })} />
+                </Field>
+              ) : null}
             </div>
           </section>
 

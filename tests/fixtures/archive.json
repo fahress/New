@@ -1,0 +1,310 @@
+{
+ "fonts": [
+  {
+   "id": "00000000-0000-4000-8000-000000000001",
+   "name": "Zawi",
+   "slug": "zawi",
+   "description": "A Kufi display face.",
+   "description_ar": null,
+   "cover": null,
+   "images": [],
+   "purchase_links": [
+    "https://sarastudio.example/zawi"
+   ],
+   "case_studies": [],
+   "license": "paid",
+   "year": 2019,
+   "weights": 6,
+   "is_variable": false,
+   "is_favorite": false,
+   "language_group": [
+    "1"
+   ],
+   "created_at": "2024-02-01T00:00:00Z",
+   "updated_at": null,
+   "status": "published",
+   "source_url": "https://sarastudio.example/zawi"
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000002",
+   "name": "Amiri",
+   "slug": "amiri",
+   "description": "Classic Naskh.",
+   "description_ar": null,
+   "cover": null,
+   "images": [],
+   "purchase_links": [],
+   "case_studies": [],
+   "license": "free",
+   "year": null,
+   "weights": 4,
+   "is_variable": false,
+   "is_favorite": true,
+   "language_group": [
+    "1"
+   ],
+   "created_at": "2023-02-01T00:00:00Z",
+   "updated_at": null,
+   "status": "featured",
+   "source_url": null
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000003",
+   "name": "Zawi 2",
+   "slug": "zawi-1",
+   "description": "",
+   "description_ar": null,
+   "cover": null,
+   "images": [],
+   "purchase_links": [
+    "https://sarastudio.example/zawi"
+   ],
+   "case_studies": [],
+   "license": "paid",
+   "year": null,
+   "weights": null,
+   "is_variable": false,
+   "is_favorite": false,
+   "language_group": [],
+   "created_at": "2024-06-01T00:00:00Z",
+   "updated_at": null,
+   "status": "draft",
+   "source_url": null
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000004",
+   "name": "Zawi",
+   "slug": "zawi-nadine",
+   "description": "",
+   "description_ar": null,
+   "cover": null,
+   "images": [],
+   "purchase_links": [
+    "https://nadine.example/zawi"
+   ],
+   "case_studies": [],
+   "license": "paid",
+   "year": 2021,
+   "weights": 3,
+   "is_variable": true,
+   "is_favorite": false,
+   "language_group": [
+    "1"
+   ],
+   "created_at": "2024-07-01T00:00:00Z",
+   "updated_at": null,
+   "status": "published",
+   "source_url": null
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000005",
+   "name": "نسيم",
+   "slug": "naseem",
+   "description": "",
+   "description_ar": null,
+   "cover": null,
+   "images": [],
+   "purchase_links": [],
+   "case_studies": [],
+   "license": "paid",
+   "year": null,
+   "weights": 2,
+   "is_variable": false,
+   "is_favorite": false,
+   "language_group": [
+    "1"
+   ],
+   "created_at": "2024-08-01T00:00:00Z",
+   "updated_at": null,
+   "status": "published",
+   "source_url": null
+  }
+ ],
+ "designers": [
+  {
+   "id": "00000000-0000-4000-8000-000000000101",
+   "name": "Sara Studio",
+   "slug": "sara-studio",
+   "type": "foundry",
+   "logo": null,
+   "bio": "An Amman-based foundry.",
+   "bio_ar": null,
+   "social_links": {
+    "website_url": "https://sarastudio.example"
+   },
+   "country": "Jordan",
+   "user_id": null,
+   "created_at": "2024-01-02T00:00:00Z",
+   "updated_at": null
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000102",
+   "name": "Sara Studio Type",
+   "slug": "sara-studio-type",
+   "type": "foundry",
+   "logo": null,
+   "bio": "",
+   "bio_ar": null,
+   "social_links": {
+    "website_url": "https://sarastudio.example"
+   },
+   "country": "Jordan",
+   "user_id": null,
+   "created_at": "2024-03-02T00:00:00Z",
+   "updated_at": null
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000103",
+   "name": "Khaled Hosny",
+   "slug": "khaled-hosny",
+   "type": "designer",
+   "logo": null,
+   "bio": "Type designer.",
+   "bio_ar": null,
+   "social_links": {},
+   "country": "Egypt",
+   "user_id": null,
+   "created_at": "2023-01-02T00:00:00Z",
+   "updated_at": null
+  },
+  {
+   "id": "00000000-0000-4000-8000-000000000104",
+   "name": "Nadine Studio",
+   "slug": "nadine-studio",
+   "type": "foundry",
+   "logo": null,
+   "bio": "",
+   "bio_ar": null,
+   "social_links": {
+    "website_url": "https://nadine.example"
+   },
+   "country": "Lebanon",
+   "user_id": null,
+   "created_at": "2023-05-02T00:00:00Z",
+   "updated_at": null
+  }
+ ],
+ "scripts": [
+  {
+   "id": 1,
+   "name": "Kufi",
+   "slug": "kufi"
+  },
+  {
+   "id": 2,
+   "name": "Naskh",
+   "slug": "naskh"
+  }
+ ],
+ "styles": [
+  {
+   "id": 1,
+   "name": "sans serif",
+   "slug": "sans-serif"
+  }
+ ],
+ "types": [
+  {
+   "id": 1,
+   "name": "geometric",
+   "slug": "geometric"
+  }
+ ],
+ "genres": [
+  {
+   "id": 1,
+   "name": "Display",
+   "slug": "display"
+  },
+  {
+   "id": 2,
+   "name": "Body text",
+   "slug": "body-text"
+  }
+ ],
+ "language_groups": [
+  {
+   "id": 1,
+   "name": "Arabic",
+   "slug": "arabic"
+  }
+ ],
+ "languages": [
+  {
+   "id": 1,
+   "name": "Arabic",
+   "native_name": "العربية"
+  }
+ ],
+ "language_group_languages": [
+  {
+   "language_group_id": 1,
+   "language_id": 1
+  }
+ ],
+ "awards": [
+  {
+   "id": "00000000-0000-4000-8000-000000000201",
+   "name": "Granshan",
+   "image": null
+  }
+ ],
+ "font_designers": [
+  {
+   "font_id": "00000000-0000-4000-8000-000000000001",
+   "designer_id": "00000000-0000-4000-8000-000000000101",
+   "created_at": "2024-02-01T00:00:00Z"
+  },
+  {
+   "font_id": "00000000-0000-4000-8000-000000000003",
+   "designer_id": "00000000-0000-4000-8000-000000000102",
+   "created_at": "2024-06-01T00:00:00Z"
+  },
+  {
+   "font_id": "00000000-0000-4000-8000-000000000002",
+   "designer_id": "00000000-0000-4000-8000-000000000103",
+   "created_at": "2023-02-01T00:00:00Z"
+  },
+  {
+   "font_id": "00000000-0000-4000-8000-000000000004",
+   "designer_id": "00000000-0000-4000-8000-000000000104",
+   "created_at": "2024-07-01T00:00:00Z"
+  }
+ ],
+ "font_scripts": [
+  {
+   "font_id": "00000000-0000-4000-8000-000000000001",
+   "script_id": 1
+  },
+  {
+   "font_id": "00000000-0000-4000-8000-000000000002",
+   "script_id": 2
+  },
+  {
+   "font_id": "00000000-0000-4000-8000-000000000004",
+   "script_id": 1
+  }
+ ],
+ "font_genres": [
+  {
+   "font_id": "00000000-0000-4000-8000-000000000001",
+   "genre_id": 1
+  }
+ ],
+ "font_styles": [],
+ "font_types": [],
+ "font_languages": [
+  {
+   "font_id": "00000000-0000-4000-8000-000000000001",
+   "lang_id": 1
+  }
+ ],
+ "font_awards": [
+  {
+   "font_id": "00000000-0000-4000-8000-000000000002",
+   "award_id": "00000000-0000-4000-8000-000000000201",
+   "url": null
+  }
+ ],
+ "profiles": []
+}
