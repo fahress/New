@@ -11,6 +11,7 @@ import { useMailStatus } from '@/lib/admin/mail';
 
 const NAV = [
   { href: '/dashboard', label: 'Overview' },
+  { href: '/dashboard/agent', label: 'Fahress Agent', exact: true },
   { href: '/dashboard/review', label: 'Review queue', badge: 'pending' as const },
   { href: '/dashboard/inbox', label: 'Inbox', badge: 'inbox' as const },
   { href: '/dashboard/fonts', label: 'Fonts' },
@@ -28,6 +29,7 @@ const NAV = [
   { href: '/dashboard/stats', label: 'Clicks & stats' },
   { href: '/dashboard/history', label: 'History' },
   { href: '/dashboard/users', label: 'Users & team' },
+  { href: '/dashboard/agent/settings', label: 'Agent settings' },
 ];
 
 type Auth = { state: 'loading' } | { state: 'out' } | { state: 'in'; email: string };
@@ -79,7 +81,7 @@ function Frame({ email, children }: { email: string; children: React.ReactNode }
     } as Record<string, number>;
   }, [data, mailStatus]);
 
-  const active = (href: string) => (href === '/dashboard' ? path === href : path === href || path.startsWith(`${href}/`));
+  const active = (href: string, exact?: boolean) => (href === '/dashboard' || exact ? path === href : path === href || path.startsWith(`${href}/`));
 
   return (
     <div className={`dz${menu ? ' is-menu' : ''}`}>
@@ -92,7 +94,7 @@ function Frame({ email, children }: { email: string; children: React.ReactNode }
           <Link href="/dashboard/fonts/new" className="dz-btn dz-btn--primary dz-btn--block">+ New font</Link>
           <nav className="dz-nav">
             {NAV.map((n) => 'group' in n ? <span key={n.group} className="dz-nav__group">{n.group}</span> : (
-              <Link key={n.href} href={n.href} className={active(n.href) ? 'is-active' : ''}>
+              <Link key={n.href} href={n.href} className={active(n.href, 'exact' in n ? n.exact : false) ? 'is-active' : ''}>
                 {n.label}
                 {n.badge && badges[n.badge] > 0 ? <span className="dz-badge">{badges[n.badge]}</span> : null}
               </Link>

@@ -13,13 +13,13 @@ import { cropSourceOf, isCoverCrop } from '@/lib/format';
 import type { Prefill } from '@/lib/admin/prefill';
 
 type Form = {
-  name: string; slug: string; slugTouched: boolean; year: string; description: string; status: string; license: string;
+  name: string; slug: string; slugTouched: boolean; year: string; description: string; descriptionAr: string; status: string; license: string;
   weights: string; variable: boolean; scripts: string[]; groups: string[]; genres: string[]; styles: string[]; types: string[];
   people: string[]; awards: { id: string; url: string }[]; purchase: string[]; cases: string[]; source: string; images: string[]; cover: string;
 };
 
 const blank: Form = {
-  name: '', slug: '', slugTouched: false, year: '', description: '', status: 'draft', license: 'paid', weights: '', variable: false,
+  name: '', slug: '', slugTouched: false, year: '', description: '', descriptionAr: '', status: 'draft', license: 'paid', weights: '', variable: false,
   scripts: [], groups: [], genres: [], styles: [], types: [], people: [], awards: [], purchase: [''], cases: [], source: '', images: [], cover: '',
 };
 
@@ -33,7 +33,7 @@ function fromRow(f: Row, data: Data, linked: (id: string, k: keyof Data['links']
   const cover = String(f.cover ?? '');
   return {
     name: String(f.name ?? ''), slug: String(f.slug ?? ''), slugTouched: true, year: f.year ? String(f.year) : '',
-    description: String(f.description ?? ''), status: String(f.status ?? 'draft'), license: String(f.license ?? 'paid'),
+    description: String(f.description ?? ''), descriptionAr: String(f.description_ar ?? ''), status: String(f.status ?? 'draft'), license: String(f.license ?? 'paid'),
     weights: f.weights ? String(f.weights) : '', variable: f.is_variable === true,
     scripts: linked(id, 'scripts'), groups: strs(f.language_group), genres: linked(id, 'genres'), styles: linked(id, 'styles'), types: linked(id, 'types'),
     people: linked(id, 'designers'), awards: awardRows.map((a) => ({ id: String(a.award_id), url: String(a.url ?? '') })),
@@ -74,6 +74,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
   const [cropping, setCropping] = useState<string | null>(null);
   const [importing, setImporting] = useState(0);
   const isEditor = data?.role === 'editor';
+  const hasAr = !!data?.fonts.length && 'description_ar' in data.fonts[0];
 
   useEffect(() => {
     if (!data) return;
@@ -259,6 +260,8 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
         cover: cover || null, images: form.images, purchase_links: purchase, case_studies: form.cases.map((s) => s.trim()).filter(Boolean),
         language_group: form.groups, source_url: form.source.trim() || null, updated_at: new Date().toISOString(),
       };
+      // the Arabic description column exists once the agent database update has run
+      if (hasAr) row.description_ar = form.descriptionAr.trim() || null;
       let fontId = id;
       if (fontId) await db.update('fonts', { id: fontId }, row);
       else {
@@ -369,7 +372,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
         <div>
           <Link href="/dashboard/fonts" className="dz-crumb">← Fonts</Link>
           <h1 className="display" style={{ marginTop: 10 }}>{form.name.trim() || (id ? 'Untitled' : 'New font')}</h1>
-          {existing ? <p style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}><StatusPill status={String(existing.status)} />{isLive ? <a href={`/fonts/${existing.slug}`} target="_blank" rel="noreferrer">View on site ↗</a> : <span>Not visible on the site</span>}</p> : <p>Add a typeface to the archive. Save as a draft any time.</p>}
+          {existing ? <p style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}><StatusPill status={String(existing.status)} />{isLive ? <a href={`/fonts/${existing.slug}`} target="_blank" rel="noreferrer">View on site ↗</a> : <span>Not visible on the site</span>}<Link href={`/dashboard/agent?context=font:${existing.id}`} className="dz-btn dz-btn--sm">Ask the agent about this font</Link></p> : <p>Add a typeface to the archive. Save as a draft any time.</p>}
         </div>
       </div>
 
@@ -407,8 +410,13 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
                 <input className="dz-input" inputMode="numeric" placeholder="e.g. 2024" value={form.year} onChange={(e) => set('year', e.target.value.replace(/\D/g, '').slice(0, 4))} />
               </Field>
               <Field label="Description" hint="A short paragraph about the font and what it's good for." wide>
-                <textarea className="dz-textarea" value={form.description} onChange={(e) => set('description', e.target.value)} />
+                <textarea className="dz-textarea" dir="auto" value={form.description} onChange={(e) => set('description', e.target.value)} />
               </Field>
+              {hasAr ? (
+                <Field label="Arabic description" hint="الوصف بالعربية (اختياري)." wide>
+                  <textarea className="dz-textarea" dir="rtl" lang="ar" value={form.descriptionAr} onChange={(e) => set('descriptionAr', e.target.value)} />
+                </Field>
+              ) : null}
             </div>
           </section>
 
