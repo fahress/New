@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { agentApi, ApiError, newId, streamChat } from './api';
 import Markdown from './Markdown';
+import SetupNeeded from './SetupNeeded';
 import { CardView, RefsCtx, SourceChip, useRefStore } from './Cards';
 import { ConfirmButton, Loading, timeAgo, useToast } from '@/components/dashboard/ui';
 import { useData } from '@/lib/admin/store';
@@ -30,6 +31,7 @@ export default function AgentChat() {
   const { fontById, personById } = useData();
   const [setup, setSetup] = useState<Setup | null>(null);
   const [setupError, setSetupError] = useState<string | null>(null);
+  const [notInstalled, setNotInstalled] = useState<string | null>(null);
   const [list, setList] = useState<ConvItem[] | null>(null);
   const [q, setQ] = useState('');
   const [archived, setArchived] = useState(false);
@@ -55,7 +57,10 @@ export default function AgentChat() {
 
   /* ----- loading ----- */
   useEffect(() => {
-    agentApi<Setup>('settings').then(setSetup).catch((e) => setSetupError(e instanceof Error ? e.message : 'Couldn’t load the agent'));
+    agentApi<Setup>('settings').then(setSetup).catch((e) => {
+      if (e instanceof ApiError && e.code === 'not_installed') setNotInstalled(String((e.body as { detail?: string } | undefined)?.detail ?? ''));
+      else setSetupError(e instanceof Error ? e.message : 'Couldn’t load the agent');
+    });
   }, []);
   const loadList = useCallback(async () => {
     try { setList((await agentApi<{ conversations: ConvItem[] }>(`conversations?${new URLSearchParams({ ...(q ? { q } : {}), ...(archived ? { archived: '1' } : {}) })}`)).conversations); }
@@ -177,6 +182,7 @@ export default function AgentChat() {
   };
 
   /* ----- render ----- */
+  if (notInstalled !== null) return <SetupNeeded detail={notInstalled || null} />;
   if (setupError) return <div className="dz-panel dz-panel--err"><b>The agent isn’t available.</b><p>{setupError}</p><p className="dz-hint">If this is a new installation, run <code>supabase/agent-setup.sql</code> and deploy the gateway — see the setup guide.</p></div>;
   if (!setup) return <Loading text="Opening the agent…" />;
   const s = setup.settings;
