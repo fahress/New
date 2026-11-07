@@ -186,7 +186,17 @@ export default function AgentChat() {
   if (setupError) return <div className="dz-panel dz-panel--err"><b>The agent isn’t available.</b><p>{setupError}</p><p className="dz-hint">If this is a new installation, run <code>supabase/agent-setup.sql</code> and deploy the gateway — see the setup guide.</p></div>;
   if (!setup) return <Loading text="Opening the agent…" />;
   const s = setup.settings;
-  const blocked = !s.runtime.enabled ? 'The agent is switched off.' : !setup.gateway.installed ? `The agent gateway isn’t reachable: ${setup.gateway.error ?? 'not installed'}.` : !s.models.chat ? 'No chat model is chosen yet.' : !setup.integrations.find((i) => i.provider === s.models.chat_provider)?.configured ? `No ${s.models.chat_provider === 'fireworks' ? 'Fireworks' : 'OpenRouter'} key is saved yet.` : null;
+  // what's still needed, in the order it's done in Agent settings (all shown at once, not only the first)
+  const llm = s.models.chat_provider === 'fireworks' ? 'Fireworks' : 'OpenRouter';
+  const keyOf = (p: string) => setup.integrations.find((i) => i.provider === p)?.configured === true;
+  const checklist = [
+    { done: setup.gateway.installed, label: setup.gateway.installed ? 'Key gateway installed' : `Install the key gateway (${setup.gateway.error ?? 'not reachable'})` },
+    { done: keyOf(s.models.chat_provider), label: `${llm} key saved and tested (Connections)` },
+    { done: !!s.models.chat, label: 'Chat model chosen (Models)' },
+    { done: s.runtime.enabled, label: 'Agent switched on (Running)' },
+  ];
+  const blocked = checklist.some((c) => !c.done);
+  const noSearch = !blocked && s.search.provider === 'tavily' && s.tools.web_search && !keyOf('tavily');
   const u = setup.usage;
   const warn = u && (u.user_today / u.user_limit >= s.usage.warn_at_percent / 100 || u.team_today / u.team_limit >= s.usage.warn_at_percent / 100);
   const messages = loaded?.messages ?? [];
@@ -235,7 +245,13 @@ export default function AgentChat() {
             {u ? <small className={warn ? 'ag-usage is-warn' : 'ag-usage'} title="Tokens used today (as reported by the provider)">Today: {fmt(u.user_today)} / {fmt(u.user_limit)} tokens{warn ? ' — close to the limit' : ''}</small> : null}
           </header>
 
-          {blocked ? <div className="dz-warn" style={{ margin: '0 0 12px' }}><b>Not ready</b>{blocked} {setup.perms.manage_settings ? <Link href="/dashboard/agent/settings">Open the agent settings →</Link> : 'Ask an admin to finish the setup.'}</div> : null}
+          {blocked ? (
+            <div className="dz-warn" style={{ margin: '0 0 12px' }}>
+              <b>Not ready — still to do</b>
+              <ul className="ag-check">{checklist.map((c) => <li key={c.label} className={c.done ? 'is-done' : ''}>{c.done ? '✓' : '○'} {c.label}</li>)}</ul>
+              {setup.perms.manage_settings ? <Link href="/dashboard/agent/settings">Open the agent settings →</Link> : 'Ask an admin to finish the setup.'}
+            </div>
+          ) : noSearch ? <p className="dz-hint" style={{ margin: '0 0 12px' }}>Web search is off until a Tavily key is saved — the agent can still search Fahress.</p> : null}
 
           <div className="ag-thread" ref={scroller} onScroll={onScroll} aria-live="polite">
             {loading ? <Loading text="Opening…" /> : shown.length === 0 ? (
