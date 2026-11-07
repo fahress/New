@@ -21,7 +21,7 @@ export default function SetupNeeded({ detail }: { detail?: string | null }) {
           Paste it into the <a href={SQL_EDITOR} target="_blank" rel="noreferrer">Supabase SQL editor ↗</a> and press <b>Run</b>.
           It only adds things and is safe to run again. The last lines should show <code>agent tables 16</code>, <code>vault available true</code> and <code>agent-staging bucket true</code>.
         </li>
-        <li>Deploy the key gateway once: <code>supabase functions deploy agent-gateway --project-ref {ref || '&lt;project&gt;'}</code></li>
+        <li>Deploy the key gateway once: <code>supabase functions deploy agent-gateway --project-ref {ref || '&lt;project&gt;'}</code>, or without the CLI paste the single-file version into Supabase → Edge Functions → Deploy a new function → Via editor, named <code>agent-gateway</code> (see the guide).</li>
         <li>Reload this page, then add the keys and choose a model in <b>Agent settings</b>.</li>
       </ol>
       <p className="dz-hint">Full guide: <code>docs/agent.md</code>.{detail ? ` Database said: ${detail}` : ''}</p>

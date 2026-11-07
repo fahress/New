@@ -49,6 +49,10 @@ With the Supabase CLI logged in to the project:
 supabase functions deploy agent-gateway --project-ref vwprdpizbxjokwmnotgl
 ```
 
+**Without the CLI** (from the browser): run `node scripts/gateway-single-file.mjs gateway.ts` to get the function as one
+file, then in Supabase → **Edge Functions → Deploy a new function → Via editor**, name it exactly `agent-gateway`, replace the
+example code with the whole file, and press **Deploy function**.
+
 Keep JWT verification on (the default). Supabase gives every Edge Function its project URL and service identity
 (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`) automatically — nothing is configured by hand. The dashboard finds the function
 from the existing Supabase address, so there is nothing to set on Vercel either.
