@@ -1,4 +1,5 @@
 'use client';
+import { AGENT_ENABLED } from '@/lib/config';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -372,7 +373,7 @@ export default function FontEditor({ id, prefill }: { id?: string; prefill?: Pre
         <div>
           <Link href="/dashboard/fonts" className="dz-crumb">← Fonts</Link>
           <h1 className="display" style={{ marginTop: 10 }}>{form.name.trim() || (id ? 'Untitled' : 'New font')}</h1>
-          {existing ? <p style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}><StatusPill status={String(existing.status)} />{isLive ? <a href={`/fonts/${existing.slug}`} target="_blank" rel="noreferrer">View on site ↗</a> : <span>Not visible on the site</span>}<Link href={`/dashboard/agent?context=font:${existing.id}`} className="dz-btn dz-btn--sm">Ask the agent about this font</Link></p> : <p>Add a typeface to the archive. Save as a draft any time.</p>}
+          {existing ? <p style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}><StatusPill status={String(existing.status)} />{isLive ? <a href={`/fonts/${existing.slug}`} target="_blank" rel="noreferrer">View on site ↗</a> : <span>Not visible on the site</span>}{AGENT_ENABLED ? <Link href={`/dashboard/agent?context=font:${existing.id}`} className="dz-btn dz-btn--sm">Ask the agent about this font</Link> : null}</p> : <p>Add a typeface to the archive. Save as a draft any time.</p>}
         </div>
       </div>
 

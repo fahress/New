@@ -1,4 +1,5 @@
 'use client';
+import { AGENT_ENABLED } from '@/lib/config';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -153,7 +154,7 @@ export default function PersonEditor({ id, kind }: { id?: string; kind: Kind }) 
         <div>
           <Link href={listHref} className="dz-crumb">← {form.type === 'foundry' ? 'Foundries' : 'Designers'}</Link>
           <h1 className="display" style={{ marginTop: 10 }}>{form.name.trim() || `New ${noun}`}</h1>
-          {existing ? <p><a href={personHref(form.type, String(existing.slug))} target="_blank" rel="noreferrer">View profile on site ↗</a> · {fonts.length} font{fonts.length === 1 ? '' : 's'} · <Link href={`/dashboard/agent?context=${form.type === 'foundry' ? 'foundry' : 'designer'}:${existing.id}`}>Ask the agent about this {form.type === 'foundry' ? 'foundry' : 'designer'}</Link></p> : null}
+          {existing ? <p><a href={personHref(form.type, String(existing.slug))} target="_blank" rel="noreferrer">View profile on site ↗</a> · {fonts.length} font{fonts.length === 1 ? '' : 's'}{AGENT_ENABLED ? <> · <Link href={`/dashboard/agent?context=${form.type === 'foundry' ? 'foundry' : 'designer'}:${existing.id}`}>Ask the agent about this {form.type === 'foundry' ? 'foundry' : 'designer'}</Link></> : null}</p> : null}
         </div>
       </div>
 

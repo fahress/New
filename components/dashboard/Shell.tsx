@@ -8,8 +8,9 @@ import { DataProvider, coverOf, img, useData } from '@/lib/admin/store';
 import { duplicateFonts, duplicatePeople } from '@/lib/admin/checks';
 import { Loading, Toasts } from './ui';
 import { useMailStatus } from '@/lib/admin/mail';
+import { AGENT_ENABLED } from '@/lib/config';
 
-const NAV = [
+const ALL_NAV = [
   { href: '/dashboard', label: 'Overview' },
   { href: '/dashboard/agent', label: 'Fahress Agent', exact: true },
   { href: '/dashboard/review', label: 'Review queue', badge: 'pending' as const },
@@ -31,6 +32,9 @@ const NAV = [
   { href: '/dashboard/users', label: 'Users & team' },
   { href: '/dashboard/agent/settings', label: 'Agent settings' },
 ];
+
+// the agent's menu items are hidden while it's switched off (lib/config.ts)
+const NAV = ALL_NAV.filter((n) => AGENT_ENABLED || !('href' in n && n.href?.startsWith('/dashboard/agent')));
 
 type Auth = { state: 'loading' } | { state: 'out' } | { state: 'in'; email: string };
 
