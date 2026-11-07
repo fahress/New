@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Logo from '@/components/Logo';
 import { DEMO, supabase } from '@/lib/admin/client';
-import { DataProvider, coverOf, img, useData } from '@/lib/admin/store';
+import { DataProvider, coverOf, img, useData, weekStart } from '@/lib/admin/store';
 import { duplicateFonts, duplicatePeople } from '@/lib/admin/checks';
 import { Loading, Toasts } from './ui';
 import { useMailStatus } from '@/lib/admin/mail';
@@ -20,6 +20,7 @@ const ALL_NAV = [
   { href: '/dashboard/foundries', label: 'Foundries' },
   { href: '/dashboard/awards', label: 'Awards' },
   { href: '/dashboard/taxonomy', label: 'Classification' },
+  { href: '/dashboard/designer-of-the-week', label: 'Designer of the week', badge: 'dotw' as const },
   { group: 'Tools' },
   { href: '/dashboard/import', label: 'Import from survey' },
   { href: '/dashboard/import-awards', label: 'Import awards' },
@@ -82,6 +83,8 @@ function Frame({ email, children }: { email: string; children: React.ReactNode }
       inbox: (data.submissions ?? []).filter((s) => s.status === 'new').length + (mailStatus?.unread ?? 0),
       dups: duplicateFonts(data).length + duplicatePeople(data).length,
       broken: (data.linkChecks ?? []).filter((l) => l.verdict === 'broken').length,
+      // 1 = nobody has been chosen for this week yet
+      dotw: data.dotw && !data.dotw.some((r) => String(r.week_start) === weekStart()) ? 1 : 0,
     } as Record<string, number>;
   }, [data, mailStatus]);
 

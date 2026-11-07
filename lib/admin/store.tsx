@@ -28,6 +28,8 @@ export type Data = {
   redirects: Row[] | null;
   activity: Row[] | null;
   team: Row[] | null;
+  /** Designer of the week picks (newest first) — null until supabase/designer-of-week.sql has been run */
+  dotw: Row[] | null;
   /** 'admin' | 'editor'; before the update everyone who can log in is treated as admin */
   role: 'admin' | 'editor';
   /** false when the update has run but this account isn't on the dashboard team */
@@ -75,13 +77,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       ]);
       let profiles: Row[] | null = null;
       try { profiles = await db.all('profiles'); } catch { profiles = null; }
-      const [submissions, linkChecks, redirects, activity, team, role] = await Promise.all([
+      const [submissions, linkChecks, redirects, activity, team, role, dotw] = await Promise.all([
         db.maybe('submissions', '*', { order: 'created_at', limit: 1000 }),
         db.maybe('link_checks'),
         db.maybe('font_redirects'),
         db.maybe('activity_log', '*', { order: 'at', limit: 300 }),
         db.maybe('dashboard_roles'),
         db.rpc<string>('dashboard_role'),
+        db.maybe('designer_of_week', '*', { order: 'week_start', limit: 200 }),
       ]);
       const sortTags = (t: Row[]) => (t as Tag[]).sort((a, b) => String(a.name).localeCompare(String(b.name)));
       setData({
@@ -96,7 +99,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         },
         profiles,
         hasCountry: people.length > 0 && 'country' in people[0],
-        submissions, linkChecks, redirects, activity, team,
+        submissions, linkChecks, redirects, activity, team, dotw,
         role: role === 'editor' ? 'editor' : 'admin',
         member: submissions === null || role === 'admin' || role === 'editor' || DEMO,
         upgraded: submissions !== null,
@@ -163,3 +166,10 @@ export const coverOf = (f: Row): string => String(f.cover || (Array.isArray(f.im
 /** Normalised key used to spot duplicates: "Elize", "elize-1" and "ELIZE " all match. */
 export const dupKey = (s: string) =>
   String(s ?? '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[-_\s]*\d+$/, '').replace(/\b(font|typeface|arabic|family)\b/g, '').replace(/[^a-z0-9؀-ۿ]/g, '');
+
+/** The Sunday (Riyadh time) that starts the week `offset` weeks from now, as YYYY-MM-DD. */
+export function weekStart(offset = 0): string {
+  const riyadh = new Date(Date.now() + 3 * 3600 * 1000);
+  riyadh.setUTCDate(riyadh.getUTCDate() - riyadh.getUTCDay() + offset * 7);
+  return riyadh.toISOString().slice(0, 10);
+}

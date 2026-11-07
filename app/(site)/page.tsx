@@ -6,7 +6,7 @@ import RandomAwards from '@/components/RandomAwards';
 import RandomReleases from '@/components/RandomReleases';
 import RandomWall from '@/components/RandomWall';
 import FoundryTicker from '@/components/FoundryTicker';
-import { getArchive } from '@/lib/data';
+import { getArchive, getDesignerOfWeek } from '@/lib/data';
 import { SCRIPT_ARABIC, excerpt, label, personHref, storageUrl, thumbUrl } from '@/lib/format';
 import { creditOf, toCard } from '@/lib/view';
 import type { Archive, Font } from '@/lib/types';
@@ -29,10 +29,14 @@ export default async function Home() {
   if (artists(releasePool) < 8) releasePool = [...releasePool, ...byYear(thisYear - 1)];
   const releaseCards = releasePool.map((f) => ({ id: f.id, people: f.people, card: { ...toCard(a, f), script: `${toCard(a, f).script} · ${f.year}` } }));
 
-  // Designer spotlight rotates weekly among designers with a bio and at least 4 typefaces.
+  // Designer of the week: the one chosen in the dashboard; in a week nobody chose, it rotates
+  // among designers with a bio, a portrait and at least 4 typefaces.
+  const chosen = await getDesignerOfWeek();
+  const picked = chosen ? a.people.find((p) => p.id === chosen.designerId && p.fontIds.length > 0) ?? null : null;
   const pool = designers.filter((p) => p.fontIds.length >= 4 && p.bio.length > 40 && p.logo);
   const week = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));
-  const star = pool.length ? pool[week % pool.length] : null;
+  const star = picked ?? (pool.length ? pool[week % pool.length] : null);
+  const starNote = picked ? chosen!.note : '';
   const starFonts = star ? star.fontIds.map((id) => a.fontById.get(id)!).filter(Boolean) : [];
 
   const scriptRows = a.scripts.map((s, i) => {
@@ -123,13 +127,14 @@ export default async function Home() {
             <div className="spotlight__text">
               <p className="mono" style={{ margin: 0, color: 'var(--mute-inv)' }}>Designer of the week</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-                <img className="avatar avatar--grey" src={thumbUrl(star.logo, 256)} alt="" width={104} height={104} />
+                {star.logo ? <img className="avatar avatar--grey" src={thumbUrl(star.logo, 256)} alt="" width={104} height={104} /> : null}
                 <div>
                   <h2 className="display h-lg" style={{ margin: 0 }}>{star.name}</h2>
                   <p style={{ margin: '8px 0 0', color: 'var(--mute-inv)' }}>{star.from ? `${star.from} · ` : ''}{star.fontIds.length} typefaces on Fahress</p>
                 </div>
               </div>
-              <p style={{ margin: 0, fontSize: 18, lineHeight: 1.65, color: '#e6e6e6' }}>{excerpt(star.bio, 320)}</p>
+              {starNote ? <p style={{ margin: 0, fontSize: 18, lineHeight: 1.65, color: '#fff' }}>{starNote}</p> : null}
+              {star.bio ? <p style={{ margin: 0, fontSize: 18, lineHeight: 1.65, color: '#e6e6e6' }}>{excerpt(star.bio, 320)}</p> : null}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
                 <Link href={personHref(star.type, star.slug)} className="btn">Read the profile</Link>
                 {starFonts[0] ? <Link href={`/fonts/${starFonts[0].slug}`} className="btn btn--ghost">View {starFonts[0].name} →</Link> : null}

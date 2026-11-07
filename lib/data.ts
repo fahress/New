@@ -190,3 +190,21 @@ export async function getRedirect(slug: string): Promise<{ to: string; kind: str
     return null;
   }
 }
+
+/** This week's chosen designer (Dashboard → Designer of the week): the latest pick whose week has started.
+ *  Returns null if nothing is chosen yet or the table hasn't been created — the home page then picks one itself. */
+export const getDesignerOfWeek = cache(async (): Promise<{ designerId: string; note: string; weekStart: string } | null> => {
+  if (process.env.FAHRESS_FIXTURE || !SUPABASE_URL || !SUPABASE_KEY) return null;
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/designer_of_week?select=designer_id,note,week_start&week_start=lte.${today}&order=week_start.desc&limit=1`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+      next: { revalidate: REVALIDATE_SECONDS, tags: ['fahress'] },
+    });
+    if (!res.ok) return null;
+    const [row] = (await res.json()) as Row[];
+    return row ? { designerId: str(row.designer_id), note: str(row.note), weekStart: str(row.week_start) } : null;
+  } catch {
+    return null;
+  }
+});
