@@ -71,7 +71,11 @@ export default function AgentSettingsPage() {
   const save = async () => {
     const p = settingsProblems(form);
     setProblems(p);
-    if (p.length) { toast('Fix the highlighted settings first.', 'err'); return; }
+    if (p.length) {
+      toast(`Can’t save yet: ${p[0]}${p.length > 1 ? ` (and ${p.length - 1} more — listed at the top of the page)` : ''}`, 'err');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     setSaving(true);
     try {
       const r = await agentApi<{ version: number; settings: AgentSettings; changed: string[] }>('settings', { settings: form, version: data.version }, 'PUT');
@@ -121,6 +125,12 @@ export default function AgentSettingsPage() {
         </div>
       </div>
       {!canEdit ? <div className="dz-panel dz-panel--note" style={{ marginBottom: 18 }}>You can see these settings but not change them. Ask an admin.</div> : null}
+      {problems.length ? (
+        <div className="dz-warn" role="alert" style={{ marginBottom: 18 }}>
+          <b>Not saved — fix these first</b>
+          <ul style={{ margin: 0, paddingLeft: 18 }}>{problems.map((x) => <li key={x}>{x}</li>)}</ul>
+        </div>
+      ) : null}
 
       <div className="ag-settings">
         <Section title="Status" note="Diagnostics">
