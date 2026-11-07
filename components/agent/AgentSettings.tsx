@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { agentApi, ApiError } from './api';
+import SetupNeeded from './SetupNeeded';
 import { ConfirmButton, Field, Loading, timeAgo, useToast } from '@/components/dashboard/ui';
 import {
   DEFAULT_SETTINGS, LIMITS, PERMISSIONS, PERM_KEYS, TOOLS, TOOL_NAMES, changedSections, settingsProblems,
@@ -35,6 +36,7 @@ export default function AgentSettingsPage() {
   const toast = useToast();
   const [data, setData] = useState<Payload | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notInstalled, setNotInstalled] = useState<string | null>(null);
   const [form, setForm] = useState<AgentSettings | null>(null);
   const [saving, setSaving] = useState(false);
   const [problems, setProblems] = useState<string[]>([]);
@@ -43,7 +45,10 @@ export default function AgentSettingsPage() {
     try {
       const d = await agentApi<Payload>('settings');
       setData(d); setForm(d.settings); setError(null);
-    } catch (e) { setError(e instanceof Error ? e.message : 'Couldn’t load the settings'); }
+    } catch (e) {
+      if (e instanceof ApiError && e.code === 'not_installed') setNotInstalled(String((e.body as { detail?: string } | undefined)?.detail ?? ''));
+      else setError(e instanceof Error ? e.message : 'Couldn’t load the settings');
+    }
   };
   useEffect(() => { load(); }, []);
 
@@ -55,6 +60,7 @@ export default function AgentSettingsPage() {
     return () => window.removeEventListener('beforeunload', warn);
   }, [changed.length]);
 
+  if (notInstalled !== null) return <SetupNeeded detail={notInstalled || null} />;
   if (error) return <div className="dz-panel dz-panel--err"><b>Couldn’t open the agent settings.</b><p>{error}</p><p className="dz-hint">If the agent was just installed, run <code>supabase/agent-setup.sql</code> in the Supabase SQL editor first.</p></div>;
   if (!data || !form) return <Loading text="Loading the agent settings…" />;
   const canEdit = data.perms.manage_settings;
@@ -65,7 +71,11 @@ export default function AgentSettingsPage() {
   const save = async () => {
     const p = settingsProblems(form);
     setProblems(p);
-    if (p.length) { toast('Fix the highlighted settings first.', 'err'); return; }
+    if (p.length) {
+      toast(`Can’t save yet: ${p[0]}${p.length > 1 ? ` (and ${p.length - 1} more — listed at the top of the page)` : ''}`, 'err');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     setSaving(true);
     try {
       const r = await agentApi<{ version: number; settings: AgentSettings; changed: string[] }>('settings', { settings: form, version: data.version }, 'PUT');
@@ -115,6 +125,12 @@ export default function AgentSettingsPage() {
         </div>
       </div>
       {!canEdit ? <div className="dz-panel dz-panel--note" style={{ marginBottom: 18 }}>You can see these settings but not change them. Ask an admin.</div> : null}
+      {problems.length ? (
+        <div className="dz-warn" role="alert" style={{ marginBottom: 18 }}>
+          <b>Not saved — fix these first</b>
+          <ul style={{ margin: 0, paddingLeft: 18 }}>{problems.map((x) => <li key={x}>{x}</li>)}</ul>
+        </div>
+      ) : null}
 
       <div className="ag-settings">
         <Section title="Status" note="Diagnostics">

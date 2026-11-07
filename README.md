@@ -9,7 +9,7 @@ Built with Next.js (App Router). All content — fonts, designers, foundries, sc
 | Route | What it shows |
 | --- | --- |
 | `/` | Hero, live search, scrolling specimen wall, counters, newest fonts, browse by script, designer of the week, award winners, foundry ticker |
-| `/fonts` | Catalog with the full filter sidebar: script, style, type, genre, designers, foundries, license, language, weights, release year, awards. Filters are kept in the address so views can be shared. Old links such as `/search?scripts=1` still work. |
+| `/fonts` | Catalog with the full filter sidebar: script, style, type, genre, designers, foundries, license, country (of the designer or foundry), language, weights, release year, awards. Filters are kept in the address so views can be shared. Old links such as `/search?scripts=1` still work. |
 | `/fonts/[slug]` | Image gallery, credits, tags, where to buy, awards, more by the designer, similar fonts |
 | `/designers`, `/foundries` | A–Z directory with search and image preview on hover |
 | `/designers/[slug]` | Designer or foundry profile: bio, links, stats, all typefaces, collaborators |

@@ -15,9 +15,12 @@ function fromPostgrest(status: number, body: string): DbError {
   try { j = JSON.parse(body); } catch { /* not JSON */ }
   const code = j.code ?? '';
   const msg = j.message || body.slice(0, 300) || `Database error (${status})`;
-  const http = code === 'AG401' ? 401 : code === 'AG403' || code === '42501' ? 403 : code === 'AG404' ? 404 : code === 'AG409' ? 409
-    : code === 'AG422' ? 422 : code === 'AG423' ? 423 : code === 'AG429' ? 429 : code === 'PGRST202' || code === '42P01' || code === '42883' ? 503 : status;
-  const plain = http === 503 ? 'The agent’s database update hasn’t been run yet (supabase/agent-setup.sql).' : code === '42501' ? `Your account isn’t allowed to do that. (${msg})` : msg;
+  // missing table / function / column: the agent's database update (supabase/agent-setup.sql) hasn't been run
+  const missing = ['PGRST202', 'PGRST205', 'PGRST204', '42P01', '42883', '42703'].includes(code) || /schema cache/i.test(msg);
+  const http = missing ? 503 : code === 'AG401' ? 401 : code === 'AG403' || code === '42501' ? 403 : code === 'AG404' ? 404 : code === 'AG409' ? 409
+    : code === 'AG422' ? 422 : code === 'AG423' ? 423 : code === 'AG429' ? 429 : status;
+  if (missing) return new DbError('The agent’s database update hasn’t been run yet (supabase/agent-setup.sql).', 503, 'not_installed', msg);
+  const plain = code === '42501' ? `Your account isn’t allowed to do that. (${msg})` : msg;
   return new DbError(plain, http, code, j.details);
 }
 

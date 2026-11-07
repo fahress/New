@@ -18,7 +18,7 @@ export class HttpError extends Error { constructor(public status: number, messag
 
 export function jsonError(e: unknown): Response {
   if (e instanceof HttpError) return Response.json({ error: e.message, code: e.code }, { status: e.status });
-  if (e instanceof DbError) return Response.json({ error: e.message, code: e.code ?? 'db' }, { status: e.status >= 400 && e.status < 600 ? e.status : 500 });
+  if (e instanceof DbError) return Response.json({ error: e.message, code: e.code ?? 'db', ...(e.code === 'not_installed' && typeof e.detail === 'string' ? { detail: e.detail.slice(0, 300) } : {}) }, { status: e.status >= 400 && e.status < 600 ? e.status : 500 });
   const err = e as { message?: string; status?: number; code?: string };
   if (err && typeof err.status === 'number' && err.status >= 400) return Response.json({ error: err.message ?? 'Error', code: err.code ?? 'error' }, { status: err.status });
   return Response.json({ error: 'Something went wrong on the server.', code: 'error' }, { status: 500 });

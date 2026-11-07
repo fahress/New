@@ -440,3 +440,5 @@
   .ag-main { padding: 12px; }
   .ag-head { flex-wrap: wrap; }
 }
+.ag-check { list-style: none; margin: 4px 0 6px; padding: 0; display: grid; gap: 4px; color: var(--ink); }
+.ag-check li.is-done { color: var(--mute); }

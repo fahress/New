@@ -3,11 +3,12 @@ import Catalog, { type CatFont, type FacetGroup } from '@/components/Catalog';
 import { getArchive } from '@/lib/data';
 import { label, slugify } from '@/lib/format';
 import { creditOf, peopleOf, shortList, tagNames, toCardPerson } from '@/lib/view';
+import { countryOf } from '@/lib/places';
 import type { Tag } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Catalog — Arabic fonts by script, style and designer',
-  description: 'Browse every Arabic typeface in the Fahress archive. Filter by script (Naskh, Kufi, Diwani, Thuluth…), style, type, license, language, designer and foundry.',
+  description: 'Browse every Arabic typeface in the Fahress archive. Filter by script (Naskh, Kufi, Diwani, Thuluth…), style, type, license, country, language, designer and foundry.',
   alternates: { canonical: '/fonts' },
 };
 
@@ -54,6 +55,8 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
         designers: people.filter((p) => p!.type === 'designer').map((p) => p!.slug),
         foundries: people.filter((p) => p!.type === 'foundry').map((p) => p!.slug),
         license: [f.license],
+        // the countries of everyone credited: where a designer is from, or the country a foundry works in
+        country: [...new Set(people.map((p) => countryOf(p!)).filter(Boolean).map((c) => slugify(c)))],
         lang: bySlug(a.languageGroups, f.languageGroups, lgSlug),
         weights: [...weightKey(f.weights), ...(f.variable ? ['variable'] : [])],
         year: f.year ? [String(f.year)] : [],
@@ -62,6 +65,10 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
     };
   });
 
+  // countries of the designers and foundries that have fonts in the catalog, A–Z
+  const countries = [...new Map(credited.map((p) => countryOf(p)).filter(Boolean).map((c) => [slugify(c), c])).entries()]
+    .sort((x, y) => x[1].localeCompare(y[1]))
+    .map(([value, label]) => ({ value, label }));
   const opt = (list: Tag[], key: (t: Tag) => string = (t) => t.slug) => list.map((t) => ({ value: key(t), label: label(t.name) }));
   const groups: FacetGroup[] = [
     { key: 'scripts', label: 'Script', options: opt(a.scripts) },
@@ -71,6 +78,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
     { key: 'designers', label: 'Designers', searchable: true, options: a.people.filter((p) => p.type === 'designer').map((p) => ({ value: p.slug, label: p.name })) },
     { key: 'foundries', label: 'Foundries', searchable: true, options: a.people.filter((p) => p.type === 'foundry').map((p) => ({ value: p.slug, label: p.name })) },
     { key: 'license', label: 'License', options: [{ value: 'free', label: 'Free' }, { value: 'paid', label: 'Paid' }, { value: 'custom', label: 'Custom' }] },
+    { key: 'country', label: 'Country', searchable: true, options: countries },
     { key: 'lang', label: 'Language', options: opt(a.languageGroups, lgSlug) },
     { key: 'weights', label: 'Weights', options: [{ value: 'single', label: 'Single weight' }, { value: 'family', label: '2–8 weights' }, { value: 'large', label: '9+ weights' }, { value: 'variable', label: 'Variable' }] },
     { key: 'year', label: 'Release year', options: years.map((y) => ({ value: String(y), label: String(y) })) },
