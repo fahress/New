@@ -7,3 +7,5 @@ out
 next-env.d.ts
 fixture/
 .vercel
+# written by `next dev` (Next.js advice for coding assistants)
+AGENTS.md
