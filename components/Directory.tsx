@@ -19,14 +19,28 @@ export default function Directory({ kind, entries, counts }: { kind: 'designer' 
     return Array.from(m.entries()).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   }, [entries]);
 
-  const first = (s: string) => {
-    const c = norm(s).trim()[0]?.toUpperCase() ?? '#';
+  // A name is listed under the letter of its first name and of its family (last) name:
+  // "Ahmed Zaza" shows under A and Z. For "Al-Samman" the family name counts under A and S.
+  const initial = (w: string) => {
+    const c = w[0]?.toUpperCase() ?? '#';
     return /[A-Z]/.test(c) ? c : '#';
   };
-  const has = useMemo(() => new Set(entries.map((e) => first(e.name))), [entries]);
+  const letters = (s: string) => {
+    const words = norm(s).trim().split(/\s+/).filter(Boolean);
+    if (!words.length) return ['#'];
+    const out = new Set([initial(words[0])]);
+    if (words.length > 1) {
+      const last = words[words.length - 1];
+      out.add(initial(last));
+      const bare = last.replace(/^(al|el)[-‐'’]/i, '');
+      if (bare !== last) out.add(initial(bare));
+    }
+    return [...out];
+  };
+  const has = useMemo(() => new Set(entries.flatMap((e) => letters(e.name))), [entries]);
   const list = useMemo(() => {
     const t = norm(q.trim());
-    const r = entries.filter((e) => (!t || norm(e.name).includes(t)) && (!letter || first(e.name) === letter) && (!country || e.country === country));
+    const r = entries.filter((e) => (!t || norm(e.name).includes(t)) && (!letter || letters(e.name).includes(letter)) && (!country || e.country === country));
     if (sort === 'most') r.sort((x, y) => y.count - x.count || x.name.localeCompare(y.name));
     else if (sort === 'random') r.sort((x, y) => x.r - y.r);
     return r;
