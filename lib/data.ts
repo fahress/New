@@ -18,6 +18,23 @@ async function readFixture(): Promise<Record<string, Row[]> | null> {
   return JSON.parse(await readFile(file, 'utf8'));
 }
 
+/** One page of rows. Uses the cached copy, but if that copy is damaged (Vercel has served
+ *  cached bodies cut off at 32 KB), reads it fresh from Supabase instead of failing the page. */
+async function readPage(url: string, name: string): Promise<Row[]> {
+  const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
+  const res = await fetch(url, { headers, next: { revalidate: REVALIDATE_SECONDS, tags: ['fahress'] } });
+  if (!res.ok) throw new Error(`Supabase ${name}: ${res.status} ${await res.text()}`);
+  const body = await res.text();
+  try {
+    return JSON.parse(body) as Row[];
+  } catch {
+    console.warn(`Supabase ${name}: cached response was damaged (${body.length} bytes) — reading it fresh`);
+    const fresh = await fetch(url, { headers, cache: 'no-store' });
+    if (!fresh.ok) throw new Error(`Supabase ${name}: ${fresh.status} ${await fresh.text()}`);
+    return (await fresh.json()) as Row[];
+  }
+}
+
 async function table(name: string, select = '*', filter = ''): Promise<Row[]> {
   const fixture = await readFixture();
   if (fixture) return fixture[name] ?? [];
@@ -28,12 +45,7 @@ async function table(name: string, select = '*', filter = ''): Promise<Row[]> {
   const pageSize = 1000;
   for (let offset = 0; ; offset += pageSize) {
     const url = `${SUPABASE_URL}/rest/v1/${name}?select=${encodeURIComponent(select)}${filter}&limit=${pageSize}&offset=${offset}`;
-    const res = await fetch(url, {
-      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-      next: { revalidate: REVALIDATE_SECONDS, tags: ['fahress'] },
-    });
-    if (!res.ok) throw new Error(`Supabase ${name}: ${res.status} ${await res.text()}`);
-    const page = (await res.json()) as Row[];
+    const page = await readPage(url, name);
     rows.push(...page);
     if (page.length < pageSize) break;
   }
