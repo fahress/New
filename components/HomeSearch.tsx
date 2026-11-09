@@ -1,4 +1,5 @@
 'use client';
+import { trackSearch } from '@/components/Analytics';
 import { useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { personHref, thumbUrl } from '@/lib/format';
@@ -33,7 +34,7 @@ export default function HomeSearch({ index, tries }: { index: SearchIndex; tries
     ];
   }, [q, index]);
 
-  const go = (href: string) => router.push(href);
+  const go = (href: string) => { trackSearch(q, 'home'); router.push(href); };
   const submit = () => {
     if (hits[sel]) go(hits[sel].href);
     else if (q.trim()) go(`/fonts?q=${encodeURIComponent(q.trim())}`);

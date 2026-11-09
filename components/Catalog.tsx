@@ -1,4 +1,5 @@
 'use client';
+import { trackSearchSoon } from '@/components/Analytics';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import FontCard, { type CardPerson } from './FontCard';
@@ -77,6 +78,9 @@ export default function Catalog({
   }, [sel, q, sort, view, groups]);
 
   useEffect(() => setShown(PAGE), [sel, q, sort]);
+  // the search that opened this page was already counted where it was typed
+  const firstQ = useRef(q);
+  useEffect(() => { if (q.trim() && q !== firstQ.current) trackSearchSoon(q, 'catalog'); }, [q]);
 
   useEffect(() => {
     document.body.style.overflow = drawer ? 'hidden' : '';

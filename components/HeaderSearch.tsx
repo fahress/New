@@ -1,4 +1,5 @@
 'use client';
+import { trackSearch } from '@/components/Analytics';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -70,7 +71,7 @@ export default function HeaderSearch() {
   }, [q, index]);
 
   const flat = groups.flatMap((g) => g.items);
-  const go = (href: string) => { setOpen(false); setQ(''); router.push(href); };
+  const go = (href: string) => { trackSearch(q, 'header'); setOpen(false); setQ(''); router.push(href); };
   const all = () => go(`/fonts?q=${encodeURIComponent(q.trim())}`);
 
   let k = -1;

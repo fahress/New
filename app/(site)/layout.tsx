@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Analytics from '@/components/Analytics';
 
 /** Public site chrome. The dashboard has its own layout. */
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -9,6 +10,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <Header />
       <main id="main">{children}</main>
       <Footer />
+      <Analytics />
     </>
   );
 }
