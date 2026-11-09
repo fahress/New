@@ -23,7 +23,7 @@ export default function Footer() {
       </div>
       <div className="wrap site-footer__base">
         <span className="mono">© Fahress</span>
-        <Link href="/contact" className="mono ul" style={{ textTransform: 'none' }}>admin@fahress.com</Link>
+        <Link href="/contact" className="mono ul" style={{ textTransform: 'none' }}>hello@fahress.com</Link>
       </div>
     </footer>
   );

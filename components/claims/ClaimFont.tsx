@@ -52,7 +52,7 @@ export default function ClaimFont({ fontId, fontName, slug }: { fontId: string; 
               <label className="field"><span>Your name</span><input className="input" required maxLength={200} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" /></label>
               <label className="field"><span>Your email</span><input className="input" type="email" required maxLength={320} value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" /></label>
               <label className="field"><span>Comment</span><textarea className="textarea" required minLength={5} maxLength={4000} value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Your role on the typeface, and a link that shows it (your website, Behance, the foundry page…)" /></label>
-              {state === 'error' ? <p className="form-error">Couldn&apos;t send right now. Please try again, or email admin@fahress.com.</p> : null}
+              {state === 'error' ? <p className="form-error">Couldn&apos;t send right now. Please try again, or email hello@fahress.com.</p> : null}
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <button className="btn" disabled={state === 'sending'}>{state === 'sending' ? 'Sending…' : 'Send claim'}</button>
                 <button type="button" className="btn btn--ghost" onClick={() => setOpen(false)}>Cancel</button>

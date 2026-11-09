@@ -85,7 +85,7 @@ export default function SubmitFont() {
         </div>
       ) : null}
       <input className="hp" tabIndex={-1} aria-hidden="true" autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} />
-      {state === 'error' ? <p className="form-error">Couldn’t send right now. Please try again, or email admin@fahress.com.</p> : null}
+      {state === 'error' ? <p className="form-error">Couldn’t send right now. Please try again, or email hello@fahress.com.</p> : null}
       <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
         <button className="btn" disabled={state === 'sending' || uploading > 0}>{state === 'sending' ? 'Sending…' : 'Submit for review'}</button>
         {!me ? <span className="muted" style={{ fontSize: 14 }}>Are you the designer? <Link href="/account" className="ul">Create an account</Link> to upload images and track your submissions.</span> : null}

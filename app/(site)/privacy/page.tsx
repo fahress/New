@@ -23,7 +23,7 @@ export default function Privacy() {
         <h2>Where it’s stored</h2>
         <p>Data is stored with our hosting and database providers (Vercel and Supabase). We keep messages for as long as they are useful for answering you, and you can ask us to delete anything you sent.</p>
         <h2>Contact</h2>
-        <p>Questions or deletion requests: <Link href="/contact">contact us</Link> or email admin@fahress.com.</p>
+        <p>Questions or deletion requests: <Link href="/contact">contact us</Link> or email hello@fahress.com.</p>
       </div>
     </div>
   );

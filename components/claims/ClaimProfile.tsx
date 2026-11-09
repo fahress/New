@@ -52,7 +52,7 @@ export default function ClaimProfile({ designerId, name, slug, kind, className =
               <p className="muted" style={{ margin: 0 }}>Once approved, you manage this {noun}: you can update the profile and edit the fonts under it. Every change is checked by the Fahress team before it goes live.</p>
               <label className="field"><span>Proof it&apos;s you</span><input className="input" type="url" required placeholder="https:// — your Instagram, Behance or website" value={proof} onChange={(e) => setProof(e.target.value)} /><small>We&apos;ll check this link shows the same {noun}.</small></label>
               <label className="field"><span>Comment (optional)</span><textarea className="textarea" maxLength={2000} value={comment} onChange={(e) => setComment(e.target.value)} /></label>
-              {state === 'error' ? <p className="form-error">Couldn&apos;t send your claim. This account may already be claimed — email admin@fahress.com if that&apos;s a mistake.</p> : null}
+              {state === 'error' ? <p className="form-error">Couldn&apos;t send your claim. This account may already be claimed — email hello@fahress.com if that&apos;s a mistake.</p> : null}
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <button className="btn" disabled={state === 'sending'}>{state === 'sending' ? 'Sending…' : 'Send claim'}</button>
                 <button type="button" className="btn btn--ghost" onClick={() => setOpen(false)}>Cancel</button>

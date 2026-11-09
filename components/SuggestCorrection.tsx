@@ -37,7 +37,7 @@ export default function SuggestCorrection({ fontId, designerId, about }: { fontI
         <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="So we can thank you or ask a question" />
       </label>
       <input className="hp" tabIndex={-1} aria-hidden="true" autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} />
-      {state === 'error' ? <p className="form-error">Couldn’t send right now. Email admin@fahress.com instead.</p> : null}
+      {state === 'error' ? <p className="form-error">Couldn’t send right now. Email hello@fahress.com instead.</p> : null}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
         <button className="btn" disabled={state === 'sending'}>{state === 'sending' ? 'Sending…' : 'Send'}</button>
         <button type="button" className="btn btn--ghost" onClick={() => setOpen(false)}>Cancel</button>

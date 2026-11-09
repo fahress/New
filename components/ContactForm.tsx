@@ -48,7 +48,7 @@ export default function ContactForm() {
         <textarea className="textarea" required minLength={5} maxLength={4900} rows={7} value={message} onChange={(e) => setMessage(e.target.value)} dir="auto" />
       </label>
       <input className="hp" tabIndex={-1} aria-hidden="true" autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} />
-      {state === 'error' ? <p className="form-error">Couldn’t send right now. Email admin@fahress.com instead.</p> : null}
+      {state === 'error' ? <p className="form-error">Couldn’t send right now. Email hello@fahress.com instead.</p> : null}
       <div><button className="btn" disabled={state === 'sending'}>{state === 'sending' ? 'Sending…' : 'Send message'}</button></div>
     </form>
   );

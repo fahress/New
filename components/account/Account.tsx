@@ -298,7 +298,7 @@ function MyFonts({ p, me, fonts, subs, onSent }: { p: Row; me: Session; fonts: R
     <div style={{ display: 'grid', gap: 14, borderTop: '1px solid var(--line)', paddingTop: 24 }}>
       <div>
         <h3 className="display" style={{ margin: "0 0 6px", fontSize: 22 }}>Your fonts <span className="muted">({fonts.length})</span></h3>
-        <p className="muted" style={{ margin: 0, fontSize: 14 }}>Edit the fonts credited to {p.name}, or put a draft on the site. Every change is checked by the Fahress team before it goes live. Fonts can&apos;t be deleted from here — email admin@fahress.com if one should be removed.</p>
+        <p className="muted" style={{ margin: 0, fontSize: 14 }}>Edit the fonts credited to {p.name}, or put a draft on the site. Every change is checked by the Fahress team before it goes live. Fonts can&apos;t be deleted from here — email hello@fahress.com if one should be removed.</p>
       </div>
       {sent ? <p className="form-note" style={{ margin: 0 }}>Sent — your changes to {sent} are waiting for review.</p> : null}
       {sorted.length === 0 ? <p className="muted" style={{ margin: 0 }}>No fonts are credited to this profile yet. <Link href="/submit" className="ul">Submit one</Link>.</p> : (
@@ -486,7 +486,7 @@ function Claim({ me, preselect, onSent }: { me: Session; preselect: string | nul
             <b style={{ fontSize: 20 }}>{chosen.name}</b>
             <button type="button" className="correction__toggle ul" onClick={() => setChosen(null)}>change</button>
           </div>
-          {chosen.user_id ? <p className="form-error">This profile has already been claimed. If that&apos;s a mistake, email admin@fahress.com.</p> : (
+          {chosen.user_id ? <p className="form-error">This profile has already been claimed. If that&apos;s a mistake, email hello@fahress.com.</p> : (
             <>
               <label className="field"><span>Proof it&apos;s you</span><input className="input" type="url" required placeholder="https:// — your Instagram, Behance or website" value={proof} onChange={(e) => setProof(e.target.value)} /><small>We&apos;ll check this link shows the same person or foundry. Mentioning fahress.com in your bio for a day speeds it up.</small></label>
               <label className="field"><span>Anything to add? (optional)</span><textarea className="textarea" value={message} onChange={(e) => setMessage(e.target.value)} /></label>
