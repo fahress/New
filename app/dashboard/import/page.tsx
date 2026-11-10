@@ -12,7 +12,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '');
 /** One font found by the Oct 2026 web survey that isn't on Fahress yet (see lib/admin/survey-fonts.json). */
 type SurveyFont = {
   n: string; d: string[]; f: string; sc: string[]; g: string[]; st: string[]; t: string[];
-  y: number | null; w: number | null; v: boolean; l: 'free' | 'paid'; u: string; s: string; a: string; lc: number | null; no: string; b?: number;
+  y: number | null; w: number | null; v: boolean; l: 'free' | 'paid'; u: string; s: string; a: string; lc: number | null; no: string; b?: number; ds?: string;
 };
 
 export default function ImportPage() {
@@ -106,7 +106,7 @@ export default function ImportPage() {
         if (r.f) ids.push(await person(r.f, 'foundry'));
         const credit = [...new Set(ids)];
         const row: Row = {
-          name: r.n, slug: unique(fontSlugs, slugify(r.n) || `font-${Date.now()}`), description: '', year: r.y, weights: r.w,
+          name: r.n, slug: unique(fontSlugs, slugify(r.n) || `font-${Date.now()}`), description: r.ds ?? '', year: r.y, weights: r.w,
           is_variable: r.v, license: r.l, status: 'draft', cover: null, images: [], purchase_links: r.u ? [r.u] : [], case_studies: [],
           language_group: [], source_url: r.u || null, updated_at: new Date().toISOString(),
         };
@@ -159,7 +159,7 @@ export default function ImportPage() {
       <div className="dz-toolbar">
         <input className="dz-input" placeholder="Search by name, designer or foundry…" value={q} onChange={(e) => { setQ(e.target.value); setShown(PAGE); }} />
         <select className="dz-select" value={round} onChange={(e) => { setRound(e.target.value); setShown(PAGE); }} aria-label="Survey round">
-          <option value="">All batches</option><option value="1">Round 1</option><option value="2">Round 2</option><option value="3">Fahd Al Fraikh (Sellfy)</option>
+          <option value="">All batches</option><option value="1">Round 1</option><option value="2">Round 2</option><option value="3">Fahd Al Fraikh (Sellfy)</option><option value="4">Font Intake page</option>
         </select>
         <label className="dz-check"><input type="checkbox" checked={onlyDup} onChange={(e) => setOnlyDup(e.target.checked)} /> Possible duplicates only ({maybeDup.size})</label>
         <select className="dz-select" value={site} onChange={(e) => { setSite(e.target.value); setShown(PAGE); }} aria-label="Found on">
