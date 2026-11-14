@@ -5,6 +5,18 @@ import { useToast } from '@/components/dashboard/ui';
 import { db, type Row } from '@/lib/admin/db';
 import { img, useData, weekStart } from '@/lib/admin/store';
 
+const PLAN_WEEKS = 8; // this week + the next 7
+
+/** "Sun 8 – Sat 14 Nov 2026" for the week starting on `iso` (a Sunday). */
+const range = (iso: string) => {
+  const a = new Date(`${iso}T12:00:00Z`);
+  const b = new Date(a.getTime() + 6 * 86400000);
+  const d = (x: Date, o: Intl.DateTimeFormatOptions) => x.toLocaleDateString('en-GB', { timeZone: 'UTC', ...o });
+  const sameMonth = a.getUTCMonth() === b.getUTCMonth();
+  return `Sun ${d(a, sameMonth ? { day: 'numeric' } : { day: 'numeric', month: 'short' })} – Sat ${d(b, { day: 'numeric', month: 'short', year: 'numeric' })}`;
+};
+const weekName = (offset: number) => (offset === 0 ? 'This week' : offset === 1 ? 'Next week' : `In ${offset} weeks`);
+
 const nice = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
 /** Choose the designer shown in the "Designer of the week" section of the home page. */
@@ -12,7 +24,7 @@ export default function DesignerOfTheWeek() {
   const { data, reload, personById, fontsOf } = useData();
   const toast = useToast();
   const [q, setQ] = useState('');
-  const [week, setWeek] = useState<0 | 1>(0);
+  const [week, setWeek] = useState<number | null>(null);
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState('');
 
@@ -46,9 +58,10 @@ export default function DesignerOfTheWeek() {
   }
 
   const thisWeek = weekStart(0);
-  const target = weekStart(week);
-  const current = picks.find((r) => String(r.week_start) === thisWeek);
-  const next = picks.find((r) => String(r.week_start) === weekStart(1));
+  const weeks = Array.from({ length: PLAN_WEEKS }, (_, i) => ({ offset: i, start: weekStart(i), pick: picks.find((r) => String(r.week_start) === weekStart(i)) }));
+  // by default, plan the first coming week that has nobody yet
+  const chosenWeek = week ?? (weeks.find((w) => !w.pick)?.offset ?? 0);
+  const target = weekStart(chosenWeek);
   const nameOf = (r?: Row) => (r ? String(personById.get(String(r.designer_id))?.name ?? 'Removed profile') : '');
 
   async function choose(p: Row) {
@@ -60,7 +73,7 @@ export default function DesignerOfTheWeek() {
       await db.refreshSite();
       await reload();
       setNote('');
-      toast(`${p.name} is the designer of the week from ${nice(target)}`);
+      toast(`${p.name} is the designer of the week for ${range(target)}`);
     } catch (e) {
       toast(e instanceof Error ? e.message : 'Could not save', 'err');
     } finally {
@@ -93,19 +106,20 @@ export default function DesignerOfTheWeek() {
       </div>
 
       <section className="dz-panel" style={{ display: 'grid', gap: 8 }}>
-        <p style={{ margin: 0 }}>
-          <b>This week</b> ({nice(thisWeek)}):{' '}
-          {current ? <><b>{nameOf(current)}</b>{current.note ? <span className="dz-muted"> — {String(current.note)}</span> : null}</> : <span style={{ color: 'var(--danger, #c0392b)' }}>not chosen yet — the site is picking one automatically</span>}
-        </p>
-        <p style={{ margin: 0 }} className="dz-muted"><b>Next week</b> ({nice(weekStart(1))}): {next ? nameOf(next) : 'not chosen yet'}</p>
+        <p className="dz-muted" style={{ margin: 0 }}>Today is {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Asia/Riyadh' })}. Weeks run Sunday to Saturday.</p>
+        {weeks.slice(0, 4).map((w) => (
+          <p key={w.start} style={{ margin: 0 }} className={w.offset === 0 ? '' : 'dz-muted'}>
+            <b>{weekName(w.offset)}</b> ({range(w.start)}):{' '}
+            {w.pick ? <><b>{nameOf(w.pick)}</b>{w.pick.note ? <span className="dz-muted"> — {String(w.pick.note)}</span> : null}</> : w.offset === 0 ? <span style={{ color: 'var(--danger, #c0392b)' }}>not chosen — the site is picking one automatically</span> : 'not chosen yet'}
+          </p>
+        ))}
         <p style={{ margin: 0 }}><Link href="/" target="_blank" className="dz-link">See it on the home page ↗</Link></p>
       </section>
 
       <section className="dz-panel" style={{ display: 'grid', gap: 12 }}>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
-          <select className="dz-select" value={week} onChange={(e) => setWeek(Number(e.target.value) as 0 | 1)} aria-label="Which week">
-            <option value={0}>Choose for this week ({nice(thisWeek)})</option>
-            <option value={1}>Choose for next week ({nice(weekStart(1))})</option>
+          <select className="dz-select" value={chosenWeek} onChange={(e) => setWeek(Number(e.target.value))} aria-label="Which week">
+            {weeks.map((w) => <option key={w.start} value={w.offset}>Choose for {weekName(w.offset).toLowerCase()} · {range(w.start)}{w.pick ? ` · now: ${nameOf(w.pick)}` : ''}</option>)}
           </select>
           <input className="dz-input" style={{ flex: '1 1 220px' }} placeholder="Search designers…" value={q} onChange={(e) => setQ(e.target.value)} />
         </div>
@@ -133,7 +147,7 @@ export default function DesignerOfTheWeek() {
           <h3 style={{ margin: 0 }}>Past and planned picks</h3>
           {picks.map((r) => (
             <div key={String(r.week_start)} style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-              <span className="dz-muted" style={{ minWidth: 150 }}>{nice(String(r.week_start))}</span>
+              <span className="dz-muted" style={{ minWidth: 230 }}>{range(String(r.week_start))}</span>
               <b>{nameOf(r)}</b>
               {r.note ? <span className="dz-muted">— {String(r.note)}</span> : null}
               {String(r.week_start) >= thisWeek ? <button type="button" className="dz-link" disabled={!!busy} onClick={() => remove(r)}>Remove</button> : null}
