@@ -6,7 +6,7 @@ import { db, type Row } from '@/lib/admin/db';
 import { newFontHref } from '@/lib/admin/prefill';
 import { img, useData } from '@/lib/admin/store';
 import Mailbox from '@/components/dashboard/Mailbox';
-import { useMailStatus } from '@/lib/admin/mail';
+import { mail, useMailStatus } from '@/lib/admin/mail';
 
 const TABS = [
   { id: 'message', label: 'Messages' },
@@ -20,6 +20,35 @@ const TABS = [
 
 const FONT_FIELD: Record<string, string> = { name: 'Name', year: 'Release year', license: 'License', description: 'About', purchase_links: 'Where to buy', images: 'Images', cover: 'Cover', status: 'On the site' };
 const STATUS_WORD: Record<string, string> = { published: 'Published', featured: 'Featured', draft: 'Draft (hidden)', pending: 'Draft (hidden)' };
+
+/** Approve a submitted font: emails the sender that it's on Fahress (editable before sending). */
+function Approve({ to, defaultText, subject, busy, onSent }: { to: string; defaultText: string; subject: string; busy: boolean; onSent: (text: string) => Promise<void> }) {
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState(defaultText);
+  const [sending, setSending] = useState(false);
+  const [err, setErr] = useState('');
+  if (!to) return null;
+  if (!open) return <button type="button" className="dz-btn dz-btn--ok" onClick={() => { setText(defaultText); setOpen(true); }}>Approved</button>;
+  return (
+    <div style={{ display: 'grid', gap: 8, width: '100%', maxWidth: 640 }}>
+      <span className="dz-muted" style={{ fontSize: 14 }}>Email to <b>{to}</b> · “{subject}”</span>
+      <textarea className="dz-input" rows={7} value={text} onChange={(e) => setText(e.target.value)} />
+      {err ? <p className="dz-error" style={{ margin: 0 }}>{err}</p> : null}
+      <div style={{ display: 'flex', gap: 8 }}>
+        <button type="button" className="dz-btn dz-btn--primary" disabled={busy || sending || text.trim().length < 5} onClick={async () => {
+          setSending(true); setErr('');
+          try {
+            await mail('send', { to, subject, body: text.trim() });
+            await onSent(text.trim());
+          } catch (e) {
+            setErr(e instanceof Error ? e.message : 'Could not send. Check that Gmail is connected in the Inbox.');
+          } finally { setSending(false); }
+        }}>{sending ? 'Sending…' : 'Send and mark approved'}</button>
+        <button type="button" className="dz-btn" disabled={sending} onClick={() => setOpen(false)}>Cancel</button>
+      </div>
+    </div>
+  );
+}
 
 /** Decline with a reason the sender sees in their account. */
 function Decline({ required, busy, onDecline }: { required: boolean; busy: boolean; onDecline: (reason: string) => void }) {
@@ -202,6 +231,14 @@ export default function Inbox() {
                     {s.kind === 'font' && (
                       <Link className="dz-btn dz-btn--primary" href={newFontHref({ name: String(p.name ?? ''), designers: (p.designers as string[]) ?? [], year: (p.year as string) ?? null, links: (p.links as string[]) ?? [], description: String(p.description ?? ''), license: String(p.license ?? ''), source: ((p.links as string[]) ?? [])[0], stored: (p.images as string[]) ?? [], submissionId: id })}>Create font from this</Link>
                     )}
+                    {s.kind === 'font' && (() => {
+                      const to = String(s.email ?? p.email ?? '');
+                      const fname = String(p.name ?? 'your typeface');
+                      const live = data.fonts.find((f) => String(f.name).trim().toLowerCase() === fname.trim().toLowerCase() && ['published', 'featured'].includes(String(f.status)));
+                      const first = String(s.name ?? p.submitter ?? '').trim().split(/\s+/)[0];
+                      const body = `Hello${first ? ` ${first}` : ''},\n\nThank you for sending ${fname} to Fahress. It has been approved and added to the archive${live ? `:\nhttps://fahress.com/fonts/${live.slug}` : '.'}\n\nBest wishes,\nFahress — the Arabic type design archive\nhttps://fahress.com`;
+                      return <Approve to={to} subject={`${fname} is now on Fahress`} defaultText={body} busy={busy === id} onSent={(text) => close(s, 'accepted', `Approved — email sent to ${to}`, undefined, text)} />;
+                    })()}
                     {s.kind === 'correction' && <button type="button" className="dz-btn dz-btn--primary" disabled={busy === id} onClick={() => close(s, 'accepted', 'Marked as done')}>Mark as done</button>}
                     {s.kind === 'claim' && person && isAdmin && (
                       <button type="button" className="dz-btn dz-btn--primary" disabled={busy === id} onClick={() => close(s, 'accepted', `${person.name} is now verified and managed by this account`, async () => { await db.update('designers', { id: String(person.id) }, { user_id: s.user_id }); await db.refreshSite(); })}>Approve claim</button>

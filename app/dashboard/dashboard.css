@@ -42,6 +42,8 @@
 .dz-btn--primary:hover { background: #333; }
 .dz-btn--danger { border-color: #b42318; color: #b42318; }
 .dz-btn--danger:hover { background: #b42318; color: #fff; }
+.dz-btn--ok { border-color: #1e6b4e; color: #1e6b4e; }
+.dz-btn--ok:hover { background: #1e6b4e; color: #fff; }
 .dz-btn--block { width: 100%; }
 .dz-btn--sm { min-height: 32px; padding: 0 12px; font-size: 13px; }
 .dz-btn:disabled { opacity: .45; cursor: not-allowed; }
